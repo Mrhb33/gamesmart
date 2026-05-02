@@ -1,0 +1,16 @@
+{
+  "name": "Cerebrum Quest",
+  "short_name": "Cerebrum",
+  "description": "A professional knowledge adventure game.",
+  "start_url": "./main.html",
+  "display": "standalone",
+  "background_color": "#0a0f1a",
+  "theme_color": "#f59e0b",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2Y1OWUwYiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjAwIiBmaWxsPSJ3aGl0ZSI+Q1E8L3RleHQ+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

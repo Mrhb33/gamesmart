@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0f1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Cerebrum Quest — Knowledge Adventure</title>
+<link rel="manifest" href="./manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --bg: #0a0f1a;
+    --bg2: #111827;
+    --fg: #e8ecf4;
+    --muted: #6b7a99;
+    --accent: #f59e0b;
+    --accent2: #10b981;
+    --accent3: #5b8def;
+    --card: rgba(17, 24, 39, 0.88);
+    --border: rgba(255,255,255,0.08);
+    --shadow: 0 8px 32px rgba(0,0,0,0.3);
+    --science: #06b6d4;
+    --history: #f59e0b;
+    --geography: #10b981;
+    --math: #ef4444;
+    --language: #a855f7;
+    --nature: #22c55e;
+    --culture: #ec4899;
+    --danger: #ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden;}
+  h1, h2, h3, .results-title, .score-ring-value, .stat-value, .welcome-title, .hub-title { font-family: 'Syne', sans-serif; }
+  
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+  /* NAV */
+  .main-nav{position:sticky;top:0;z-index:100;display:flex;justify-content:center;gap:24px;padding:0 16px;background:rgba(10,15,26,0.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .nav-tab{padding:16px 8px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;}
+  .nav-tab:hover{color:var(--fg);}
+  .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .nav-tab .badge{background:var(--accent);color:#000;font-size:11px;font-weight:800;padding:2px 6px;border-radius:99px;min-width:20px;text-align:center;}
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border-radius: 12px; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .3s; border: none; text-decoration: none; }
+  .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .btn:active { transform: translateY(0); }
+  
+  .btn-gold { background: linear-gradient(135deg, var(--accent), #d97706); color: #000; }
+  .btn-gold:hover { box-shadow: 0 8px 28px rgba(245,158,11,.3); }
+  
+  .btn-ghost { background: rgba(255,255,255,.06); color: var(--fg); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: var(--accent); }
+  
+  .btn-red { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+  .btn-red:hover { background: rgba(239,68,68,.2); }
+  
+  .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+
+  /* SCREENS */
+  .screen{display:none;position:relative;z-index:1;min-height:calc(100vh - 52px);padding:24px 20px 40px;animation:fadeIn .45s ease;}
+  .screen.active{display:flex;flex-direction:column;align-items:center;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  @keyframes xpFly{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.4);}}
+  @keyframes streakFire{0%,100%{text-shadow:0 0 8px rgba(245,158,11,.5);}50%{text-shadow:0 0 24px rgba(245,158,11,.9),0 0 48px rgba(239,68,68,.4);}}
+  @keyframes popIn{0%{transform:scale(0);opacity:0;}60%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+  @keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3);}50%{box-shadow:0 0 0 12px rgba(245,158,11,0);}}
+  .shake-anim{animation:shake .45s ease;}
+
+  /* WELCOME */
+  .welcome-container{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:78vh;text-align:center;max-width:660px;}
+  .welcome-icon{font-size:68px;margin-bottom:20px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(245,158,11,.35));color:var(--accent);}
+  .welcome-title{font-size:clamp(40px,7vw,68px);font-weight:800;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--accent),#fbbf24,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .welcome-subtitle{font-size:17px;color:var(--muted);margin-bottom:36px;font-weight:500;letter-spacing:2px;}
+  .welcome-tagline{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:44px;}
+  .name-input-group{display:flex;gap:12px;margin-bottom:28px;width:100%;max-width:420px;}
+  .name-input-group input{flex:1;padding:14px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;color:var(--fg);font-family:inherit;font-size:16px;outline:none;transition:border-color .3s;}
+  .name-input-group input:focus{border-color:var(--accent);}
+  .stats-bar{display:flex;gap:32px;margin-top:44px;padding:20px 32px;background:var(--card);border-radius:16px;border:1px solid var(--border);backdrop-filter:blur(10px);}
+  .stat-item{text-align:center;}
+  .stat-value{font-size:28px;font-weight:700;color:var(--accent);}
+  .stat-label{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+
+  /* HUB */
+  .hub-header{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;padding:8px 0 20px;flex-wrap:wrap;gap:16px;}
+  .hub-profile{display:flex;align-items:center;gap:14px;}
+  .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#000;flex-shrink:0;}
+  .profile-info h2{font-size:18px;font-weight:700;margin:0;}
+  .profile-level{font-size:13px;color:var(--accent);font-weight:600;}
+  .xp-bar-container{width:180px;height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:4px;}
+  .xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .8s ease;}
+  .hub-stats{display:flex;gap:14px;flex-wrap:wrap;}
+  .hub-stat{text-align:center;padding:8px 14px;background:var(--card);border-radius:12px;border:1px solid var(--border);}
+  .hub-stat-val{font-weight:700;font-size:18px;color:var(--accent);}
+  .hub-stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .hub-title{font-size:34px;font-weight:700;margin-bottom:6px;text-align:center;}
+  .hub-subtitle{color:var(--muted);margin-bottom:32px;text-align:center;font-size:15px;}
+  .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;width:100%;max-width:1100px;margin-bottom:32px;}
+  .category-card{position:relative;padding:26px;background:var(--card);border:1px solid var(--border);border-radius:20px;cursor:pointer;transition:all .3s;overflow:hidden;backdrop-filter:blur(10px);}
+  .category-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;border-radius:20px 20px 0 0;}
+  .category-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.15);box-shadow:var(--shadow);}
+  .category-card:active{transform:translateY(-1px);}
+  .category-card[data-cat="science"]::before{background:var(--science);}
+  .category-card[data-cat="history"]::before{background:var(--history);}
+  .category-card[data-cat="geography"]::before{background:var(--geography);}
+  .category-card[data-cat="math"]::before{background:var(--math);}
+  .category-card[data-cat="language"]::before{background:var(--language);}
+  .category-card[data-cat="nature"]::before{background:var(--nature);}
+  .category-card[data-cat="culture"]::before{background:var(--culture);}
+  .cat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+  .category-card[data-cat="science"] .cat-icon{background:rgba(6,182,212,.15);color:var(--science);}
+  .category-card[data-cat="history"] .cat-icon{background:rgba(245,158,11,.15);color:var(--history);}
+  .category-card[data-cat="geography"] .cat-icon{background:rgba(16,185,129,.15);color:var(--geography);}
+  .category-card[data-cat="math"] .cat-icon{background:rgba(239,68,68,.15);color:var(--math);}
+  .category-card[data-cat="language"] .cat-icon{background:rgba(168,85,247,.15);color:var(--language);}
+  .category-card[data-cat="nature"] .cat-icon{background:rgba(34,197,94,.15);color:var(--nature);}
+  .category-card[data-cat="culture"] .cat-icon{background:rgba(236,72,153,.15);color:var(--culture);}
+  .cat-name{font-size:21px;font-weight:700;margin-bottom:5px;font-family:'Syne',sans-serif;}
+  .cat-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+  
+  .cat-levels-badge{display:flex;gap:4px;margin-bottom:12px;}
+  .lvl-badge{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--muted);}
+  .lvl-badge.done{background:rgba(16,185,129,.15);color:var(--accent2);}
+  .lvl-badge.next{background:rgba(245,158,11,.15);color:var(--accent);}
+
+  .cat-meta{display:flex;justify-content:space-between;align-items:center;}
+  .cat-progress{font-size:13px;color:var(--muted);font-weight:500;}
+  
+  /* LEVEL SELECT */
+  .level-select-container{width:100%;max-width:800px;}
+  .ls-header{display:flex;align-items:center;gap:16px;margin-bottom:30px;}
+  .ls-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .ls-title{font-size:32px;font-family:'Syne',sans-serif;font-weight:700;}
+  .ls-desc{color:var(--muted);font-size:15px;}
+  .level-list{display:flex;flex-direction:column;gap:16px;}
+  .level-card{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--card);border:1px solid var(--border);border-radius:16px;transition:all .3s;}
+  .level-card.available{cursor:pointer;border-color:rgba(245,158,11,.3);}
+  .level-card.available:hover{transform:translateX(6px);background:rgba(245,158,11,.05);}
+  .level-card.completed{cursor:pointer;border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.05);}
+  .level-card.completed:hover{transform:translateX(6px);}
+  .level-card.locked{opacity:0.5;filter:grayscale(1);pointer-events:none;}
+  .lc-left{display:flex;align-items:center;gap:16px;}
+  .lc-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--muted);width:30px;text-align:center;}
+  .level-card.available .lc-num{color:var(--accent);}
+  .level-card.completed .lc-num{color:var(--accent2);}
+  .lc-info h3{font-size:18px;margin-bottom:4px;}
+  .lc-info p{font-size:13px;color:var(--muted);}
+  .lc-right{display:flex;align-items:center;gap:16px;}
+  .lc-stars{display:flex;gap:4px;color:rgba(255,255,255,0.1);font-size:16px;}
+  .lc-stars .lit{color:var(--accent);}
+  .lc-status{font-size:20px;color:var(--muted);}
+  .level-card.completed .lc-status{color:var(--accent2);}
+
+  /* QUIZ */
+  .quiz-container{width:100%;max-width:800px;padding-top:8px;}
+  .quiz-top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+  .quiz-category-label{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;}
+  .quiz-category-dot{width:12px;height:12px;border-radius:50%;}
+  .quiz-stats-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+  .quiz-stat-pill{display:flex;align-items:center;gap:7px;padding:7px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-size:14px;}
+  .quiz-stat-pill i{color:var(--accent);font-size:13px;}
+  .quiz-stat-pill .val{font-weight:700;}
+  .streak-pill.hot .val{animation:streakFire .6s ease infinite;color:#ef4444;}
+  
+  .progress-outer{width:100%;height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-bottom:28px;overflow:hidden;}
+  .progress-inner{height:100%;background:var(--accent3);border-radius:3px;transition:width .3s ease;}
+
+  .timer-container{width:100%;height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-bottom:28px;overflow:hidden;}
+  .timer-fill{height:100%;background:var(--accent2);border-radius:2px;transition:width .1s linear,background .3s;}
+  .timer-fill.warning{background:var(--accent);}
+  .timer-fill.danger{background:var(--danger);}
+  
+  .question-number{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-weight:600;}
+  .question-text{font-size:clamp(20px,3.5vw,30px);font-weight:700;line-height:1.4;margin-bottom:32px;font-family:'Syne',sans-serif;}
+  .options-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+  .option-btn{display:flex;align-items:center;gap:14px;padding:16px 22px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all .22s;font-family:inherit;font-size:15px;color:var(--fg);text-align:left;width:100%;font-weight:500;}
+  .option-btn:hover:not(.disabled){background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateX(4px);}
+  .option-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .option-letter{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;transition:all .3s;}
+  .option-btn.correct{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.4);}
+  .option-btn.correct .option-letter{background:var(--accent2);color:#000;}
+  .option-btn.incorrect{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);}
+  .option-btn.incorrect .option-letter{background:#ef4444;color:#fff;}
+  .option-btn.disabled{cursor:default;pointer-events:none;}
+  .option-btn.disabled:not(.correct):not(.incorrect){opacity:.5;}
+  .explanation-box{padding:18px 22px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:14px;margin-top:16px;animation:slideUp .35s ease;}
+  .explanation-box .label{font-weight:700;color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .explanation-box .text{font-size:14px;line-height:1.65;color:var(--fg);}
+
+  /* RESULTS */
+  .results-container{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:75vh;text-align:center;max-width:600px;}
+  .results-icon{font-size:60px;margin-bottom:20px;animation:popIn .5s ease;}
+  .results-title{font-size:40px;font-weight:800;margin-bottom:6px;}
+  .results-subtitle{color:var(--muted);font-size:15px;margin-bottom:24px;}
+  
+  .level-complete-banner { display: none; align-items: center; gap: 10px; background: rgba(16,185,129,0.15); color: #34d399; padding: 12px 24px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); font-weight: 600; margin-bottom: 24px; animation: slideUp .4s ease; }
+  .level-complete-banner.show { display: flex; }
+  
+  .results-stars { display: flex; gap: 8px; font-size: 32px; color: rgba(255,255,255,0.1); margin-bottom: 30px; }
+  .results-stars .fas { transition: color 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0.8); }
+  .results-stars .lit { color: var(--accent); transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(245,158,11,0.6)); }
+
+  .results-score-ring{width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:28px;position:relative;}
+  .results-score-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+  .score-ring-value{font-size:40px;font-weight:800;}
+  .score-ring-label{font-size:12px;color:var(--muted);}
+  .results-details{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;margin-bottom:28px;}
+  .result-detail-box{padding:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;}
+  .result-detail-box .val{font-size:26px;font-weight:700;font-family:'Syne',sans-serif;}
+  .result-detail-box .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .results-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+  /* ACHIEVEMENTS */
+  .achievements-header{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+  .achievements-header h2{font-size:34px;font-weight:700;}
+  .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;width:100%;max-width:1100px;}
+  .achievement-card{position:relative;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center;transition:all .3s;}
+  .achievement-card.unlocked{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05);}
+  .achievement-card.locked{opacity:.35;filter:grayscale(.5);}
+  .achievement-icon{font-size:34px;margin-bottom:10px;}
+  .achievement-card.unlocked .achievement-icon{color:var(--accent);}
+  .achievement-name{font-weight:700;font-size:15px;margin-bottom:3px;}
+  .achievement-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+  .badge-new { position: absolute; top: -8px; right: -8px; background: var(--accent2); color: #000; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 8px; display: none; }
+  .achievement-card.new-unlock .badge-new { display: block; animation: popIn 0.3s ease; }
+
+  /* REVIEW */
+  .review-container{width:100%;max-width:800px;}
+  .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+  .review-header h2{font-size:30px;font-weight:700;}
+  .review-list{display:flex;flex-direction:column;gap:16px;width:100%;}
+  .review-item{padding:20px;background:var(--card);border:1px solid var(--border);border-radius:16px;}
+  .review-item.was-correct{border-left:3px solid var(--accent2);}
+  .review-item.was-wrong{border-left:3px solid var(--danger);}
+  .review-q{font-weight:600;font-size:15px;margin-bottom:8px;line-height:1.5;}
+  .review-answers{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .review-answer{padding:5px 12px;border-radius:8px;font-size:13px;font-weight:500;}
+  .review-answer.correct-a{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3);}
+  .review-answer.wrong-a{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+  .review-answer.user-a{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3);}
+  .review-expl{font-size:13px;color:var(--muted);line-height:1.6;}
+
+  /* PROFILE */
+  .profile-container{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;}
+  .profile-big-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:38px;color:#000;margin-bottom:16px;animation:ringPulse 2s ease infinite;}
+  .profile-name{font-size:28px;font-weight:700;margin-bottom:4px;font-family:'Syne',sans-serif;}
+  .profile-level-display{color:var(--accent);font-weight:600;font-size:16px;margin-bottom:20px;}
+  .profile-xp-big{width:100%;max-width:400px;margin-bottom:32px;}
+  .profile-xp-label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;}
+  .profile-xp-bar{width:100%;height:12px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;}
+  .profile-xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:6px;transition:width 1s ease;}
+  .profile-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;margin-bottom:32px;}
+  .profile-stat-card{padding:18px;background:var(--card);border:1px solid var(--border);border-radius:14px;text-align:center;}
+  .profile-stat-card .pval{font-size:28px;font-weight:700;color:var(--accent);font-family:'Syne',sans-serif;}
+  .profile-stat-card .plbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .profile-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+
+  /* MODALS & TOASTS */
+  .toast{position:fixed;top:20px;right:20px;padding:14px 22px;background:rgba(17,24,39,.95);border:1px solid var(--accent);border-radius:14px;z-index:200;animation:slideUp .3s ease;backdrop-filter:blur(12px);display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;max-width:340px;box-shadow:var(--shadow);}
+  .toast i{color:var(--accent);font-size:18px;flex-shrink:0;}
+  .xp-fly{position:fixed;font-weight:800;font-size:22px;color:var(--accent);pointer-events:none;z-index:100;animation:xpFly 1s ease forwards;text-shadow:0 0 10px rgba(245,158,11,.5);}
+
+  .modal-bg { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; }
+  .modal-bg.open { display: flex; }
+  .modal-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 32px; max-width: 400px; width: 90%; text-align: center; box-shadow: var(--shadow); }
+
+  /* RESPONSIVE */
+  @media(max-width:700px){
+    .category-grid{grid-template-columns:1fr;}
+    .hub-header{flex-direction:column;align-items:flex-start;}
+    .hub-stats{width:100%;justify-content:space-between;}
+    .stats-bar{flex-direction:column;gap:14px;}
+    .name-input-group{flex-direction:column;}
+    .results-details{grid-template-columns:1fr 1fr;}
+    .results-actions{flex-direction:column;width:100%;}
+    .quiz-stats-row{gap:8px;}
+    .nav-tab{padding:12px 8px;font-size:13px;}
+    .nav-tab span.tab-label{display:none;}
+    .profile-stats-grid{grid-template-columns:1fr 1fr;}
+    .achievements-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:440px){ .achievements-grid{grid-template-columns:1fr;} }
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+<!-- NAV -->
+<nav class="main-nav" id="mainNav" style="display:none;" role="tablist">
+  <button class="nav-tab active" data-tab="hub" onclick="switchTab('hub')" role="tab">
+    <i class="fas fa-compass"></i><span class="tab-label">Realms</span>
+  </button>
+  <button class="nav-tab" data-tab="achievements" onclick="switchTab('achievements')" role="tab">
+    <i class="fas fa-trophy"></i><span class="tab-label">Achievements</span>
+    <span class="badge" id="achieveBadge" style="display:none;">0</span>
+  </button>
+  <button class="nav-tab" data-tab="shop" onclick="switchTab('shop')" role="tab"><i class="fas fa-store"></i><span class="tab-label">Shop</span></button>
+  <button class="nav-tab" data-tab="profile" onclick="switchTab('profile')" role="tab">
+    <i class="fas fa-user"></i><span class="tab-label">Profile</span>
+  </button>
+</nav>
+
+<!-- WELCOME -->
+<section id="sWelcome" class="screen active" role="region">
+  <div class="welcome-container">
+    <div class="welcome-icon"><i class="fas fa-brain"></i></div>
+    <h1 class="welcome-title">Cerebrum Quest</h1>
+    <p class="welcome-subtitle">KNOWLEDGE ADVENTURE</p>
+    <p class="welcome-tagline">Explore seven realms of knowledge. Ascend the ranks from Apprentice to Master. Every answer teaches you something new.</p>
+    <div class="name-input-group">
+      <input type="text" id="playerNameInput" placeholder="Enter your name, explorer..." maxlength="20">
+      <button class="btn btn-gold" id="startBtn">Begin Quest</button>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Realms</div></div>
+      <div class="stat-item"><div class="stat-value">35</div><div class="stat-label">Levels</div></div>
+      <div class="stat-item"><div class="stat-value">15</div><div class="stat-label">Achievements</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HUB -->
+<section id="sHub" class="screen" role="region">
+  <header class="hub-header">
+    <div class="hub-profile">
+      <div class="avatar" id="hubAvatar">A</div>
+      <div class="profile-info">
+        <h2 id="hubName">Explorer</h2>
+        <div class="profile-level" id="hubLevel">Level 1 — Novice</div>
+        <div class="xp-bar-container"><div class="xp-bar-fill" id="hubXpBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="hub-stats">
+      <div class="hub-stat"><div class="hub-stat-val" id="hudLevels">0/35</div><div class="hub-stat-lbl">Levels</div></div>
+      <div class="hub-stat"><div class="hub-stat-val" id="hubTotalXP">0</div><div class="hub-stat-lbl">Total XP</div></div>
+      <div class="hub-stat"><div class="hub-stat-val" id="hubAccuracy">0%</div><div class="hub-stat-lbl">Accuracy</div></div>
+    </div>
+  </header>
+  <h2 class="hub-title">Choose Your Realm</h2>
+  <p class="hub-subtitle">Master each realm level by level</p>
+  <div class="daily-card" id="dailyCard" onclick="startDaily()" style="width:100%;max-width:1100px;margin-bottom:24px;padding:24px;background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.2));border:1px solid var(--accent);border-radius:20px;cursor:pointer;transition:all .3s;"><h3><i class="fas fa-calendar-day"></i> Daily Challenge</h3><p style="color:var(--muted);font-size:14px;margin-top:6px;">Complete 10 hard questions for massive XP and Coins!</p></div>
+  <div class="category-grid" id="categoryGrid"></div>
+</section>
+
+<!-- LEVEL SELECT -->
+<section id="sLevelSelect" class="screen" role="region">
+  <div class="level-select-container">
+    <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Realms</button>
+    <div class="ls-header">
+      <div class="ls-icon" id="lsIcon"></div>
+      <div>
+        <h2 class="ls-title" id="lsTitle">Realm Name</h2>
+        <p class="ls-desc" id="lsDesc">Description</p>
+      </div>
+    </div>
+    <div class="level-list" id="levelList"></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="sQuiz" class="screen" role="region">
+  <div class="quiz-container">
+    <div class="quiz-top-bar">
+      <div class="quiz-category-label">
+        <div class="quiz-category-dot" id="quizCatDot"></div>
+        <span id="quizCatName">Science — Level 3</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="quizBackBtn" style="color:var(--muted);"><i class="fas fa-times"></i> Quit</button>
+    </div>
+    <div class="quiz-stats-row">
+      <div class="quiz-stat-pill"><i class="fas fa-bolt"></i><span>XP: <span class="val" id="quizXP">0</span></span></div>
+      <div class="quiz-stat-pill streak-pill" id="streakPill"><i class="fas fa-fire"></i><span>Streak: <span class="val" id="quizStreak">0</span></span></div>
+      <div class="quiz-stat-pill"><i class="fas fa-star"></i><span><span class="val" id="quizScore">0</span>/<span id="quizTotal">0</span></span></div>
+      <div class="quiz-stat-pill"><i class="fas fa-clock"></i><span id="quizTimerText">20s</span></div>
+    </div>
+    
+    
+<div style="display:flex;gap:12px;margin-bottom:20px;width:100%;">
+  <button class="btn btn-ghost btn-sm" id="llFifty" style="flex:1;border-color:var(--accent3);color:var(--accent3)"><i class="fas fa-percent"></i> 50/50 (20 <i class="fas fa-coins"></i>)</button>
+  <button class="btn btn-ghost btn-sm" id="llTime" style="flex:1;border-color:var(--accent2);color:var(--accent2)"><i class="fas fa-snowflake"></i> Freeze (20 <i class="fas fa-coins"></i>)</button>
+</div>
+<div class="progress-outer"><div class="progress-inner" id="qProgressBar" style="width:0%"></div></div>
+    <div class="timer-container"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    
+    <div class="question-number" id="questionNumber">Question 1 of 5</div>
+    <div class="question-text" id="questionText">Loading...</div>
+    <div class="options-list" id="optionsList"></div>
+    <div id="explanationArea"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="sResults" class="screen" role="region">
+  <div class="results-container">
+    <div class="results-icon" id="resultsIcon"><i class="fas fa-trophy"></i></div>
+    <h2 class="results-title" id="resultsTitle">Well Done!</h2>
+    <p class="results-subtitle" id="resultsSubtitle">You completed the level</p>
+    
+    <div class="level-complete-banner" id="levelCompleteBanner">
+      <i class="fas fa-check-circle"></i> <span id="bannerText">Level Complete!</span>
+    </div>
+    
+    <div class="results-stars" id="resultsStars">
+      <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+    </div>
+
+    <div class="results-score-ring" id="resultsRing">
+      <svg width="150" height="150"><circle cx="75" cy="75" r="68" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/><circle cx="75" cy="75" r="68" fill="none" stroke="var(--accent2)" stroke-width="7" stroke-dasharray="427.26" stroke-dashoffset="427.26" stroke-linecap="round" id="scoreCircle"/></svg>
+      <div class="score-ring-value" id="scoreRingValue">0%</div>
+      <div class="score-ring-label">Accuracy</div>
+    </div>
+    
+    <div class="results-details">
+      <div class="result-detail-box"><div class="val" style="color:var(--accent)" id="resXP">0</div><div class="lbl">XP Earned</div></div>
+      <div class="result-detail-box"><div class="val" style="color:#eab308" id="resCoins">0</div><div class="lbl">Coins</div></div>
+      <div class="result-detail-box"><div class="val" style="color:var(--accent2)" id="resCorrect">0</div><div class="lbl">Correct</div></div>
+      <div class="result-detail-box"><div class="val" style="color:#ef4444" id="resWrong">0</div><div class="lbl">Wrong</div></div>
+    </div>
+    <div class="results-actions">
+      <button class="btn btn-gold" id="nextLvlBtn" style="display:none;">Next Level <i class="fas fa-arrow-right"></i></button>
+      <button class="btn btn-ghost" id="retryBtn"><i class="fas fa-rotate-right"></i> Play Again</button>
+      <button class="btn btn-ghost" id="shareBtn"><i class="fas fa-share-nodes"></i> Share</button>
+      <button class="btn btn-ghost" id="reviewBtn"><i class="fas fa-eye"></i> Review</button>
+      <button class="btn btn-ghost" id="backHubBtn"><i class="fas fa-compass"></i> Realms</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEW -->
+<section id="sReview" class="screen" role="region">
+  <div class="review-container">
+    <div class="review-header">
+      <h2>Answer Review</h2>
+      <button class="btn btn-ghost btn-sm" id="reviewBackBtn"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="sAchievements" class="screen" role="region">
+  <div style="width:100%;max-width:1100px;">
+    <div class="achievements-header">
+      <h2>Achievements</h2>
+      <span id="achieveCount" style="color:var(--muted);font-size:15px;font-weight:600;">0 / 15 Unlocked</span>
+    </div>
+    <div class="achievements-grid" id="achievementsGrid"></div>
+  </div>
+</section>
+
+
+<!-- SHOP -->
+<section id="sShop" class="screen" role="region">
+  <div style="width:100%;max-width:1100px;">
+    <div class="achievements-header">
+      <h2>Avatar Shop</h2>
+      <span style="color:var(--accent);font-size:18px;font-weight:700;"><i class="fas fa-coins"></i> <span id="shopCoins">0</span></span>
+    </div>
+    <div class="category-grid" id="shopGrid"></div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="sProfile" class="screen" role="region">
+  <div class="profile-container">
+    <div class="profile-big-avatar" id="profileBigAvatar">A</div>
+    <div class="profile-name" id="profileName">Explorer</div>
+    <div class="profile-level-display" id="profileLevel">Level 1 — Novice</div>
+    <div class="profile-xp-big">
+      <div class="profile-xp-label"><span id="profileXpCurrent">0 XP</span><span id="profileXpNeeded">150 XP</span></div>
+      <div class="profile-xp-bar"><div class="profile-xp-fill" id="profileXpFill" style="width:0%"></div></div>
+    </div>
+    <div class="profile-stats-grid" id="profileStatsGrid"></div>
+    <div class="profile-actions">
+      <button class="btn btn-ghost" id="profileEditBtn"><i class="fas fa-pen"></i> Edit Name</button>
+      <button class="btn btn-red" id="profileResetBtn"><i class="fas fa-rotate-left"></i> Reset Progress</button>
+    </div>
+  </div>
+</section>
+
+<!-- Confirm Modal -->
+<div id="confirmModal" class="modal-bg">
+  <div class="modal-box">
+    <h3 id="confirmTitle" style="font-size:20px;font-weight:700;margin-bottom:10px;">Are you sure?</h3>
+    <p id="confirmMsg" style="color:var(--muted);margin-bottom:24px;font-size:14px;line-height:1.6;">This action cannot be undone.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-ghost" id="confirmCancelBtn">Cancel</button>
+      <button class="btn btn-red" id="confirmOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Name Modal -->
+<div id="nameModal" class="modal-bg">
+  <div class="modal-box">
+    <h3 style="font-size:20px;font-weight:700;margin-bottom:16px;">Edit Name</h3>
+    <input type="text" id="editNameInput" maxlength="20" style="width:100%;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;color:var(--fg);font-family:inherit;font-size:16px;outline:none;margin-bottom:20px;" placeholder="New name...">
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-ghost" id="nameCancelBtn">Cancel</button>
+      <button class="btn btn-gold" id="nameSaveBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const vibe = (t) => { if(navigator.vibrate) navigator.vibrate(t); };
+
+function showToast(msg, dur=3000){
+  let t=document.createElement('div'); t.className='toast';
+  t.innerHTML=`<i class="fas fa-info-circle"></i><span>${escHtml(msg)}</span>`;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},dur);
+}
+
+if(S.coins === undefined) S.coins = 0;
+if(!S.unlockedAvatars) S.unlockedAvatars = ['A'];
+if(!S.avatar) S.avatar = 'A';
+if(!S.lastDaily) S.lastDaily = 0;
+if(!S.dailyStreak) S.dailyStreak = 0;
+if(S.isDaily === undefined) S.isDaily = false;
+if(!S.lifelinesUsed) S.lifelinesUsed = {fifty:0, time:0};
+
+function saveState() { try{localStorage.setItem('cerebrum_save', JSON.stringify(S, (k,v) => (v instanceof Set ? [...v] : v)));}catch(e){} }
+function loadState() {
+  try{
+    let d = localStorage.getItem('cerebrum_save');
+    if(d) {
+      let p = JSON.parse(d);
+      delete p.timerInterval; delete p.qs; delete p.qIndex; delete p.quizScore;
+      delete p.quizStreak; delete p.quizXP; delete p.quizStartTime; delete p.timeLeft;
+      delete p.questionAnswered; delete p.lastQuizAnswers; delete p.quizStarted; delete p.isDaily;
+      S = {...S, ...p};
+      S.newAchievements = new Set(S.newAchievements||[]);
+      S.unlockedAchievements = new Set(S.unlockedAchievements||[]);
+    }
+  }catch(e){localStorage.removeItem('cerebrum_save');}
+}
+loadState(); document.addEventListener('DOMContentLoaded', () => { if(S.playerName !== 'Explorer') updateAvatars(); });
+
+// Register SW
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+
+const AVATARS = [
+  {id:'A', icon:'fa-user', cost:0}, {id:'B', icon:'fa-robot', cost:100}, {id:'C', icon:'fa-dragon', cost:250}, {id:'D', icon:'fa-ghost', cost:500}
+];
+
+function renderShop() {
+  let el = document.getElementById('shopCoins');
+  if(el) el.textContent = S.coins;
+  let grid = document.getElementById('shopGrid'); 
+  if(!grid) return;
+  grid.innerHTML = '';
+  AVATARS.forEach(a => {
+    let unl = S.unlockedAvatars.includes(a.id);
+    let card = document.createElement('div'); card.className = 'category-card';
+    card.innerHTML = `<div class="cat-icon"><i class="fas ${a.icon}"></i></div>
+      <div class="cat-name">Avatar ${a.id}</div>
+      <div style="margin-top:12px;">${unl ? (S.avatar===a.id ? '<button class="btn btn-gold btn-sm disabled">Equipped</button>' : '<button class="btn btn-ghost btn-sm" onclick="equipAva(\''+a.id+'\')">Equip</button>') : '<button class="btn btn-gold btn-sm" onclick="buyAva(\''+a.id+'\', '+a.cost+')"><i class="fas fa-coins"></i> '+a.cost+'</button>'}</div>`;
+    grid.appendChild(card);
+  });
+}
+function buyAva(id, cost) { if(S.coins>=cost) { S.coins-=cost; S.unlockedAvatars.push(id); saveState(); renderShop(); sfxC(); } else { vibe(200); sfxW(); showToast('Not enough coins!'); } }
+function equipAva(id) { S.avatar=id; saveState(); renderShop(); updateAvatars(); sfxK(); }
+function updateAvatars() {
+  let a = AVATARS.find(x=>x.id===S.avatar);
+  if(a) { 
+    let i = '<i class="fas '+a.icon+'"></i>';
+    document.getElementById('hubAvatar').innerHTML=i; document.getElementById('profileBigAvatar').innerHTML=i; 
+  } else {
+    document.getElementById('hubAvatar').textContent=S.playerName.charAt(0); document.getElementById('profileBigAvatar').textContent=S.playerName.charAt(0);
+  }
+}
+
+function startDaily() {
+  sfxK();
+  let today = new Date().toDateString();
+  if(S.lastDaily === today) { showToast('Daily Challenge already completed!'); return; }
+  S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex=0; S.quizScore=0; S.quizStreak=0; S.quizXP=0; S.lastQuizAnswers=[]; S.quizStarted=false;
+  
+  let allHard = [];
+  Object.values(QUESTIONS).forEach(arr => allHard.push(...arr.filter(q=>q.lvl>=4)));
+  S.qs = shuffle(allHard).slice(0, 10);
+  
+  document.getElementById('quizCatName').textContent = 'Daily Challenge';
+  document.getElementById('quizCatDot').style.background = 'var(--accent)';
+  document.getElementById('quizTotal').textContent=S.qs.length;
+  S.lifelinesUsed = {fifty:0, time:0}; updateLL();
+  updateStats(); showScreen('sQuiz'); loadQ();
+}
+
+function updateLL() {
+  let llF = document.getElementById('llFifty');
+  let llT = document.getElementById('llTime');
+  if(!llF || !llT) return;
+  llF.disabled = S.coins<20 || S.lifelinesUsed.fifty;
+  llT.disabled = S.coins<20 || S.lifelinesUsed.time;
+  llF.onclick = () => { if(S.coins>=20 && !S.lifelinesUsed.fifty && !S.questionAnswered) { S.coins-=20; S.lifelinesUsed.fifty=1; saveState(); sfxK(); updateLL(); doFifty(); } };
+  llT.onclick = () => { if(S.coins>=20 && !S.lifelinesUsed.time && !S.questionAnswered) { S.coins-=20; S.lifelinesUsed.time=1; saveState(); sfxK(); updateLL(); S.timeLeft+=10000; showToast('+10s Freeze Time!'); } };
+}
+
+function doFifty() {
+  let q=S.qs[S.qIndex]; let wrong = [0,1,2,3].filter(i=>i!==q.a); wrong = shuffle(wrong).slice(0,2);
+  let btns=document.querySelectorAll('.option-btn');
+  wrong.forEach(w => { btns[w].style.opacity='0.2'; btns[w].style.pointerEvents='none'; });
+}
+
+function tryShare() {
+  sfxK();
+  let catLabel = S.isDaily?'Daily Challenge':(CATEGORY_META[S.curCat]?CATEGORY_META[S.curCat].name+' Lvl '+S.curLevel:'Quiz');
+  let txt = `Cerebrum Quest - ${catLabel}\nScore: ${S.quizScore}/${S.qs.length}\nStreak: 🔥${S.bestStreak}`;
+  if(navigator.share) navigator.share({title:'Cerebrum Quest', text:txt}).catch(()=>{});
+  else if(navigator.clipboard) navigator.clipboard.writeText(txt).then(()=>showToast('Copied to clipboard!')).catch(()=>showToast('Could not copy'));
+  else showToast('Share not supported');
+}
+
+function confetti() {
+  for(let i=0;i<40;i++){
+    let p=document.createElement('div'); p.style.cssText='position:fixed;width:8px;height:8px;border-radius:50%;left:50%;top:50%;z-index:9999;pointer-events:none;';
+    p.style.backgroundColor=['#f59e0b','#10b981','#06b6d4','#ef4444'][Math.floor(Math.random()*4)];
+    let a=Math.random()*Math.PI*2, v=Math.random()*12+5;
+    p.style.transition='all .9s cubic-bezier(.2,1,.3,1)';
+    document.body.appendChild(p);
+    requestAnimationFrame(()=>{
+      p.style.transform=`translate(${Math.cos(a)*v*20}px, ${Math.sin(a)*v*20+180}px) rotate(${Math.random()*360}deg)`;
+      p.style.opacity='0';
+    });
+    setTimeout(()=>p.remove(), 950);
+  }
+}
+
+
+const QUESTIONS = {
+  "science": [
+    {"q":"What is the center of our solar system?","opts":["Sun","Earth","Moon","Jupiter"],"a":0,"expl":"The Sun is at the center of the solar system.","lvl":1},
+    {"q":"What gas do humans need to breathe?","opts":["Oxygen","Carbon","Nitrogen","Helium"],"a":0,"expl":"Humans breathe oxygen to survive.","lvl":1},
+    {"q":"What state of matter is ice?","opts":["Solid","Liquid","Gas","Plasma"],"a":0,"expl":"Ice is solid water.","lvl":1},
+    {"q":"How many legs does a spider have?","opts":["8","6","10","4"],"a":0,"expl":"Spiders are arachnids with 8 legs.","lvl":1},
+    {"q":"What planet is known as the Red Planet?","opts":["Mars","Venus","Jupiter","Saturn"],"a":0,"expl":"Mars has iron oxide causing a red color.","lvl":1},
+    {"q":"What is the largest mammal?","opts":["Blue Whale","Elephant","Giraffe","Shark"],"a":0,"expl":"The Blue Whale is the largest mammal.","lvl":1},
+    {"q":"What force keeps us on the ground?","opts":["Gravity","Magnetism","Friction","Inertia"],"a":0,"expl":"Gravity pulls us down.","lvl":1},
+    {"q":"What do bees collect from flowers?","opts":["Nectar","Pollen","Honey","Water"],"a":0,"expl":"Bees collect nectar to make honey.","lvl":1},
+    {"q":"What part of the plant conducts photosynthesis?","opts":["Leaf","Root","Stem","Flower"],"a":0,"expl":"Leaves contain chlorophyll for photosynthesis.","lvl":1},
+    {"q":"What is H2O commonly known as?","opts":["Water","Salt","Sugar","Air"],"a":0,"expl":"H2O is water.","lvl":1},
+    {"q":"What is the hardest natural substance?","opts":["Diamond","Gold","Iron","Quartz"],"a":0,"expl":"Diamond is a very hard carbon lattice.","lvl":2},
+    {"q":"How many bones in an adult human body?","opts":["206","205","208","210"],"a":0,"expl":"Adults have exactly 206 bones.","lvl":2},
+    {"q":"What organ pumps blood?","opts":["Heart","Lung","Brain","Liver"],"a":0,"expl":"The heart pumps blood through the body.","lvl":2},
+    {"q":"What are clouds made of?","opts":["Water drops","Smoke","Cotton","Dust"],"a":0,"expl":"Clouds are condensed water vapor.","lvl":2},
+    {"q":"Who developed the theory of relativity?","opts":["Einstein","Newton","Galileo","Tesla"],"a":0,"expl":"Albert Einstein developed it in the early 20th century.","lvl":2},
+    {"q":"What is the chemical symbol for Gold?","opts":["Au","Ag","Gd","Go"],"a":0,"expl":"Au comes from the Latin word aurum.","lvl":2},
+    {"q":"Which planet has prominent rings?","opts":["Saturn","Mars","Earth","Venus"],"a":0,"expl":"Saturn is famous for its visible ring system.","lvl":2},
+    {"q":"What do herbivores eat?","opts":["Plants","Meat","Insects","Everything"],"a":0,"expl":"Herbivores exclusively eat vegetation.","lvl":2},
+    {"q":"What is the boiling point of water in C?","opts":["100","90","110","120"],"a":0,"expl":"Water boils at 100 degrees Celsius at sea level.","lvl":2},
+    {"q":"What part of the cell contains DNA?","opts":["Nucleus","Membrane","Cytoplasm","Ribosome"],"a":0,"expl":"The nucleus holds the cell's genetic info.","lvl":2},
+    {"q":"What is the rarest blood type?","opts":["AB-","O-","B+","A+"],"a":0,"expl":"AB- is the rarest blood type globally.","lvl":3},
+    {"q":"What gas makes up most of Earth's atmosphere?","opts":["Nitrogen","Oxygen","Carbon","Argon"],"a":0,"expl":"Nitrogen makes up about 78% of the air.","lvl":3},
+    {"q":"How many planets are in our solar system?","opts":["8","9","7","10"],"a":0,"expl":"There are 8 recognized planets.","lvl":3},
+    {"q":"What is the powerhouse of the cell?","opts":["Mitochondria","Nucleus","Ribosome","Golgi"],"a":0,"expl":"Mitochondria produce cellular energy (ATP).","lvl":3},
+    {"q":"Who discovered penicillin?","opts":["Fleming","Pasteur","Curie","Darwin"],"a":0,"expl":"Alexander Fleming discovered it in 1928.","lvl":3},
+    {"q":"What type of wave is light?","opts":["Electromagnetic","Mechanical","Sound","Seismic"],"a":0,"expl":"Light is an electromagnetic wave.","lvl":3},
+    {"q":"What is the pH of pure water?","opts":["7","6","8","1"],"a":0,"expl":"A pH of 7 is completely neutral.","lvl":3},
+    {"q":"Which metal is liquid at room temp?","opts":["Mercury","Iron","Lead","Copper"],"a":0,"expl":"Mercury is a heavy, liquid metal.","lvl":3},
+    {"q":"What do we call a baby kangaroo?","opts":["Joey","Calf","Cub","Kid"],"a":0,"expl":"Baby kangaroos are called joeys.","lvl":3},
+    {"q":"What does DNA stand for?","opts":["Deoxyribonucleic acid","Dinucleic acid","Deoxynitric acid","Dinitrogen acid"],"a":0,"expl":"It stands for Deoxyribonucleic acid.","lvl":3},
+    {"q":"What is the half-life of Carbon-14?","opts":["5730 years","1000 years","10000 years","500 years"],"a":0,"expl":"Carbon-14 decays with a half-life of 5730 years.","lvl":4},
+    {"q":"What subatomic particle has no charge?","opts":["Neutron","Proton","Electron","Positron"],"a":0,"expl":"Neutrons are neutrally charged particles.","lvl":4},
+    {"q":"What principle states you cannot know exactly both position and momentum?","opts":["Heisenberg's Uncertainty","Pauli Exclusion","Aufbau","Bohr"],"a":0,"expl":"Werner Heisenberg formulated this principle.","lvl":4},
+    {"q":"Which phylum do insects belong to?","opts":["Arthropoda","Mollusca","Chordata","Annelida"],"a":0,"expl":"Insects are arthropods, meaning jointed legs.","lvl":4},
+    {"q":"What is the most abundant element in the universe?","opts":["Hydrogen","Helium","Oxygen","Carbon"],"a":0,"expl":"Hydrogen makes up about 75% of baryonic mass.","lvl":4},
+    {"q":"What is the hardest bone in the human body?","opts":["Jawbone","Femur","Skull","Tibia"],"a":0,"expl":"The mandible or jawbone is extremely dense.","lvl":4},
+    {"q":"Who is the father of modern genetics?","opts":["Mendel","Darwin","Watson","Crick"],"a":0,"expl":"Gregor Mendel studied inheritance in pea plants.","lvl":4},
+    {"q":"What type of chemical bond shares electrons?","opts":["Covalent","Ionic","Metallic","Hydrogen"],"a":0,"expl":"Covalent bonds involve the sharing of electron pairs.","lvl":4},
+    {"q":"What disease is caused by a lack of Vitamin C?","opts":["Scurvy","Rickets","Pellagra","Beriberi"],"a":0,"expl":"Scurvy was common among sailors lacking fresh fruit.","lvl":4},
+    {"q":"What is the heaviest naturally occurring element?","opts":["Uranium","Plutonium","Lead","Osmium"],"a":0,"expl":"Uranium has the highest atomic weight of natural elements.","lvl":4},
+    {"q":"What is the name of the largest known star?","opts":["UY Scuti","Betelgeuse","VY Canis Majoris","Rigel"],"a":0,"expl":"UY Scuti is a red supergiant and one of the largest stars.","lvl":5},
+    {"q":"What is the function of the Islets of Langerhans?","opts":["Produce insulin","Produce bile","Filter blood","Digest fat"],"a":0,"expl":"They are regions in the pancreas containing endocrine cells.","lvl":5},
+    {"q":"What particle mediates the strong nuclear force?","opts":["Gluon","Photon","Boson","Quark"],"a":0,"expl":"Gluons act as the exchange particles for the strong force.","lvl":5},
+    {"q":"Who proposed the continental drift theory?","opts":["Wegener","Hutton","Lyell","Darwin"],"a":0,"expl":"Alfred Wegener proposed it in 1912.","lvl":5},
+    {"q":"What is the main component of natural gas?","opts":["Methane","Ethane","Propane","Butane"],"a":0,"expl":"Methane makes up the vast majority of natural gas.","lvl":5},
+    {"q":"What is the rarest naturally occurring element?","opts":["Astatine","Francium","Promethium","Technetium"],"a":0,"expl":"Astatine is highly radioactive and extremely rare in the crust.","lvl":5},
+    {"q":"What cycle describes carbon fixation in plants?","opts":["Calvin cycle","Krebs cycle","Nitrogen cycle","Water cycle"],"a":0,"expl":"The Calvin cycle happens in chloroplasts during photosynthesis.","lvl":5},
+    {"q":"What constant is approx 6.626 x 10^-34 J s?","opts":["Planck's","Avogadro's","Boltzmann's","Faraday's"],"a":0,"expl":"Planck's constant is foundational in quantum mechanics.","lvl":5},
+    {"q":"What extinct hominin lived in Europe until 40,000 years ago?","opts":["Neanderthal","Homo erectus","Australopithecus","Homo habilis"],"a":0,"expl":"Neanderthals lived alongside early modern humans.","lvl":5},
+    {"q":"What phenomenon explains the origin of mass?","opts":["Higgs mechanism","String theory","Relativity","Quantum gravity"],"a":0,"expl":"The Higgs field gives mass to elementary particles.","lvl":5}
+  ],
+  "history": [
+    {"q":"Who was the first US President?","opts":["George Washington","Lincoln","Adams","Jefferson"],"a":0,"expl":"George Washington served as the first president.","lvl":1},
+    {"q":"What structure was built in Egypt as tombs?","opts":["Pyramids","Castles","Ziggurats","Temples"],"a":0,"expl":"The Pyramids were monumental tombs for pharaohs.","lvl":1},
+    {"q":"What ancient empire was centered in Rome?","opts":["Roman","Greek","Persian","Ottoman"],"a":0,"expl":"The Roman Empire originated in the city of Rome.","lvl":1},
+    {"q":"Who sailed to America in 1492?","opts":["Columbus","Magellan","Cook","Vespucci"],"a":0,"expl":"Christopher Columbus crossed the Atlantic in 1492.","lvl":1},
+    {"q":"What famous ship sank on its maiden voyage in 1912?","opts":["Titanic","Lusitania","Mayflower","Santa Maria"],"a":0,"expl":"The RMS Titanic hit an iceberg and sank.","lvl":1},
+    {"q":"What country gifted the Statue of Liberty to the US?","opts":["France","UK","Spain","Germany"],"a":0,"expl":"It was a gift from the people of France.","lvl":1},
+    {"q":"Who was the first man on the moon?","opts":["Neil Armstrong","Buzz Aldrin","Yuri Gagarin","John Glenn"],"a":0,"expl":"Armstrong stepped onto the lunar surface in 1969.","lvl":1},
+    {"q":"What wall divided a major German city until 1989?","opts":["Berlin Wall","Great Wall","Iron Curtain","Hadrian's Wall"],"a":0,"expl":"The Berlin Wall physically and ideologically divided Berlin.","lvl":1},
+    {"q":"Who was the Queen of the UK before Charles III?","opts":["Elizabeth II","Victoria","Mary","Anne"],"a":0,"expl":"Elizabeth II reigned for over 70 years.","lvl":1},
+    {"q":"What ancient civilization built Machu Picchu?","opts":["Incas","Aztecs","Mayans","Olmecs"],"a":0,"expl":"The Inca Empire built it in the 15th century.","lvl":1},
+    {"q":"What war was fought between the North and South in the US?","opts":["Civil War","WWI","WWII","Revolutionary"],"a":0,"expl":"The American Civil War lasted from 1861 to 1865.","lvl":2},
+    {"q":"Who was the British Prime Minister during most of WWII?","opts":["Churchill","Chamberlain","Attlee","Thatcher"],"a":0,"expl":"Winston Churchill led Britain to victory in WWII.","lvl":2},
+    {"q":"What founding US document was signed in 1776?","opts":["Declaration of Independence","Constitution","Magna Carta","Bill of Rights"],"a":0,"expl":"It formally severed ties with Great Britain.","lvl":2},
+    {"q":"What disease killed millions in the Middle Ages?","opts":["Black Death","Spanish Flu","Cholera","Smallpox"],"a":0,"expl":"The Black Death was a devastating plague pandemic.","lvl":2},
+    {"q":"Who painted the Mona Lisa?","opts":["Da Vinci","Michelangelo","Raphael","Donatello"],"a":0,"expl":"Leonardo da Vinci painted it in the early 16th century.","lvl":2},
+    {"q":"What empire was led by Genghis Khan?","opts":["Mongol","Roman","Ottoman","Persian"],"a":0,"expl":"He founded the vast Mongol Empire.","lvl":2},
+    {"q":"Who was assassinated in 1963 in Dallas?","opts":["JFK","Lincoln","MLK","McKinley"],"a":0,"expl":"President John F. Kennedy was fatally shot in Dallas.","lvl":2},
+    {"q":"What was the ancient writing system of Egypt?","opts":["Hieroglyphics","Cuneiform","Runes","Latin"],"a":0,"expl":"Hieroglyphics used pictures to represent words.","lvl":2},
+    {"q":"Who led the French in the early 1800s?","opts":["Napoleon","Louis XIV","Robespierre","Charlemagne"],"a":0,"expl":"Napoleon Bonaparte became Emperor of the French.","lvl":2},
+    {"q":"What event sparked the start of WWI?","opts":["Assassination of Archduke Ferdinand","Sinking of Lusitania","Invasion of Poland","Fall of Rome"],"a":0,"expl":"His assassination in Sarajevo triggered the war.","lvl":2},
+    {"q":"Who was the first female Prime Minister of the UK?","opts":["Margaret Thatcher","Theresa May","Indira Gandhi","Golda Meir"],"a":0,"expl":"Margaret Thatcher was known as the Iron Lady.","lvl":3},
+    {"q":"What year did WWII end?","opts":["1945","1944","1939","1950"],"a":0,"expl":"The war ended with the surrender of the Axis powers in 1945.","lvl":3},
+    {"q":"Who was the second President of the US?","opts":["John Adams","Thomas Jefferson","James Madison","George Washington"],"a":0,"expl":"John Adams served as the second US President.","lvl":3},
+    {"q":"What civilization lived in ancient Mesopotamia?","opts":["Sumerians","Egyptians","Indus","Shang"],"a":0,"expl":"Sumer is one of the oldest known civilizations.","lvl":3},
+    {"q":"Who wrote the Communist Manifesto?","opts":["Karl Marx","Lenin","Stalin","Trotsky"],"a":0,"expl":"Karl Marx and Friedrich Engels co-authored it.","lvl":3},
+    {"q":"What war took place from 1950 to 1953?","opts":["Korean War","Vietnam War","WWII","Gulf War"],"a":0,"expl":"The Korean War ended in an armistice.","lvl":3},
+    {"q":"Who was the leader of the Soviet Union during WWII?","opts":["Joseph Stalin","Lenin","Khrushchev","Gorbachev"],"a":0,"expl":"Stalin led the USSR from the 1920s to 1953.","lvl":3},
+    {"q":"What queen ruled ancient Egypt alongside Julius Caesar?","opts":["Cleopatra","Nefertiti","Hatshepsut","Isis"],"a":0,"expl":"Cleopatra VII was the last active ruler of the Ptolemaic Kingdom.","lvl":3},
+    {"q":"What was the longest reigning dynasty in China?","opts":["Zhou","Han","Ming","Qing"],"a":0,"expl":"The Zhou dynasty lasted for over 789 years.","lvl":3},
+    {"q":"What treaty effectively ended WWI?","opts":["Treaty of Versailles","Treaty of Paris","Treaty of Ghent","Treaty of Tordesillas"],"a":0,"expl":"It was signed in the Palace of Versailles in 1919.","lvl":3},
+    {"q":"Who was the first Emperor of Rome?","opts":["Augustus","Julius Caesar","Nero","Caligula"],"a":0,"expl":"Augustus founded the Roman Empire.","lvl":4},
+    {"q":"What year did the French Revolution begin?","opts":["1789","1776","1799","1812"],"a":0,"expl":"The storming of the Bastille occurred in 1789.","lvl":4},
+    {"q":"Who was the first King of a unified England?","opts":["Athelstan","William the Conqueror","Alfred the Great","Henry VIII"],"a":0,"expl":"Athelstan became the first King of England in 927.","lvl":4},
+    {"q":"What battle definitively ended Napoleon's rule?","opts":["Waterloo","Trafalgar","Austerlitz","Leipzig"],"a":0,"expl":"He was defeated at the Battle of Waterloo in 1815.","lvl":4},
+    {"q":"Who was the last Tsar of Russia?","opts":["Nicholas II","Alexander III","Peter the Great","Ivan the Terrible"],"a":0,"expl":"Nicholas II was forced to abdicate in 1917.","lvl":4},
+    {"q":"What was the name of the first artificial Earth satellite?","opts":["Sputnik 1","Apollo 11","Vostok 1","Explorer 1"],"a":0,"expl":"The USSR launched Sputnik 1 in 1957.","lvl":4},
+    {"q":"Who was the founder of the Ottoman Empire?","opts":["Osman I","Suleiman","Mehmed II","Selim I"],"a":0,"expl":"Osman I established the empire in the 13th century.","lvl":4},
+    {"q":"What devastating war was fought in Europe from 1618 to 1648?","opts":["Thirty Years' War","Hundred Years' War","Seven Years' War","War of the Roses"],"a":0,"expl":"It was one of the most destructive conflicts in human history.","lvl":4},
+    {"q":"Who was the US President during WWI?","opts":["Woodrow Wilson","FDR","Teddy Roosevelt","Taft"],"a":0,"expl":"Wilson led the US through the First World War.","lvl":4},
+    {"q":"What was the first permanent English settlement in North America?","opts":["Jamestown","Plymouth","Roanoke","St. Augustine"],"a":0,"expl":"Jamestown was established in Virginia in 1607.","lvl":4},
+    {"q":"Who was the primary author of the US Constitution?","opts":["James Madison","Thomas Jefferson","Alexander Hamilton","Ben Franklin"],"a":0,"expl":"Madison is hailed as the 'Father of the Constitution'.","lvl":5},
+    {"q":"What ancient battle occurred in 331 BC where Alexander defeated Darius III?","opts":["Gaugamela","Issus","Granicus","Thermopylae"],"a":0,"expl":"The Battle of Gaugamela sealed the fall of the Persian Empire.","lvl":5},
+    {"q":"What was the name of the ship that brought the Pilgrims to America?","opts":["Mayflower","Speedwell","Santa Maria","Discovery"],"a":0,"expl":"The Mayflower transported English Puritans in 1620.","lvl":5},
+    {"q":"Who was the longest-ruling female leader of Russia?","opts":["Catherine the Great","Elizabeth","Anna","Mary"],"a":0,"expl":"She reigned over Russia from 1762 until 1796.","lvl":5},
+    {"q":"What treaty divided newly discovered lands outside Europe between Portugal and Spain?","opts":["Tordesillas","Zaragoza","Paris","Westphalia"],"a":0,"expl":"The Treaty of Tordesillas was signed in 1494.","lvl":5},
+    {"q":"Who was the last Emperor of the Aztec Empire?","opts":["Cuauhtemoc","Montezuma II","Pachacuti","Atahualpa"],"a":0,"expl":"Cuauhtemoc was executed by the Spanish in 1525.","lvl":5},
+    {"q":"What dynasty ruled Russia from 1613 to 1917?","opts":["Romanov","Rurik","Habsburg","Tudor"],"a":0,"expl":"The Romanov dynasty ended with the Russian Revolution.","lvl":5},
+    {"q":"What year was the Magna Carta signed?","opts":["1215","1066","1492","1776"],"a":0,"expl":"King John of England sealed the Magna Carta in 1215.","lvl":5},
+    {"q":"Who was the Japanese Emperor during WWII?","opts":["Hirohito","Mutsuhito","Akihito","Yoshihito"],"a":0,"expl":"Emperor Hirohito presided over Japan during the war.","lvl":5},
+    {"q":"What was the capital of the Byzantine Empire?","opts":["Constantinople","Rome","Athens","Alexandria"],"a":0,"expl":"Constantinople was the capital for over a millennium.","lvl":5}
+  ],
+  "geography": [
+    {"q":"What is the largest ocean?","opts":["Pacific","Atlantic","Indian","Arctic"],"a":0,"expl":"The Pacific Ocean covers more than 30% of the Earth.","lvl":1},
+    {"q":"What continent is Egypt in?","opts":["Africa","Asia","Europe","South America"],"a":0,"expl":"Egypt is located in the northeast corner of Africa.","lvl":1},
+    {"q":"What country has the most people?","opts":["India","USA","China","Brazil"],"a":0,"expl":"India recently surpassed China as the most populous country.","lvl":1},
+    {"q":"What is the capital of France?","opts":["Paris","London","Rome","Berlin"],"a":0,"expl":"Paris is the capital and most populous city of France.","lvl":1},
+    {"q":"What planet do we live on?","opts":["Earth","Mars","Venus","Jupiter"],"a":0,"expl":"Earth is the third planet from the Sun.","lvl":1},
+    {"q":"What is the largest country by area?","opts":["Russia","Canada","China","USA"],"a":0,"expl":"Russia spans eleven time zones across two continents.","lvl":1},
+    {"q":"What desert covers much of North Africa?","opts":["Sahara","Gobi","Kalahari","Mojave"],"a":0,"expl":"The Sahara is the largest hot desert in the world.","lvl":1},
+    {"q":"What river flows through Egypt?","opts":["Nile","Amazon","Yangtze","Mississippi"],"a":0,"expl":"The Nile River was the lifeline of ancient Egypt.","lvl":1},
+    {"q":"What continent is also a country?","opts":["Australia","Antarctica","Europe","Asia"],"a":0,"expl":"Australia is unique as both a country and a continent.","lvl":1},
+    {"q":"What are the two poles called?","opts":["North and South","East and West","Top and Bottom","Up and Down"],"a":0,"expl":"Earth has a North Pole and a South Pole.","lvl":1},
+    {"q":"What is the capital of Japan?","opts":["Tokyo","Beijing","Seoul","Bangkok"],"a":0,"expl":"Tokyo is the bustling capital of Japan.","lvl":2},
+    {"q":"What country is famous for the maple leaf?","opts":["Canada","USA","UK","France"],"a":0,"expl":"The maple leaf is on Canada's national flag.","lvl":2},
+    {"q":"What mountain range is Mount Everest in?","opts":["Himalayas","Alps","Andes","Rockies"],"a":0,"expl":"The Himalayas separate the Indian subcontinent from the Tibetan Plateau.","lvl":2},
+    {"q":"What is the longest river in South America?","opts":["Amazon","Orinoco","Parana","Colorado"],"a":0,"expl":"The Amazon River runs through South America.","lvl":2},
+    {"q":"What ocean is on the east coast of the US?","opts":["Atlantic","Pacific","Indian","Arctic"],"a":0,"expl":"The Atlantic Ocean borders the Eastern US.","lvl":2},
+    {"q":"What is the capital of Italy?","opts":["Rome","Milan","Venice","Naples"],"a":0,"expl":"Rome is Italy's capital and a major historical center.","lvl":2},
+    {"q":"What country is known as the Land Down Under?","opts":["Australia","New Zealand","South Africa","Argentina"],"a":0,"expl":"Australia is located in the Southern Hemisphere.","lvl":2},
+    {"q":"What is the smallest country in the world?","opts":["Vatican City","Monaco","Nauru","Tuvalu"],"a":0,"expl":"Vatican City is an independent city-state enclaved within Rome.","lvl":2},
+    {"q":"What continent is Brazil in?","opts":["South America","North America","Africa","Europe"],"a":0,"expl":"Brazil is the largest country in South America.","lvl":2},
+    {"q":"What country is the Taj Mahal located in?","opts":["India","Pakistan","Bangladesh","Nepal"],"a":0,"expl":"The Taj Mahal is an ivory-white marble mausoleum in Agra, India.","lvl":2},
+    {"q":"What is the largest country in South America?","opts":["Brazil","Argentina","Peru","Colombia"],"a":0,"expl":"Brazil covers nearly half of South America's landmass.","lvl":3},
+    {"q":"What river flows through London?","opts":["Thames","Seine","Rhine","Danube"],"a":0,"expl":"The River Thames flows through central London.","lvl":3},
+    {"q":"What is the highest mountain in Africa?","opts":["Mount Kilimanjaro","Mount Kenya","Atlas","Ruwenzori"],"a":0,"expl":"Kilimanjaro is a dormant volcano in Tanzania.","lvl":3},
+    {"q":"What is the capital of Australia?","opts":["Canberra","Sydney","Melbourne","Perth"],"a":0,"expl":"Canberra was chosen as a compromise between Sydney and Melbourne.","lvl":3},
+    {"q":"What desert is the largest hot desert in the world?","opts":["Sahara","Arabian","Gobi","Kalahari"],"a":0,"expl":"The Sahara spans across North Africa.","lvl":3},
+    {"q":"Which two countries share the longest international border?","opts":["Canada and USA","Russia and China","Argentina and Chile","India and Bangladesh"],"a":0,"expl":"The US-Canada border is the longest in the world.","lvl":3},
+    {"q":"What sea separates Europe from Africa?","opts":["Mediterranean Sea","Red Sea","Black Sea","Caspian Sea"],"a":0,"expl":"The Mediterranean Sea connects to the Atlantic Ocean.","lvl":3},
+    {"q":"What is the capital of Canada?","opts":["Ottawa","Toronto","Vancouver","Montreal"],"a":0,"expl":"Ottawa is located in the province of Ontario.","lvl":3},
+    {"q":"In which country is the Suez Canal located?","opts":["Egypt","Panama","Israel","Turkey"],"a":0,"expl":"The Suez Canal connects the Mediterranean Sea to the Red Sea.","lvl":3},
+    {"q":"What is the smallest continent by land area?","opts":["Australia","Europe","Antarctica","South America"],"a":0,"expl":"Australia is the world's smallest continent.","lvl":3},
+    {"q":"What is the capital of New Zealand?","opts":["Wellington","Auckland","Christchurch","Hamilton"],"a":0,"expl":"Wellington is located at the southern tip of the North Island.","lvl":4},
+    {"q":"What mountain range separates Europe and Asia?","opts":["Ural Mountains","Caucasus","Alps","Himalayas"],"a":0,"expl":"The Urals act as a natural boundary in Russia.","lvl":4},
+    {"q":"What is the largest island in the world?","opts":["Greenland","New Guinea","Borneo","Madagascar"],"a":0,"expl":"Greenland is an autonomous territory of Denmark.","lvl":4},
+    {"q":"Which African country has the largest population?","opts":["Nigeria","Egypt","Ethiopia","South Africa"],"a":0,"expl":"Nigeria is the most populous country in Africa.","lvl":4},
+    {"q":"What is the capital of Argentina?","opts":["Buenos Aires","Santiago","Lima","Bogota"],"a":0,"expl":"Buenos Aires is located on the western shore of the Rio de la Plata.","lvl":4},
+    {"q":"Which ocean is the Mariana Trench located in?","opts":["Pacific Ocean","Atlantic Ocean","Indian Ocean","Southern Ocean"],"a":0,"expl":"The Mariana Trench is the deepest oceanic trench on Earth.","lvl":4},
+    {"q":"What river flows through the Grand Canyon?","opts":["Colorado River","Mississippi","Snake","Rio Grande"],"a":0,"expl":"The Colorado River carved the Grand Canyon over millions of years.","lvl":4},
+    {"q":"Which country has the most lakes in the world?","opts":["Canada","Russia","USA","Finland"],"a":0,"expl":"Canada has over 2 million lakes.","lvl":4},
+    {"q":"What is the highest waterfall in the world?","opts":["Angel Falls","Victoria Falls","Niagara Falls","Iguazu Falls"],"a":0,"expl":"Angel Falls is located in Venezuela.","lvl":4},
+    {"q":"Which European country is divided into cantons?","opts":["Switzerland","Belgium","Austria","Netherlands"],"a":0,"expl":"Switzerland is a federal republic of 26 cantons.","lvl":4},
+    {"q":"What is the capital of Mongolia?","opts":["Ulaanbaatar","Astana","Bishkek","Tashkent"],"a":0,"expl":"Ulaanbaatar is the coldest capital city in the world.","lvl":5},
+    {"q":"Which sea is the lowest body of water on Earth's surface?","opts":["Dead Sea","Caspian Sea","Aral Sea","Salton Sea"],"a":0,"expl":"The Dead Sea's surface is over 400 meters below sea level.","lvl":5},
+    {"q":"What is the only country that borders both the Caspian Sea and the Persian Gulf?","opts":["Iran","Iraq","Saudi Arabia","Oman"],"a":0,"expl":"Iran occupies this strategic geographic position.","lvl":5},
+    {"q":"Which African country was formerly known as Abyssinia?","opts":["Ethiopia","Somalia","Sudan","Kenya"],"a":0,"expl":"Ethiopia has a long and continuous independent history.","lvl":5},
+    {"q":"What is the capital of Burkina Faso?","opts":["Ouagadougou","Bamako","Niamey","Dakar"],"a":0,"expl":"Ouagadougou is the cultural and economic center of the nation.","lvl":5},
+    {"q":"Which strait separates Tierra del Fuego from mainland South America?","opts":["Strait of Magellan","Drake Passage","Beagle Channel","Bering Strait"],"a":0,"expl":"Ferdinand Magellan navigated it during his global circumnavigation.","lvl":5},
+    {"q":"What is the most populous island in the world?","opts":["Java","Honshu","Great Britain","Luzon"],"a":0,"expl":"Java, in Indonesia, is home to over half of the country's population.","lvl":5},
+    {"q":"Which country completely surrounds the enclave of Lesotho?","opts":["South Africa","Swaziland","Botswana","Namibia"],"a":0,"expl":"Lesotho is an independent nation completely landlocked by South Africa.","lvl":5},
+    {"q":"What mountain is the highest peak in North America?","opts":["Denali","Mount Logan","Mount Whitney","Mount Elbert"],"a":0,"expl":"Denali, formerly Mount McKinley, is in Alaska.","lvl":5},
+    {"q":"What is the name of the microstate situated between France and Spain?","opts":["Andorra","Monaco","San Marino","Liechtenstein"],"a":0,"expl":"Andorra is located in the Pyrenees mountains.","lvl":5}
+  ],
+  "math": [
+    {"q":"What is 2 + 2?","opts":["4","3","5","6"],"a":0,"expl":"Two plus two equals four.","lvl":1},
+    {"q":"What is 5 + 5?","opts":["10","9","11","8"],"a":0,"expl":"Five plus five is ten.","lvl":1},
+    {"q":"What is 10 - 2?","opts":["8","7","9","6"],"a":0,"expl":"Ten minus two leaves eight.","lvl":1},
+    {"q":"What is 3 + 4?","opts":["7","6","8","9"],"a":0,"expl":"Three plus four is seven.","lvl":1},
+    {"q":"What is 9 - 5?","opts":["4","3","5","6"],"a":0,"expl":"Nine minus five leaves four.","lvl":1},
+    {"q":"What is 1 + 8?","opts":["9","8","10","7"],"a":0,"expl":"One plus eight is nine.","lvl":1},
+    {"q":"What is 10 - 10?","opts":["0","1","10","5"],"a":0,"expl":"Any number minus itself is zero.","lvl":1},
+    {"q":"What is 6 + 6?","opts":["12","11","10","13"],"a":0,"expl":"Double six is twelve.","lvl":1},
+    {"q":"What is 4 + 5?","opts":["9","8","10","7"],"a":0,"expl":"Four plus five equals nine.","lvl":1},
+    {"q":"What is 7 - 3?","opts":["4","5","3","6"],"a":0,"expl":"Seven minus three leaves four.","lvl":1},
+    {"q":"What is 5 x 5?","opts":["25","20","30","10"],"a":0,"expl":"Five times five is twenty-five.","lvl":2},
+    {"q":"What is 10 / 2?","opts":["5","4","6","8"],"a":0,"expl":"Ten divided by two is five.","lvl":2},
+    {"q":"What is 8 x 8?","opts":["64","56","72","48"],"a":0,"expl":"Eight times eight equals sixty-four.","lvl":2},
+    {"q":"What is 100 - 45?","opts":["55","65","45","50"],"a":0,"expl":"One hundred minus forty-five is fifty-five.","lvl":2},
+    {"q":"What is 3 x 7?","opts":["21","24","18","28"],"a":0,"expl":"Three times seven is twenty-one.","lvl":2},
+    {"q":"What is half of 50?","opts":["25","20","30","15"],"a":0,"expl":"Half of fifty is twenty-five.","lvl":2},
+    {"q":"What is 12 x 12?","opts":["144","120","132","100"],"a":0,"expl":"Twelve times twelve is one hundred forty-four.","lvl":2},
+    {"q":"What is 9 x 9?","opts":["81","72","90","64"],"a":0,"expl":"Nine times nine is eighty-one.","lvl":2},
+    {"q":"What is 40 / 8?","opts":["5","6","4","7"],"a":0,"expl":"Forty divided by eight is five.","lvl":2},
+    {"q":"What is 15 + 16?","opts":["31","30","32","29"],"a":0,"expl":"Fifteen plus sixteen is thirty-one.","lvl":2},
+    {"q":"What is the square root of 64?","opts":["8","6","7","9"],"a":0,"expl":"Eight times eight is sixty-four.","lvl":3},
+    {"q":"What is 2 cubed (2^3)?","opts":["8","6","4","16"],"a":0,"expl":"Two times two times two is eight.","lvl":3},
+    {"q":"What is 15% of 100?","opts":["15","10","20","5"],"a":0,"expl":"Percent means per hundred, so 15% of 100 is 15.","lvl":3},
+    {"q":"What is 1/2 + 1/4?","opts":["3/4","1/3","2/4","2/6"],"a":0,"expl":"Two fourths plus one fourth equals three fourths.","lvl":3},
+    {"q":"What is x if 2x = 10?","opts":["5","4","6","8"],"a":0,"expl":"Divide both sides by two to get five.","lvl":3},
+    {"q":"What is the perimeter of a square with side length 4?","opts":["16","8","12","20"],"a":0,"expl":"Four sides of length four equals sixteen.","lvl":3},
+    {"q":"What is the area of a rectangle with sides 5 and 6?","opts":["30","11","25","36"],"a":0,"expl":"Area is length times width: 5 x 6 = 30.","lvl":3},
+    {"q":"What is 10 squared (10^2)?","opts":["100","20","1000","50"],"a":0,"expl":"Ten times ten is one hundred.","lvl":3},
+    {"q":"What is the next prime number after 7?","opts":["11","9","13","8"],"a":0,"expl":"Eleven is only divisible by 1 and itself.","lvl":3},
+    {"q":"What is 3/4 as a decimal?","opts":["0.75","0.50","0.25","0.80"],"a":0,"expl":"Three divided by four is 0.75.","lvl":3},
+    {"q":"What is the value of pi to two decimal places?","opts":["3.14","3.15","3.13","3.16"],"a":0,"expl":"Pi is approximately 3.14159...","lvl":4},
+    {"q":"What is the square root of 169?","opts":["13","12","14","15"],"a":0,"expl":"13 times 13 equals 169.","lvl":4},
+    {"q":"What is x if 3x + 2 = 11?","opts":["3","4","2","5"],"a":0,"expl":"Subtract 2 to get 9, then divide by 3 to get 3.","lvl":4},
+    {"q":"What is the hypotenuse of a right triangle with sides 3 and 4?","opts":["5","6","7","8"],"a":0,"expl":"By the Pythagorean theorem, 3^2 + 4^2 = 5^2.","lvl":4},
+    {"q":"What is the area of a circle with radius r?","opts":["pi*r^2","2*pi*r","pi*d","r^2"],"a":0,"expl":"Area of a circle is pi times the radius squared.","lvl":4},
+    {"q":"What is 5! (5 factorial)?","opts":["120","24","60","100"],"a":0,"expl":"5 x 4 x 3 x 2 x 1 equals 120.","lvl":4},
+    {"q":"What is the sum of interior angles of a triangle?","opts":["180","360","90","270"],"a":0,"expl":"The angles of any plane triangle add to 180 degrees.","lvl":4},
+    {"q":"What is the sine of 90 degrees?","opts":["1","0","-1","0.5"],"a":0,"expl":"The sine of a 90-degree angle is 1.","lvl":4},
+    {"q":"What is the probability of flipping a coin and getting heads?","opts":["1/2","1/3","1/4","1"],"a":0,"expl":"There are 2 outcomes, so heads is 1/2.","lvl":4},
+    {"q":"What is 2^5?","opts":["32","16","64","10"],"a":0,"expl":"Two multiplied by itself five times is 32.","lvl":4},
+    {"q":"What is the derivative of sin(x)?","opts":["cos(x)","-cos(x)","-sin(x)","sec^2(x)"],"a":0,"expl":"Calculus rules state the derivative of sine is cosine.","lvl":5},
+    {"q":"What is the integral of e^x?","opts":["e^x + C","e^x","xe^x","e"],"a":0,"expl":"The integral of e^x is e^x plus a constant.","lvl":5},
+    {"q":"What is Euler's number 'e' to 2 decimals?","opts":["2.72","2.71","2.73","3.14"],"a":0,"expl":"Euler's number is approximately 2.718...","lvl":5},
+    {"q":"What is the 10th Fibonacci number?","opts":["55","34","89","21"],"a":0,"expl":"The sequence goes 1, 1, 2, 3, 5, 8, 13, 21, 34, 55.","lvl":5},
+    {"q":"What is the determinant of a 2x2 matrix [[a,b],[c,d]]?","opts":["ad-bc","ab-cd","ac-bd","a+d"],"a":0,"expl":"The determinant formula for 2x2 matrices is ad minus bc.","lvl":5},
+    {"q":"What is the Pythagorean trigonometric identity?","opts":["sin^2(x)+cos^2(x)=1","sin(x)=cos(x)","tan(x)=1","sec(x)=csc(x)"],"a":0,"expl":"This fundamental identity is based on the Pythagorean theorem.","lvl":5},
+    {"q":"What is the formula for the volume of a sphere?","opts":["4/3*pi*r^3","pi*r^2*h","1/3*pi*r^2*h","4*pi*r^2"],"a":0,"expl":"This formula calculates the 3D space inside a sphere.","lvl":5},
+    {"q":"What is the sum of interior angles of a hexagon?","opts":["720","540","900","360"],"a":0,"expl":"Formula: (n-2)*180, so (6-2)*180 = 720.","lvl":5},
+    {"q":"What is i^2?","opts":["-1","1","i","-i"],"a":0,"expl":"By definition, the imaginary unit squared equals -1.","lvl":5},
+    {"q":"What is the base of the natural logarithm?","opts":["e","10","2","pi"],"a":0,"expl":"The natural logarithm uses Euler's number (e) as its base.","lvl":5}
+  ],
+  "language": [
+    {"q":"What is the first letter of the alphabet?","opts":["A","B","C","Z"],"a":0,"expl":"The English alphabet begins with A.","lvl":1},
+    {"q":"What is the opposite of hot?","opts":["Cold","Warm","Sun","Fire"],"a":0,"expl":"Cold is the antonym of hot.","lvl":1},
+    {"q":"What do you call a person who writes books?","opts":["Author","Reader","Publisher","Editor"],"a":0,"expl":"An author creates and writes books.","lvl":1},
+    {"q":"What is a noun?","opts":["A person, place, or thing","An action","A describing word","A joining word"],"a":0,"expl":"Nouns name entities.","lvl":1},
+    {"q":"What is the past tense of 'run'?","opts":["Ran","Runned","Running","Runs"],"a":0,"expl":"'Ran' is the irregular past tense of run.","lvl":1},
+    {"q":"How many main vowels are in the English alphabet?","opts":["5","6","4","7"],"a":0,"expl":"A, E, I, O, U are the five main vowels.","lvl":1},
+    {"q":"What is a synonym for 'happy'?","opts":["Joyful","Sad","Angry","Tired"],"a":0,"expl":"Joyful means feeling or expressing happiness.","lvl":1},
+    {"q":"What language is spoken in Spain?","opts":["Spanish","English","French","German"],"a":0,"expl":"Spanish is the official language.","lvl":1},
+    {"q":"What do you use a dictionary for?","opts":["Definitions","Math","History","Maps"],"a":0,"expl":"Dictionaries list words and their meanings.","lvl":1},
+    {"q":"What is the plural of 'cat'?","opts":["Cats","Cat","Cates","Catti"],"a":0,"expl":"Add an 's' to make 'cat' plural.","lvl":1},
+    {"q":"What is an adjective?","opts":["Describing word","Action word","Noun","Pronoun"],"a":0,"expl":"Adjectives modify nouns.","lvl":2},
+    {"q":"What is the past tense of 'go'?","opts":["Went","Goed","Gone","Going"],"a":0,"expl":"'Went' is the irregular past tense of go.","lvl":2},
+    {"q":"What is the antonym of 'fast'?","opts":["Slow","Quick","Rapid","Swift"],"a":0,"expl":"Slow is the opposite of fast.","lvl":2},
+    {"q":"What punctuation ends a question?","opts":["?","-","!",","],"a":0,"expl":"A question mark denotes an interrogative sentence.","lvl":2},
+    {"q":"What language has the most native speakers?","opts":["Mandarin","English","Spanish","Hindi"],"a":0,"expl":"Mandarin Chinese has the most native speakers worldwide.","lvl":2},
+    {"q":"What is a verb?","opts":["Action word","Person","Describing word","Place"],"a":0,"expl":"Verbs indicate action or state of being.","lvl":2},
+    {"q":"How many syllables in 'banana'?","opts":["3","2","4","1"],"a":0,"expl":"Ba-na-na has three syllables.","lvl":2},
+    {"q":"What does 'bi' mean in 'bicycle'?","opts":["Two","One","Three","Four"],"a":0,"expl":"'Bi-' is a prefix meaning two.","lvl":2},
+    {"q":"What is the plural of 'mouse'?","opts":["Mice","Mouses","Meese","Mouse"],"a":0,"expl":"The plural is irregular: mice.","lvl":2},
+    {"q":"What do you call a word that sounds the same but has different meaning?","opts":["Homophone","Synonym","Antonym","Pronoun"],"a":0,"expl":"'Homo' means same, 'phone' means sound.","lvl":2},
+    {"q":"What is a palindrome?","opts":["Spelled same backwards","A poem","A synonym","An old word"],"a":0,"expl":"E.g., racecar reads the same forward and backward.","lvl":3},
+    {"q":"Who wrote Romeo and Juliet?","opts":["Shakespeare","Dickens","Austen","Twain"],"a":0,"expl":"William Shakespeare wrote the famous tragedy.","lvl":3},
+    {"q":"What is an adverb?","opts":["Modifies a verb","Names a person","Modifies a noun","Connects sentences"],"a":0,"expl":"Adverbs describe verbs, adjectives, or other adverbs.","lvl":3},
+    {"q":"What is the past participle of 'eat'?","opts":["Eaten","Ate","Eated","Eating"],"a":0,"expl":"'I have eaten' uses the past participle.","lvl":3},
+    {"q":"What is a haiku?","opts":["A 3-line poem","A short story","A song","A play"],"a":0,"expl":"A haiku has a 5-7-5 syllable structure.","lvl":3},
+    {"q":"What language is the root of many European languages?","opts":["Latin","Greek","Sanskrit","Arabic"],"a":0,"expl":"Latin spawned the Romance languages.","lvl":3},
+    {"q":"What is the longest word in English?","opts":["Pneumonoultramicroscopicsilicovolcanoconiosis","Supercalifragilisticexpialidocious","Hippopotomonstrosesquippedaliophobia","Antidisestablishmentarianism"],"a":0,"expl":"It refers to a lung disease caused by inhaling ash.","lvl":3},
+    {"q":"What is a metaphor?","opts":["Comparison without like/as","Comparison with like/as","Exaggeration","Rhyme"],"a":0,"expl":"A metaphor says one thing IS another.","lvl":3},
+    {"q":"What does the prefix 'pre-' mean?","opts":["Before","After","Again","Not"],"a":0,"expl":"'Pre-' means prior to or before.","lvl":3},
+    {"q":"What is a pronoun?","opts":["Takes place of noun","Action word","Describes noun","Joins sentences"],"a":0,"expl":"E.g., he, she, it, they.","lvl":3},
+    {"q":"What is a gerund?","opts":["Verb ending in -ing acting as noun","Adjective","Past tense verb","Preposition"],"a":0,"expl":"E.g., 'Running is fun.'","lvl":4},
+    {"q":"Who wrote '1984'?","opts":["George Orwell","Aldous Huxley","J.K. Rowling","Ray Bradbury"],"a":0,"expl":"George Orwell wrote the dystopian novel.","lvl":4},
+    {"q":"What is a tautology?","opts":["Saying the same thing twice","A contradiction","A metaphor","A rhyme"],"a":0,"expl":"E.g., 'free gift' is a tautology.","lvl":4},
+    {"q":"What does 'quid pro quo' mean?","opts":["Something for something","Nothing for nothing","All for one","Seize the day"],"a":0,"expl":"It's a Latin phrase meaning an exchange.","lvl":4},
+    {"q":"What is the study of word origins called?","opts":["Etymology","Entomology","Philology","Semantics"],"a":0,"expl":"Etymology traces the history of words.","lvl":4},
+    {"q":"What is iambic pentameter?","opts":["A poetic meter","A type of novel","A punctuation mark","A grammar rule"],"a":0,"expl":"It has five iambs (unstressed-stressed) per line.","lvl":4},
+    {"q":"What does the suffix '-ology' mean?","opts":["Study of","Fear of","Love of","Made of"],"a":0,"expl":"From Greek 'logia', meaning study of.","lvl":4},
+    {"q":"Who wrote 'Pride and Prejudice'?","opts":["Jane Austen","Charlotte Bronte","Mary Shelley","Virginia Woolf"],"a":0,"expl":"Jane Austen published it in 1813.","lvl":4},
+    {"q":"What is an oxymoron?","opts":["Contradictory terms together","A type of fool","A synonym","A long sentence"],"a":0,"expl":"E.g., 'jumbo shrimp' or 'deafening silence'.","lvl":4},
+    {"q":"What is syntax?","opts":["Arrangement of words","Meaning of words","Origin of words","Spelling"],"a":0,"expl":"Syntax governs sentence structure.","lvl":4},
+    {"q":"What is a 'hapax legomenon'?","opts":["Word occurring once in a text","A grammar error","A dead language","A poetic device"],"a":0,"expl":"A rare word seen only once in a given context.","lvl":5},
+    {"q":"Who wrote 'The Canterbury Tales'?","opts":["Geoffrey Chaucer","William Shakespeare","John Milton","Dante Alighieri"],"a":0,"expl":"Chaucer wrote it in Middle English.","lvl":5},
+    {"q":"What is a portmanteau?","opts":["Word blending sounds/meanings","A suitcase","A French poem","A long story"],"a":0,"expl":"E.g., 'smog' from smoke + fog.","lvl":5},
+    {"q":"What is the oldest recorded language?","opts":["Sumerian","Egyptian","Sanskrit","Chinese"],"a":0,"expl":"Sumerian dates back to at least 3000 BC.","lvl":5},
+    {"q":"What is an anachronism?","opts":["Something out of historical time","A spelling mistake","A synonym","A paradox"],"a":0,"expl":"E.g., a clock in a play about ancient Rome.","lvl":5},
+    {"q":"What is semantic shift?","opts":["Change in word meaning over time","Translating languages","Changing accents","Grammar rules"],"a":0,"expl":"Words can naturally change definitions over centuries.","lvl":5},
+    {"q":"Who wrote 'Ulysses'?","opts":["James Joyce","F. Scott Fitzgerald","Ernest Hemingway","T.S. Eliot"],"a":0,"expl":"James Joyce authored this modernist masterpiece.","lvl":5},
+    {"q":"What is a synecdoche?","opts":["A part represents the whole","A rhyme","A type of joke","A short poem"],"a":0,"expl":"E.g., 'all hands on deck'.","lvl":5},
+    {"q":"What does 'lingua franca' mean?","opts":["Common language between different speakers","A French dialect","A dead language","A formal language"],"a":0,"expl":"It serves as a bridge language.","lvl":5},
+    {"q":"What is morphology in linguistics?","opts":["Study of word forms","Study of sounds","Study of meaning","Study of sentences"],"a":0,"expl":"It looks at root words, prefixes, and suffixes.","lvl":5}
+  ],
+  "nature": [
+    {"q":"What drops from clouds when it rains?","opts":["Water","Snow","Ice","Dirt"],"a":0,"expl":"Rain is liquid water droplets falling.","lvl":1},
+    {"q":"What is a baby dog called?","opts":["Puppy","Kitten","Cub","Calf"],"a":0,"expl":"Young dogs are called puppies.","lvl":1},
+    {"q":"What gives us light during the day?","opts":["The Sun","The Moon","Stars","Fire"],"a":0,"expl":"The Sun is our primary light source.","lvl":1},
+    {"q":"What do birds use to fly?","opts":["Wings","Legs","Tails","Beaks"],"a":0,"expl":"Wings create lift for flight.","lvl":1},
+    {"q":"What do trees grow from?","opts":["Seeds","Rocks","Dirt","Water"],"a":0,"expl":"Most trees begin as a small seed.","lvl":1},
+    {"q":"What is the green part of a plant?","opts":["Leaf","Root","Stem","Flower"],"a":0,"expl":"Leaves are green due to chlorophyll.","lvl":1},
+    {"q":"What animal says 'moo'?","opts":["Cow","Pig","Horse","Sheep"],"a":0,"expl":"Cows make a mooing sound.","lvl":1},
+    {"q":"What is the largest ocean animal?","opts":["Whale","Shark","Dolphin","Seal"],"a":0,"expl":"The blue whale is the largest animal on Earth.","lvl":1},
+    {"q":"What season comes after winter?","opts":["Spring","Summer","Fall","Autumn"],"a":0,"expl":"Spring brings warmer weather and blooming plants.","lvl":1},
+    {"q":"What insect makes honey?","opts":["Bee","Ant","Butterfly","Fly"],"a":0,"expl":"Honeybees produce honey from nectar.","lvl":1},
+    {"q":"What animal has a long trunk?","opts":["Elephant","Giraffe","Rhino","Hippo"],"a":0,"expl":"Elephants use their trunk for grasping and drinking.","lvl":2},
+    {"q":"What is the fastest land animal?","opts":["Cheetah","Lion","Horse","Tiger"],"a":0,"expl":"Cheetahs can run up to 70 mph.","lvl":2},
+    {"q":"What do caterpillars turn into?","opts":["Butterflies","Beetles","Flies","Worms"],"a":0,"expl":"They undergo metamorphosis into butterflies or moths.","lvl":2},
+    {"q":"What do you call a group of wolves?","opts":["Pack","Herd","Flock","Swarm"],"a":0,"expl":"Wolves live and hunt in packs.","lvl":2},
+    {"q":"What bird can mimic human speech?","opts":["Parrot","Eagle","Crow","Owl"],"a":0,"expl":"Parrots have a syrinx that allows vocal mimicry.","lvl":2},
+    {"q":"What kind of animal is a frog?","opts":["Amphibian","Reptile","Mammal","Fish"],"a":0,"expl":"Amphibians live in water and on land.","lvl":2},
+    {"q":"What do pandas mainly eat?","opts":["Bamboo","Leaves","Meat","Fish"],"a":0,"expl":"Bamboo makes up 99% of a panda's diet.","lvl":2},
+    {"q":"What has a hard shell on its back?","opts":["Turtle","Snake","Lizard","Frog"],"a":0,"expl":"Turtles have a protective shell.","lvl":2},
+    {"q":"What do you call a baby cat?","opts":["Kitten","Puppy","Cub","Foal"],"a":0,"expl":"Young cats are called kittens.","lvl":2},
+    {"q":"What animal is known for building dams?","opts":["Beaver","Otter","Rat","Bear"],"a":0,"expl":"Beavers construct dams to create still, deep water.","lvl":2},
+    {"q":"What is the largest land animal?","opts":["African Elephant","Rhino","Hippo","Giraffe"],"a":0,"expl":"The African Elephant is the largest terrestrial animal.","lvl":3},
+    {"q":"What do you call a group of lions?","opts":["Pride","Pack","Flock","Herd"],"a":0,"expl":"A family group of lions is a pride.","lvl":3},
+    {"q":"Which bird lays the largest eggs?","opts":["Ostrich","Emu","Penguin","Eagle"],"a":0,"expl":"Ostrich eggs are the largest of any living bird.","lvl":3},
+    {"q":"What is a marsupial?","opts":["Carries young in pouch","Lays eggs","Has cold blood","Lives in water"],"a":0,"expl":"Kangaroos and koalas are marsupials.","lvl":3},
+    {"q":"What is the only mammal capable of true flight?","opts":["Bat","Flying squirrel","Sugar glider","Lemur"],"a":0,"expl":"Bats have wings made of webbed skin.","lvl":3},
+    {"q":"What do you call animals that eat both plants and meat?","opts":["Omnivores","Carnivores","Herbivores","Insectivores"],"a":0,"expl":"Omni means all, vore means eater.","lvl":3},
+    {"q":"What is the longest venomous snake?","opts":["King Cobra","Rattlesnake","Mamba","Python"],"a":0,"expl":"King Cobras can grow over 18 feet long.","lvl":3},
+    {"q":"How many legs does an insect have?","opts":["6","8","4","10"],"a":0,"expl":"All adult insects have 6 legs.","lvl":3},
+    {"q":"What animal can change its color?","opts":["Chameleon","Iguana","Gecko","Skink"],"a":0,"expl":"Chameleons alter their skin color for communication or camouflage.","lvl":3},
+    {"q":"What is a baby swan called?","opts":["Cygnet","Duckling","Gosling","Chick"],"a":0,"expl":"A young swan is a cygnet.","lvl":3},
+    {"q":"What is the fastest bird in a dive?","opts":["Peregrine Falcon","Eagle","Hawk","Swift"],"a":0,"expl":"It can dive at speeds over 240 mph.","lvl":4},
+    {"q":"What marine animal is known as the 'killer whale'?","opts":["Orca","Great White","Blue Whale","Dolphin"],"a":0,"expl":"The orca is actually the largest dolphin species.","lvl":4},
+    {"q":"What is the largest living species of lizard?","opts":["Komodo Dragon","Iguana","Monitor Lizard","Gila Monster"],"a":0,"expl":"Komodo dragons can grow up to 10 feet long.","lvl":4},
+    {"q":"What tree is known to be the tallest in the world?","opts":["Coast Redwood","Sequoia","Eucalyptus","Oak"],"a":0,"expl":"Hyperion, a Coast Redwood, is over 380 feet tall.","lvl":4},
+    {"q":"What is a monotreme?","opts":["An egg-laying mammal","A type of bird","A reptile","A flightless insect"],"a":0,"expl":"Platypuses and echidnas are the only monotremes.","lvl":4},
+    {"q":"Which insect is known for its long, epic migrations?","opts":["Monarch Butterfly","Locust","Honeybee","Dragonfly"],"a":0,"expl":"Monarchs migrate thousands of miles to Mexico.","lvl":4},
+    {"q":"What is the world's largest coral reef system?","opts":["Great Barrier Reef","Mesoamerican Reef","Red Sea Coral","Florida Reef"],"a":0,"expl":"It is located off the coast of Queensland, Australia.","lvl":4},
+    {"q":"What type of animal is a 'Portuguese man o' war'?","opts":["Siphonophore","Jellyfish","Octopus","Squid"],"a":0,"expl":"It is a colonial organism, not a single jellyfish.","lvl":4},
+    {"q":"What biome has very low temperatures and little precipitation?","opts":["Tundra","Desert","Taiga","Savanna"],"a":0,"expl":"The tundra is a cold, treeless biome.","lvl":4},
+    {"q":"What extinct bird was native to Mauritius?","opts":["Dodo","Moa","Passenger Pigeon","Great Auk"],"a":0,"expl":"The Dodo was hunted to extinction in the 17th century.","lvl":4},
+    {"q":"What animal has the most powerful bite force relative to its size?","opts":["Saltwater Crocodile","Hyena","Hippo","Lion"],"a":0,"expl":"Crocodilians have incredibly powerful jaw muscles.","lvl":5},
+    {"q":"What is the only bird that can fly backwards?","opts":["Hummingbird","Swift","Kingfisher","Woodpecker"],"a":0,"expl":"Their wing structure allows multidirectional flight.","lvl":5},
+    {"q":"What crustacean creates a cavitation bubble that produces light?","opts":["Pistol shrimp","Mantis shrimp","King crab","Lobster"],"a":0,"expl":"The snapping claw produces sonoluminescence.","lvl":5},
+    {"q":"What is the term for a plant that grows on another plant without being parasitic?","opts":["Epiphyte","Saprophyte","Halophyte","Xerophyte"],"a":0,"expl":"Orchids and bromeliads are often epiphytes.","lvl":5},
+    {"q":"What deep-sea creature is known for biological immortality?","opts":["Turritopsis dohrnii","Giant squid","Anglerfish","Coelacanth"],"a":0,"expl":"This jellyfish can revert to its polyp stage.","lvl":5},
+    {"q":"What is the main diet of the critically endangered Kakapo?","opts":["Plants/seeds","Insects","Small rodents","Fish"],"a":0,"expl":"The Kakapo is an herbivorous, flightless parrot.","lvl":5},
+    {"q":"What rare mammal has venomous spurs on its hind legs?","opts":["Platypus","Echidna","Slow loris","Solenodon"],"a":0,"expl":"Male platypuses use venom during mating season combat.","lvl":5},
+    {"q":"What phenomenon involves a sudden, massive insect emergence every 13/17 years?","opts":["Periodical cicadas","Locust swarms","Mayfly hatch","Moth migration"],"a":0,"expl":"Brood X is a famous group of 17-year cicadas.","lvl":5},
+    {"q":"Which tree species can live for over 5,000 years?","opts":["Bristlecone pine","Baobab","Yew","Banyan"],"a":0,"expl":"Methuselah is a famous, ancient bristlecone pine.","lvl":5},
+    {"q":"What is the technical term for the shedding of an exoskeleton?","opts":["Ecdysis","Metamorphosis","Molting","Autotomy"],"a":0,"expl":"Ecdysis allows arthropods to grow.","lvl":5}
+  ],
+  "culture": [
+    {"q":"What holiday is on December 25th?","opts":["Christmas","Halloween","Easter","Thanksgiving"],"a":0,"expl":"Christmas is an annual festival commemorating the birth of Jesus.","lvl":1},
+    {"q":"What is a popular Italian dish with a round crust?","opts":["Pizza","Sushi","Tacos","Burgers"],"a":0,"expl":"Pizza originated in Naples, Italy.","lvl":1},
+    {"q":"What sport uses a black and white ball you kick?","opts":["Soccer","Basketball","Baseball","Tennis"],"a":0,"expl":"Soccer, or association football, is the world's most popular sport.","lvl":1},
+    {"q":"What do people use an umbrella for?","opts":["Rain","Snow","Wind","Cold"],"a":0,"expl":"Umbrellas protect you from precipitation.","lvl":1},
+    {"q":"What is a place where you borrow books?","opts":["Library","Bank","Supermarket","Gym"],"a":0,"expl":"Libraries loan books to the public.","lvl":1},
+    {"q":"Who delivers presents on Christmas?","opts":["Santa Claus","Easter Bunny","Tooth Fairy","Sandman"],"a":0,"expl":"Santa Claus is said to bring gifts to children.","lvl":1},
+    {"q":"What color means 'stop' at a traffic light?","opts":["Red","Green","Yellow","Blue"],"a":0,"expl":"Red universally means stop.","lvl":1},
+    {"q":"What instrument has black and white keys?","opts":["Piano","Guitar","Drum","Flute"],"a":0,"expl":"Pianos typically have 88 keys.","lvl":1},
+    {"q":"What is the traditional Halloween activity?","opts":["Trick-or-treating","Fireworks","Egg hunt","Caroling"],"a":0,"expl":"Children dress up and ask for candy.","lvl":1},
+    {"q":"What do you wear on your head?","opts":["Hat","Shoes","Gloves","Socks"],"a":0,"expl":"Hats provide warmth or shade.","lvl":1},
+    {"q":"What city is famous for the Eiffel Tower?","opts":["Paris","London","Rome","Berlin"],"a":0,"expl":"The tower was built for the 1889 World's Fair in Paris.","lvl":2},
+    {"q":"What instrument does a guitarist play?","opts":["Guitar","Piano","Drum","Flute"],"a":0,"expl":"Guitars are stringed musical instruments.","lvl":2},
+    {"q":"What language is 'hola' from?","opts":["Spanish","French","Italian","German"],"a":0,"expl":"Hola means hello in Spanish.","lvl":2},
+    {"q":"What do you call a person who directs an orchestra?","opts":["Conductor","Composer","Singer","Musician"],"a":0,"expl":"Conductors lead the orchestra with a baton.","lvl":2},
+    {"q":"What is the famous painting of a woman with a mysterious smile?","opts":["Mona Lisa","Starry Night","The Scream","Last Supper"],"a":0,"expl":"The Mona Lisa is displayed in the Louvre.","lvl":2},
+    {"q":"What is the currency of the USA?","opts":["Dollar","Euro","Pound","Yen"],"a":0,"expl":"The United States Dollar is the official currency.","lvl":2},
+    {"q":"What holiday is associated with Cupid?","opts":["Valentine's Day","Halloween","Christmas","Easter"],"a":0,"expl":"Valentine's Day celebrates romance and love.","lvl":2},
+    {"q":"What genre of music uses a lot of electric guitars and drums?","opts":["Rock","Classical","Jazz","Country"],"a":0,"expl":"Rock music evolved in the 1950s.","lvl":2},
+    {"q":"Who wrote the Harry Potter books?","opts":["J.K. Rowling","Stephen King","J.R.R. Tolkien","Roald Dahl"],"a":0,"expl":"J.K. Rowling created the famous wizarding world.","lvl":2},
+    {"q":"What color is the traditional wedding dress in Western culture?","opts":["White","Red","Black","Blue"],"a":0,"expl":"Queen Victoria popularized the white wedding dress.","lvl":2},
+    {"q":"What is the currency of the UK?","opts":["Pound","Euro","Dollar","Franc"],"a":0,"expl":"The Pound Sterling is the oldest currency still in use.","lvl":3},
+    {"q":"What city is known as the Big Apple?","opts":["New York City","Los Angeles","Chicago","Miami"],"a":0,"expl":"The nickname originated in the 1920s.","lvl":3},
+    {"q":"Who composed the 'Four Seasons'?","opts":["Vivaldi","Mozart","Beethoven","Bach"],"a":0,"expl":"Antonio Vivaldi wrote these famous violin concertos.","lvl":3},
+    {"q":"What religion was founded by Siddhartha Gautama?","opts":["Buddhism","Hinduism","Islam","Christianity"],"a":0,"expl":"He became known as the Buddha.","lvl":3},
+    {"q":"What is the traditional clothing of Japan?","opts":["Kimono","Sari","Kilt","Hanbok"],"a":0,"expl":"A kimono is a traditional Japanese garment.","lvl":3},
+    {"q":"In Greek mythology, who is the king of the gods?","opts":["Zeus","Apollo","Poseidon","Hades"],"a":0,"expl":"Zeus ruled from Mount Olympus.","lvl":3},
+    {"q":"What festival is known as the Festival of Colors?","opts":["Holi","Diwali","Ramadan","Hanukkah"],"a":0,"expl":"Holi is a popular ancient Hindu festival.","lvl":3},
+    {"q":"What artist is famous for cutting off part of his ear?","opts":["Van Gogh","Picasso","Monet","Dali"],"a":0,"expl":"Vincent van Gogh famously mutilated his ear.","lvl":3},
+    {"q":"What dance originated in Argentina?","opts":["Tango","Salsa","Waltz","Flamenco"],"a":0,"expl":"The tango originated in the border area of Argentina and Uruguay.","lvl":3},
+    {"q":"What is the national sport of Japan?","opts":["Sumo wrestling","Karate","Judo","Baseball"],"a":0,"expl":"Sumo is deeply tied to Shinto traditions.","lvl":3},
+    {"q":"What philosophy is associated with yin and yang?","opts":["Daoism/Taoism","Confucianism","Buddhism","Shinto"],"a":0,"expl":"Yin and yang describe interconnected opposite forces.","lvl":4},
+    {"q":"Who painted the ceiling of the Sistine Chapel?","opts":["Michelangelo","Da Vinci","Raphael","Donatello"],"a":0,"expl":"Michelangelo painted it in the early 16th century.","lvl":4},
+    {"q":"What is the primary language spoken in Brazil?","opts":["Portuguese","Spanish","French","English"],"a":0,"expl":"Brazil was colonized by Portugal.","lvl":4},
+    {"q":"What ancient wonder was located in Alexandria?","opts":["Lighthouse","Pyramid","Hanging Gardens","Colossus"],"a":0,"expl":"The Lighthouse of Alexandria was built by the Ptolemaic Kingdom.","lvl":4},
+    {"q":"What is the name of the traditional Maori war dance?","opts":["Haka","Hula","Corroboree","Siva"],"a":0,"expl":"The haka is performed by New Zealanders, famously by the All Blacks.","lvl":4},
+    {"q":"What is the currency of Japan?","opts":["Yen","Yuan","Won","Baht"],"a":0,"expl":"The Japanese yen is the official currency.","lvl":4},
+    {"q":"What famous architect designed the Sagrada Familia?","opts":["Antoni Gaudi","Frank Lloyd Wright","Le Corbusier","I.M. Pei"],"a":0,"expl":"Gaudi's masterpiece is still under construction in Barcelona.","lvl":4},
+    {"q":"In Norse mythology, what is the name of Thor's hammer?","opts":["Mjolnir","Gungnir","Excalibur","Aegis"],"a":0,"expl":"Mjolnir is depicted as one of the most fearsome weapons.","lvl":4},
+    {"q":"What Indian festival is known as the Festival of Lights?","opts":["Diwali","Holi","Navratri","Dussehra"],"a":0,"expl":"Diwali symbolizes the spiritual victory of light over darkness.","lvl":4},
+    {"q":"Who wrote the epic poem 'The Divine Comedy'?","opts":["Dante Alighieri","Homer","Virgil","Milton"],"a":0,"expl":"Dante wrote it in the 14th century.","lvl":4},
+    {"q":"What was the first full-length animated feature film by Disney?","opts":["Snow White and the Seven Dwarfs","Pinocchio","Fantasia","Dumbo"],"a":0,"expl":"It was released in 1937 and revolutionized animation.","lvl":5},
+    {"q":"Which architectural style is characterized by pointed arches and flying buttresses?","opts":["Gothic","Romanesque","Baroque","Neoclassical"],"a":0,"expl":"Gothic architecture flourished in Europe during the High and Late Middle Ages.","lvl":5},
+    {"q":"What traditional Korean fermented side dish is made of vegetables and seasonings?","opts":["Kimchi","Bibimbap","Bulgogi","Tteokbokki"],"a":0,"expl":"Kimchi is a staple in Korean cuisine.","lvl":5},
+    {"q":"Who wrote the existentialist novel 'The Stranger'?","opts":["Albert Camus","Jean-Paul Sartre","Franz Kafka","Simone de Beauvoir"],"a":0,"expl":"Camus published 'L'Etranger' in 1942.","lvl":5},
+    {"q":"What is the name of the sacred text of Islam?","opts":["Quran","Torah","Bible","Vedas"],"a":0,"expl":"Muslims believe the Quran was revealed to Muhammad.","lvl":5},
+    {"q":"What museum houses the Rosetta Stone?","opts":["British Museum","Louvre","Metropolitan","Smithsonian"],"a":0,"expl":"It has been on public display at the British Museum since 1802.","lvl":5},
+    {"q":"What is the term for a Japanese poetic form of 5, 7, and 5 syllables?","opts":["Haiku","Tanka","Renga","Senryu"],"a":0,"expl":"Haiku focus on nature or a specific moment in time.","lvl":5},
+    {"q":"In which country did the Renaissance movement begin?","opts":["Italy","France","Greece","Spain"],"a":0,"expl":"The Renaissance started in Florence, Italy, in the 14th century.","lvl":5},
+    {"q":"What instrument is used to play classical Indian music, popularised by Ravi Shankar?","opts":["Sitar","Tabla","Flute","Sarod"],"a":0,"expl":"The sitar is a plucked stringed instrument.","lvl":5},
+    {"q":"What Mesoamerican civilization is known for its complex calendar system?","opts":["Maya","Aztec","Inca","Olmec"],"a":0,"expl":"The Maya calendar system is extremely precise.","lvl":5}
+  ]
+};
+
+const CATEGORY_META = {
+  science:{name:"Science",icon:"fa-flask",desc:"Physics, chemistry, biology, and the universe",color:"var(--science)"},
+  history:{name:"History",icon:"fa-landmark",desc:"Civilizations, wars, and humanity",color:"var(--history)"},
+  geography:{name:"Geography",icon:"fa-earth-americas",desc:"Countries, oceans, and the world",color:"var(--geography)"},
+  math:{name:"Mathematics",icon:"fa-square-root-variable",desc:"Numbers, patterns, and logic",color:"var(--math)"},
+  language:{name:"Language",icon:"fa-language",desc:"Words, grammar, and communication",color:"var(--language)"},
+  nature:{name:"Nature",icon:"fa-leaf",desc:"Animals, ecosystems, and the living world",color:"var(--nature)"},
+  culture:{name:"Culture",icon:"fa-masks-theater",desc:"Art, traditions, and human creativity",color:"var(--culture)"}
+};
+
+const LVL_NAMES = ["Apprentice", "Explorer", "Journeyman", "Adept", "Master"];
+const PLAYER_RANKS = [
+  { minLvl: 1, name: "Novice" },
+  { minLvl: 5, name: "Scholar" },
+  { minLvl: 10, name: "Sage" },
+  { minLvl: 15, name: "Polymath" },
+  { minLvl: 20, name: "Mastermind" },
+  { minLvl: 25, name: "Luminary" },
+  { minLvl: 30, name: "Legend" }
+];
+const XP_MAP = { 1: 15, 2: 25, 3: 40, 4: 60, 5: 90 };
+const TIMER_DUR = { 1: 30, 2: 25, 3: 20, 4: 15, 5: 12 };
+
+let S = {
+  playerName:"Explorer", totalXP:0, curLevelNum:1, bestStreak:0,
+  totalCorrect:0, totalAnswered:0, totalQuizzes:0, perfectQuizzes:0, hardCorrect:0, fastAnswer:0,
+  curCat:null, curLevel:1,
+  categoryData: {},
+  tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
+  newAchievements: new Set(), unlockedAchievements: new Set(),
+  qs: [], qIndex: 0, quizScore: 0, quizStreak: 0, quizXP: 0,
+  quizStartTime: 0, timerInterval: null, timeLeft: 0, questionAnswered: false, lastQuizAnswers: [],
+  currentTab: "hub", quizStarted: false
+};
+
+// init category data
+Object.keys(CATEGORY_META).forEach(c => {
+  S.categoryData[c] = { levelData: Array.from({length:5},()=>({stars:0,completed:false})) };
+});
+
+const ACHIEVEMENTS = [
+  {id:"first_step",name:"First Step",desc:"Complete your first level",icon:"fa-shoe-prints",check:s=>s.levelsCleared>=1},
+  {id:"curious_mind",name:"Curious Mind",desc:"Play 3 different categories",icon:"fa-magnifying-glass",check:s=>Object.values(s.categoryData).filter(c=>c.levelData[0].completed||c.levelData[0].stars>0).length>=3},
+  {id:"streak_5",name:"On Fire",desc:"Get a 5-answer streak",icon:"fa-fire",check:s=>s.bestStreak>=5},
+  {id:"streak_10",name:"Unstoppable",desc:"Get a 10-answer streak",icon:"fa-meteor",check:s=>s.bestStreak>=10},
+  {id:"perfect",name:"Perfectionist",desc:"Score 3 stars on any level",icon:"fa-crown",check:s=>s.tripleStars>=1},
+  {id:"scholar",name:"Scholar",desc:"Earn 500 total XP",icon:"fa-graduation-cap",check:s=>s.totalXP>=500},
+  {id:"polymath",name:"Polymath",desc:"Play all 7 categories",icon:"fa-brain",check:s=>Object.values(s.categoryData).filter(c=>c.levelData[0].completed||c.levelData[0].stars>0).length>=7},
+  {id:"mastery",name:"Realm Master",desc:"Complete all 5 levels in one category",icon:"fa-gem",check:s=>s.realmsMastered>=1},
+  {id:"level5",name:"The Summit",desc:"Complete any Level 5",icon:"fa-mountain",check:s=>s.lvl5Cleared>=1},
+  {id:"veteran",name:"Veteran",desc:"Clear 10 levels",icon:"fa-medal",check:s=>s.levelsCleared>=10},
+  {id:"all_realms",name:"Grand Master",desc:"Complete all 35 levels",icon:"fa-globe",check:s=>s.levelsCleared>=35},
+  {id:"mastermind",name:"Mastermind",desc:"Earn 2000 total XP",icon:"fa-chess-knight",check:s=>s.totalXP>=2000},
+  {id:"speed_demon",name:"Speed Demon",desc:"Answer in under 3 seconds",icon:"fa-bolt",check:s=>s.fastAnswer>=1},
+  {id:"encyclopedia",name:"Encyclopedia",desc:"Answer 100 questions total",icon:"fa-book",check:s=>s.totalAnswered>=100},
+  {id:"survivor",name:"Survivor",desc:"Answer a Level 4+ question correctly",icon:"fa-shield-halved",check:s=>s.hardCorrect>=1}
+];
+
+// Bg Particles
+const canvas=document.getElementById('bgCanvas'), ctx=canvas.getContext('2d');
+let particles=[], mouseX=0, mouseY=0;
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+function initParticles(){
+  particles=[]; const count=Math.min(70,Math.floor(window.innerWidth*window.innerHeight/18000));
+  for(let i=0;i<count;i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.5,alpha:Math.random()*.25+.08,color:['#f59e0b','#10b981','#06b6d4','#a855f7'][Math.floor(Math.random()*4)]});
+}
+function animateBg(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const grd=ctx.createRadialGradient(mouseX,mouseY,0,mouseX,mouseY,350);
+  grd.addColorStop(0,'rgba(245,158,11,0.025)'); grd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grd; ctx.fillRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i]; p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0; if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(.5,p.r),0,Math.PI*2); ctx.fillStyle=p.color; ctx.globalAlpha=p.alpha; ctx.fill();
+    for(let j=i+1;j<particles.length;j++){
+      let p2=particles[j], dx=p.x-p2.x, dy=p.y-p2.y, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<110){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=p.color;ctx.globalAlpha=(1-dist/110)*.06;ctx.lineWidth=.5;ctx.stroke();}
+    }
+  }
+  ctx.globalAlpha=1; requestAnimationFrame(animateBg);
+}
+window.addEventListener('resize',()=>{resizeCanvas();initParticles();});
+window.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+resizeCanvas(); initParticles(); animateBg();
+
+// Audio
+let aCtx=null; function getAudioCtx(){if(!aCtx){aCtx=new(window.AudioContext||window.webkitAudioContext)();}if(aCtx.state==='suspended')aCtx.resume();return aCtx;}
+function playTone(freq,dur,type='sine',vol=.12){
+  try{let a=getAudioCtx(),o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dur);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+dur);}catch(e){}
+}
+function sfxC(){playTone(523,.1);setTimeout(()=>playTone(659,.1),80);setTimeout(()=>playTone(784,.15),160);}
+function sfxW(){playTone(200,.25,'sawtooth',.08);}
+function sfxK(){playTone(880,.05,'sine',.06);}
+function sfxA(){playTone(784,.08);setTimeout(()=>playTone(988,.08),80);setTimeout(()=>playTone(1175,.12),160);setTimeout(()=>playTone(1568,.2),260);}
+function sfxT(){playTone(300,.15,'triangle',.08);setTimeout(()=>playTone(220,.3,'triangle',.06),150);}
+
+// Navigation
+function showScreen(id){
+  const allScreens=['sHub','sLevelSelect','sQuiz','sResults','sReview','sAchievements','sProfile','sWelcome','sShop'];
+  allScreens.forEach(s=>{let el=document.getElementById(s);if(el)el.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  let nav = document.getElementById('mainNav');
+  nav.style.display = (id === 'sWelcome' || id === 'sQuiz') ? 'none' : 'flex';
+  
+  if(id==='sHub') { updateHub(); saveState(); }
+  if(id==='sShop') { renderShop(); saveState(); }
+  if(id==='sAchievements') renderAchievements();
+  if(id==='sProfile') renderProfile();
+  
+  ['hub','shop','achievements','profile'].forEach(t=>{
+    let isActive = false;
+    if (t === 'hub') isActive = ['sHub', 'sLevelSelect', 'sResults', 'sReview'].includes(id);
+    else if (t === 'shop') isActive = id === 'sShop';
+    else if (t === 'achievements') isActive = id === 'sAchievements';
+    else if (t === 'profile') isActive = id === 'sProfile';
+    document.querySelector(`[data-tab="${t}"]`)?.classList.toggle('active', isActive);
+  });
+  if(id==='sAchievements'){ S.newAchievements.clear(); updateBadge(); }
+}
+function switchTab(t){ sfxK(); showScreen('s'+t.charAt(0).toUpperCase()+t.slice(1)); }
+function updateBadge(){
+  let b=document.getElementById('achieveBadge');
+  if(S.newAchievements.size>0){b.style.display='inline-block';b.textContent=S.newAchievements.size;}else b.style.display='none';
+}
+function getRank(lvl){ return PLAYER_RANKS.slice().reverse().find(r=>lvl>=r.minLvl).name; }
+function calcLevel(){
+  let l=1, xp=0; while(xp+l*150<=S.totalXP&&l<200){xp+=l*150;l++;}
+  let need=l*150; let xpIn=S.totalXP-xp;
+  return {lvl:l, xpIn, xpNeed:need, pct:Math.min(100,(xpIn/need)*100)};
+}
+
+// Welcome
+document.getElementById('startBtn').addEventListener('click',startGame);
+function startGame(){
+  let n=document.getElementById('playerNameInput').value.trim();
+  if(n) S.playerName=n;
+  let init=S.playerName.charAt(0).toUpperCase();
+  document.getElementById('hubAvatar').textContent=init; document.getElementById('hubName').textContent=S.playerName;
+  document.getElementById('profileBigAvatar').textContent=init; document.getElementById('profileName').textContent=S.playerName; updateAvatars();
+  saveState(); sfxK(); showScreen('sHub');
+}
+
+// Auto-skip welcome if returning player
+if(S.playerName && S.playerName !== 'Explorer'){
+  document.getElementById('playerNameInput').value = S.playerName;
+  startGame();
+}
+
+// Hub
+function updateHub(){
+  let li=calcLevel(); S.curLevelNum=li.lvl;
+  document.getElementById('hubLevel').textContent=`Level ${li.lvl} — ${getRank(li.lvl)}`;
+  document.getElementById('hubXpBar').style.width=li.pct+'%';
+  document.getElementById('hubTotalXP').textContent=S.totalXP;
+  document.getElementById('hudLevels').textContent=`${S.levelsCleared}/35`;
+  document.getElementById('hubAccuracy').textContent=(S.totalAnswered>0?Math.round((S.totalCorrect/S.totalAnswered)*100):0)+'%';
+  
+  let grid=document.getElementById('categoryGrid'); grid.innerHTML='';
+  Object.keys(CATEGORY_META).forEach(cat=>{
+    let m=CATEGORY_META[cat], ld=S.categoryData[cat].levelData;
+    let done=ld.filter(l=>l.completed).length, stars=ld.reduce((a,b)=>a+b.stars,0);
+    
+    let badgesHtml = ld.map((l,i) => {
+      if(l.completed) return `<span class="lvl-badge done"><i class="fas fa-check"></i> L${i+1}</span>`;
+      if(i===0 || ld[i-1].completed) return `<span class="lvl-badge next"><i class="fas fa-play"></i> L${i+1}</span>`;
+      return `<span class="lvl-badge"><i class="fas fa-lock"></i> L${i+1}</span>`;
+    }).join('');
+
+    let card=document.createElement('div'); card.className='category-card'; card.setAttribute('data-cat',cat);
+    card.innerHTML=`<div class="cat-icon"><i class="fas ${m.icon}"></i></div>
+      <div class="cat-name">${m.name}</div>
+      <div class="cat-levels-badge">${badgesHtml}</div>
+      <div class="cat-desc">${m.desc}</div>
+      <div class="cat-meta">
+        <span class="cat-progress">${done}/5 levels · ${stars}★</span>
+        <div style="width:70px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;"><div style="height:100%;width:${(done/5)*100}%;background:${m.color}"></div></div>
+      </div>`;
+    card.onclick=()=>{ sfxK(); openLevelSelect(cat); };
+    grid.appendChild(card);
+  });
+}
+
+// Level Select
+function openLevelSelect(cat){
+  S.curCat=cat;
+  let m=CATEGORY_META[cat]||{name:cat,icon:'fa-question',desc:'',color:'var(--accent)'};
+  let ld=S.categoryData[cat]?S.categoryData[cat].levelData:Array.from({length:5},()=>({stars:0,completed:false}));
+  document.getElementById('lsIcon').innerHTML=`<i class="fas ${m.icon}"></i>`;
+  const CAT_RGBA = {science:'6,182,212',history:'245,158,11',geography:'16,185,129',math:'239,68,68',language:'168,85,247',nature:'34,197,94',culture:'236,72,153'};
+  document.getElementById('lsIcon').style.background=`rgba(${CAT_RGBA[cat]||'255,255,255'},0.15)`;
+  document.getElementById('lsIcon').style.color=m.color;
+  document.getElementById('lsTitle').textContent=m.name;
+  document.getElementById('lsDesc').textContent=m.desc;
+  
+  let list=document.getElementById('levelList'); list.innerHTML='';
+  for(let i=0;i<5;i++){
+    let st=ld[i], avail=i===0||ld[i-1].completed;
+    let pool=QUESTIONS[cat].filter(q=>q.lvl===(i+1));
+    let cls=st.completed?'completed':avail?'available':'locked';
+    let icon=st.completed?'fa-check-circle':avail?'fa-play-circle':'fa-lock';
+    let starsHtml=Array(3).fill(0).map((_,j)=>`<i class="fas fa-star ${j<st.stars?'lit':''}"></i>`).join('');
+    
+    let el=document.createElement('div'); el.className=`level-card ${cls}`;
+    el.innerHTML=`
+      <div class="lc-left"><div class="lc-num">${i+1}</div>
+      <div class="lc-info"><h3>${LVL_NAMES[i]}</h3><p>${pool.length} Questions · ${i<2?'Easy':i===4?'Hard':'Medium'}</p></div></div>
+      <div class="lc-right"><div class="lc-stars">${starsHtml}</div><div class="lc-status"><i class="fas ${icon}"></i></div></div>`;
+    if(avail) el.onclick=()=>{ sfxK(); startLevel(cat, i+1); };
+    list.appendChild(el);
+  }
+  showScreen('sLevelSelect');
+}
+
+// Quiz
+function shuffle(a){let c=[...a];for(let i=c.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+
+function startLevel(cat, lvl){
+  S.curCat=cat; S.curLevel=lvl; S.qIndex=0; S.quizScore=0; S.quizStreak=0; S.quizXP=0; S.lastQuizAnswers=[]; S.quizStarted=false;
+  S.lifelinesUsed={fifty:0,time:0};
+
+  let pool = cat==='daily' ? [] : QUESTIONS[cat].filter(q=>q.lvl===lvl);
+  if(cat!=='daily') S.qs=shuffle(pool);
+
+  let meta = CATEGORY_META[cat];
+  document.getElementById('quizCatName').textContent=meta?`${meta.name} — Level ${lvl}`:`${cat==='daily'?'Daily Challenge':cat} — Level ${lvl}`;
+  document.getElementById('quizCatDot').style.background=meta?meta.color:'var(--accent)';
+  document.getElementById('quizTotal').textContent=S.qs.length;
+  updateStats(); showScreen('sQuiz'); loadQ();
+}
+
+function loadQ(){
+  if(S.qIndex>=S.qs.length){ finishLvl(); return; }
+  S.questionAnswered=false; document.getElementById('explanationArea').innerHTML='';
+  let q=S.qs[S.qIndex];
+  document.getElementById('questionNumber').textContent=`Question ${S.qIndex+1} of ${S.qs.length}`;
+  document.getElementById('questionText').textContent=q.q;
+  document.getElementById('qProgressBar').style.width=`${(S.qIndex/S.qs.length)*100}%`;
+  
+  let list=document.getElementById('optionsList'); list.innerHTML='';
+  // map options with original index
+  let opts=q.opts.map((text,origIdx)=>({text, origIdx}));
+  // opts=shuffle(opts); // optional shuffle
+  let letters=['A','B','C','D'];
+  opts.forEach((o,displayIdx)=>{
+    let btn=document.createElement('button'); btn.className='option-btn';
+    btn.innerHTML=`<span class="option-letter">${letters[displayIdx]}</span><span>${escHtml(o.text)}</span>`;
+    btn.onclick=()=>pickA(displayIdx, o.origIdx);
+    list.appendChild(btn);
+  });
+  
+  if(S.qIndex>=1) S.quizStarted=true;
+  startT(); S.quizStartTime=Date.now(); updateLL();
+}
+
+function startT(){
+  clearInterval(S.timerInterval); let dur=TIMER_DUR[S.curLevel]*1000; S.timeLeft=dur;
+  let f=document.getElementById('timerFill'); f.style.width='100%'; f.className='timer-fill';
+  S.timerInterval=setInterval(()=>{
+    S.timeLeft-=100; let pct=Math.max(0,(S.timeLeft/dur)*100);
+    f.style.width=pct+'%'; f.className=pct<25?'timer-fill danger':pct<50?'timer-fill warning':'timer-fill';
+    document.getElementById('quizTimerText').textContent=Math.ceil(S.timeLeft/1000)+'s';
+    if(S.timeLeft<=0){ clearInterval(S.timerInterval); timeOut(); }
+  },100);
+}
+
+function timeOut(){
+  if(S.questionAnswered)return; S.questionAnswered=true; sfxT();
+  let q=S.qs[S.qIndex]; S.quizStreak=0; S.totalAnswered++;
+  S.lastQuizAnswers.push({q:q.q, opts:q.opts, correctIdx:q.a, selectedIdx:-1, isCor:false, expl:q.expl});
+  let btns=document.querySelectorAll('.option-btn');
+  btns.forEach((b,i)=>{ b.classList.add('disabled'); if(i===q.a) b.classList.add('correct'); });
+  updateStats(); showExpl(q,false,"Time's up!"); setTimeout(()=>{S.qIndex++;loadQ();},2800);
+}
+
+function pickA(dIdx, oIdx){
+  if(S.questionAnswered)return; S.questionAnswered=true; clearInterval(S.timerInterval);
+  let q=S.qs[S.qIndex], isCor=oIdx===q.a, t=(Date.now()-S.quizStartTime)/1000;
+  S.totalAnswered++;
+  if(isCor){ vibe([50,50,50]);
+    sfxC(); S.quizScore++; S.quizStreak++; S.totalCorrect++; S.bestStreak=Math.max(S.bestStreak,S.quizStreak);
+    if(S.curLevel>=4) S.hardCorrect++;
+    let xp=XP_MAP[S.curLevel];
+    if(S.quizStreak>=5) xp=Math.round(xp*1.5); if(S.quizStreak>=10) xp=Math.round(xp*2);
+    if(t<3){ xp=Math.round(xp*1.25); S.fastAnswer++; }
+    S.quizXP+=xp; S.totalXP+=xp; flyXP(xp);
+  } else { vibe(200); sfxW(); S.quizStreak=0; document.getElementById('optionsList').classList.add('shake-anim'); setTimeout(()=>document.getElementById('optionsList').classList.remove('shake-anim'),500); }
+  
+  S.lastQuizAnswers.push({q:q.q, opts:q.opts, correctIdx:q.a, selectedIdx:oIdx, isCor, expl:q.expl});
+  
+  let btns=document.querySelectorAll('.option-btn');
+  btns.forEach((b,i)=>{
+    b.classList.add('disabled');
+    if(i===q.a) b.classList.add('correct');
+    if(i===oIdx && !isCor) b.classList.add('incorrect');
+  });
+  
+  updateStats(); showExpl(q,isCor); checkAch(); setTimeout(()=>{S.qIndex++;loadQ();},isCor?2200:3000);
+}
+
+function updateStats(){
+  document.getElementById('quizXP').textContent=S.quizXP; document.getElementById('quizStreak').textContent=S.quizStreak;
+  document.getElementById('quizScore').textContent=S.quizScore;
+  document.getElementById('streakPill').classList.toggle('hot',S.quizStreak>=5);
+}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showExpl(q,isC,cLab){
+  let box=document.createElement('div'); box.className='explanation-box';
+  let label=document.createElement('div'); label.className='label';
+  label.innerHTML=`<i class="fas ${isC?'fa-check-circle':'fa-times-circle'}"></i> ${cLab||(isC?'Correct!':"Not quite — here's why:")}`;
+  let text=document.createElement('div'); text.className='text'; text.textContent=q.expl;
+  box.appendChild(label); box.appendChild(text);
+  document.getElementById('explanationArea').appendChild(box);
+}
+function flyXP(amt){
+  let el=document.createElement('div'); el.className='xp-fly'; el.textContent='+'+amt+' XP';
+  let r=document.getElementById('quizXP').getBoundingClientRect();
+  el.style.left=r.left+'px'; el.style.top=(r.top-10)+'px'; document.body.appendChild(el); setTimeout(()=>el.remove(),1000);
+}
+
+document.getElementById('quizBackBtn').onclick=()=>{
+  sfxK(); clearInterval(S.timerInterval);
+  showCnf('Quit Quiz?','Progress in this level will be lost.',()=>{showScreen('sLevelSelect');});
+};
+
+function finishLvl(){
+  clearInterval(S.timerInterval); S.totalQuizzes++;
+  let tot=S.qs.length, cor=S.quizScore, pct=Math.round((cor/tot)*100);
+  if(cor===tot) S.perfectQuizzes++;
+  
+  let ld = S.categoryData[S.curCat] ? S.categoryData[S.curCat].levelData[S.curLevel-1] : {stars:0,completed:false};
+  let passed = pct>=60;
+  let st = pct===100?3:pct>=70?2:pct>=50?1:0;
+  
+  let coinsEarned = st * 10; if(S.isDaily && passed) coinsEarned = 100; S.coins += coinsEarned; if(S.isDaily) { S.lastDaily = new Date().toDateString(); S.dailyStreak++; S.isDaily=false; } saveState();
+  if(passed && !ld.completed){ ld.completed=true; S.levelsCleared++; if(S.curLevel===5) S.lvl5Cleared++; }
+  if(st > ld.stars){ if(st===3) S.tripleStars++; ld.stars=st; }
+  
+  // check realm master
+  if(S.categoryData[S.curCat] && S.categoryData[S.curCat].levelData.filter(l=>l.completed).length === 5){
+    // verify not already counted (rudimentary, simplified for now: just recalc total)
+    S.realmsMastered = Object.values(S.categoryData).filter(c=>c.levelData.filter(l=>l.completed).length===5).length;
+  }
+  
+  document.getElementById('resultsTitle').textContent=passed?'Level Cleared!':'Keep Trying';
+  let catName = S.curCat==='daily'?'Daily Challenge':(CATEGORY_META[S.curCat]?CATEGORY_META[S.curCat].name+' Level '+S.curLevel:'the level');
+  document.getElementById('resultsSubtitle').textContent=passed?`You mastered ${catName}`:`You need 60% to pass`;
+  document.getElementById('resultsIcon').innerHTML=`<i class="fas ${passed?'fa-trophy':'fa-book-open'}"></i>`;
+  document.getElementById('scoreRingValue').textContent=pct+'%';
+  document.getElementById('resXP').textContent=S.quizXP; document.getElementById('resCoins').textContent=coinsEarned||0; document.getElementById('resCorrect').textContent=cor; document.getElementById('resWrong').textContent=tot-cor;
+  
+  let circ=document.getElementById('scoreCircle');
+  let circumference = 2 * Math.PI * 68;
+  circ.style.stroke=pct>=80?'#10b981':pct>=60?'#f59e0b':pct>=40?'#f97316':'#ef4444';
+  circ.style.transition='none'; circ.style.strokeDashoffset=circumference;
+  setTimeout(()=>{ circ.style.transition='stroke-dashoffset 1.2s cubic-bezier(.2,1,.3,1)'; circ.style.strokeDashoffset=circumference-(pct/100)*circumference; },200);
+
+  let sEls=document.getElementById('resultsStars').querySelectorAll('.fas');
+  sEls.forEach(e=>e.className='fas fa-star');
+  sEls.forEach((e,i)=>{ if(i<st) setTimeout(()=>e.classList.add('lit'),400+i*200); });
+  
+  let ban=document.getElementById('levelCompleteBanner'), nxt=document.getElementById('nextLvlBtn');
+  if(passed){
+    ban.classList.add('show'); confetti();
+    document.getElementById('bannerText').textContent=`Level ${S.curLevel} Complete`+(S.curLevel<5?` — Level ${S.curLevel+1} Unlocked!`:'');
+    nxt.style.display=S.curLevel<5?'inline-flex':'none';
+    nxt.onclick=()=>{ sfxK(); startLevel(S.curCat, S.curLevel+1); };
+  } else { ban.classList.remove('show'); nxt.style.display='none'; }
+
+  showScreen('sResults'); checkAch();
+}
+
+document.getElementById('retryBtn').onclick=()=>{ sfxK(); startLevel(S.curCat, S.curLevel); };
+let sBtn = document.getElementById('shareBtn'); if(sBtn) sBtn.onclick=tryShare;
+  document.getElementById('reviewBtn').onclick=()=>{
+  sfxK(); let list=document.getElementById('reviewList'); list.innerHTML='';
+  S.lastQuizAnswers.forEach((a,i)=>{
+    let div=document.createElement('div'); div.className=`review-item ${a.isCor?'was-correct':'was-wrong'}`;
+    let letters=['A','B','C','D'];
+    let ansHtml=a.opts.map((o,j)=>`<span class="review-answer ${j===a.correctIdx?'correct-a':j===a.selectedIdx?'wrong-a':''}">${letters[j]}. ${escHtml(o)}</span>`).join('');
+    let qEl=document.createElement('div'); qEl.className='review-q'; qEl.textContent=`${i+1}. ${a.q}`;
+    let ansEl=document.createElement('div'); ansEl.className='review-answers'; ansEl.innerHTML=ansHtml;
+    let explEl=document.createElement('div'); explEl.className='review-expl'; explEl.innerHTML=`<i class="fas fa-info-circle" style="color:var(--accent);margin-right:4px;"></i>`; explEl.appendChild(document.createTextNode(a.expl));
+    div.appendChild(qEl); div.appendChild(ansEl); div.appendChild(explEl);
+    list.appendChild(div);
+  });
+  showScreen('sReview');
+};
+document.getElementById('reviewBackBtn').onclick=()=>{ sfxK(); showScreen('sResults'); };
+document.getElementById('backHubBtn').onclick=()=>{ sfxK(); showScreen('sHub'); };
+
+// Achievements
+function checkAch(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(!S.unlockedAchievements.has(a.id) && a.check(S)){
+      S.unlockedAchievements.add(a.id); S.newAchievements.add(a.id); sfxA(); updateBadge(); saveState();
+      let t=document.createElement('div'); t.className='toast'; t.innerHTML=`<i class="fas ${a.icon}"></i><span>Achievement: ${escHtml(a.name)}</span>`;
+      document.body.appendChild(t); setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3000);
+    }
+  });
+}
+function renderAchievements(){
+  let grid=document.getElementById('achievementsGrid'); grid.innerHTML='';
+  document.getElementById('achieveCount').textContent=`${S.unlockedAchievements.size} / 15 Unlocked`;
+  ACHIEVEMENTS.forEach(a=>{
+    let unl=S.unlockedAchievements.has(a.id), isNew=S.newAchievements.has(a.id);
+    let el=document.createElement('div'); el.className=`achievement-card ${unl?'unlocked':'locked'} ${isNew?'new-unlock':''}`;
+    el.innerHTML=`<div class="badge-new">NEW</div><div class="achievement-icon"><i class="fas ${a.icon}"></i></div><div class="achievement-name">${a.name}</div><div class="achievement-desc">${a.desc}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+// Profile
+function renderProfile(){
+  let li=calcLevel();
+  document.getElementById('profileName').textContent=S.playerName;
+  updateAvatars();
+  document.getElementById('profileLevel').textContent=`Level ${li.lvl} — ${getRank(li.lvl)}`;
+  document.getElementById('profileXpCurrent').textContent=`${li.xpIn} XP`; document.getElementById('profileXpNeeded').textContent=`${li.xpNeed} XP`;
+  document.getElementById('profileXpFill').style.width=`${li.pct}%`;
+
+  let totStars = Object.values(S.categoryData).reduce((sum,c)=>sum+c.levelData.reduce((s,l)=>s+l.stars,0), 0);
+  let acc=S.totalAnswered>0?Math.round((S.totalCorrect/S.totalAnswered)*100):0;
+
+  document.getElementById('profileStatsGrid').innerHTML=`
+    <div class="profile-stat-card"><div class="pval">${S.totalXP}</div><div class="plbl">Total XP</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.coins||0}</div><div class="plbl">Total Coins</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.levelsCleared}/35</div><div class="plbl">Levels Cleared</div></div>
+    <div class="profile-stat-card"><div class="pval">${totStars}</div><div class="plbl">Total Stars</div></div>
+    <div class="profile-stat-card"><div class="pval">${acc}%</div><div class="plbl">Accuracy</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.bestStreak}</div><div class="plbl">Best Streak</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.totalQuizzes}</div><div class="plbl">Quizzes</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.totalAnswered}</div><div class="plbl">Questions</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.unlockedAchievements.size}/15</div><div class="plbl">Achievements</div></div>
+    <div class="profile-stat-card"><div class="pval">${Object.values(S.categoryData).filter(c=>c.levelData[0].completed||c.levelData[0].stars>0).length}/7</div><div class="plbl">Realms Explored</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.realmsMastered}</div><div class="plbl">Realms Mastered</div></div>
+    <div class="profile-stat-card"><div class="pval">${S.perfectQuizzes}</div><div class="plbl">Perfect Quizzes</div></div>`;
+}
+
+// Edit / Reset / Confirm
+let cb=null;
+function showCnf(t,m,onC){ document.getElementById('confirmTitle').textContent=t; document.getElementById('confirmMsg').textContent=m; cb=onC; document.getElementById('confirmModal').classList.add('open'); }
+document.getElementById('confirmCancelBtn').onclick=()=>{ sfxK(); document.getElementById('confirmModal').classList.remove('open'); cb=null; };
+document.getElementById('confirmOkBtn').onclick=()=>{ sfxK(); document.getElementById('confirmModal').classList.remove('open'); if(cb)cb(); cb=null; };
+
+document.getElementById('profileEditBtn').onclick=()=>{ sfxK(); document.getElementById('editNameInput').value=S.playerName; document.getElementById('nameModal').classList.add('open'); };
+document.getElementById('nameCancelBtn').onclick=()=>{ sfxK(); document.getElementById('nameModal').classList.remove('open'); };
+document.getElementById('nameSaveBtn').onclick=()=>{
+  let n=document.getElementById('editNameInput').value.trim();
+  if(n){ S.playerName=n; let init=n.charAt(0).toUpperCase(); document.getElementById('hubAvatar').textContent=init; document.getElementById('hubName').textContent=n; document.getElementById('profileBigAvatar').textContent=init; document.getElementById('profileName').textContent=n; updateAvatars(); saveState(); sfxK(); }
+  document.getElementById('nameModal').classList.remove('open');
+};
+
+document.getElementById('profileResetBtn').onclick=()=>{
+  sfxK(); showCnf('Reset Progress?','All data will be erased permanently.',()=>{
+    S.totalXP=0; S.curLevelNum=1; S.bestStreak=0; S.totalCorrect=0; S.totalAnswered=0; S.totalQuizzes=0; S.perfectQuizzes=0; S.hardCorrect=0; S.fastAnswer=0; S.levelsCleared=0; S.lvl5Cleared=0; S.tripleStars=0; S.realmsMastered=0;
+    S.coins=0; S.unlockedAvatars=['A']; S.avatar='A'; S.lastDaily=0; S.dailyStreak=0; S.lifelinesUsed={fifty:0,time:0};
+    S.unlockedAchievements.clear(); S.newAchievements.clear(); S.lastQuizAnswers=[];
+    Object.keys(S.categoryData).forEach(c=>{ S.categoryData[c].levelData.forEach(l=>{l.stars=0;l.completed=false;}); });
+    saveState(); renderProfile(); showToast('Progress reset.');
+  });
+};
+
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('sQuiz').classList.contains('active')||S.questionAnswered)return;
+  let k=parseInt(e.key); if(k>=1&&k<=4){ let idx=k-1; pickA(idx, idx); }
+});
+</script>
+</body>
+</html>
