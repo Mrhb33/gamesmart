@@ -60,8 +60,7 @@ function loadState() {
 }
 loadState();
 
-// Register SW
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+// SW registered at bottom with auto-update support
 
 const AVATARS = [
   {id:'A', icon:'fa-user', cost:0}, {id:'B', icon:'fa-robot', cost:100}, {id:'C', icon:'fa-dragon', cost:250}, {id:'D', icon:'fa-ghost', cost:500}

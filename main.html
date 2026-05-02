@@ -635,8 +635,7 @@ function loadState() {
 }
 loadState(); document.addEventListener('DOMContentLoaded', () => { if(S.playerName !== 'Explorer') updateAvatars(); });
 
-// Register SW
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+// SW registered at bottom with auto-update support
 
 const AVATARS = [
   {id:'A', icon:'fa-user', cost:0}, {id:'B', icon:'fa-robot', cost:100}, {id:'C', icon:'fa-dragon', cost:250}, {id:'D', icon:'fa-ghost', cost:500}
@@ -1552,20 +1551,26 @@ document.addEventListener('keydown',e=>{
 
 // Auto-update: show banner when new version available
 if('serviceWorker' in navigator){
+  let showUpdateBanner=(sw)=>{
+    if(document.getElementById('updateBanner'))return;
+    let b=document.createElement('div');
+    b.id='updateBanner';
+    b.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:700;z-index:99999;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.4);font-family:DM Sans,sans-serif;transition:opacity .3s;';
+    b.innerHTML='<i class="fas fa-sync-alt"></i> New version available — Tap to update';
+    b.onclick=()=>{sw.postMessage({type:'SKIP_WAITING'});};
+    document.body.appendChild(b);
+  };
   navigator.serviceWorker.register('./sw.js').then(reg=>{
+    // If a new SW is already waiting, show banner immediately
+    if(reg.waiting) showUpdateBanner(reg.waiting);
     reg.addEventListener('updatefound',()=>{
-      let nw=reg.installing;
-      nw.addEventListener('statechange',()=>{
-        if(nw.state==='installed' && navigator.serviceWorker.controller){
-          let b=document.createElement('div');
-          b.id='updateBanner';
-          b.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:700;z-index:99999;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.4);font-family:DM Sans,sans-serif;transition:opacity .3s;';
-          b.innerHTML='<i class="fas fa-sync-alt"></i> New version available — Tap to update';
-          b.onclick=()=>{nw.postMessage({type:'SKIP_WAITING'});};
-          document.body.appendChild(b);
-        }
+      let sw=reg.installing;
+      sw.addEventListener('statechange',()=>{
+        if(sw.state==='installed' && navigator.serviceWorker.controller) showUpdateBanner(sw);
       });
     });
+    // Check for updates every 5 minutes while app is open
+    setInterval(()=>reg.update(),5*60*1000);
   });
   navigator.serviceWorker.addEventListener('controllerchange',()=>{window.location.reload();});
 }
