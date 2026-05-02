@@ -1,16 +1,28 @@
 {
   "name": "Cerebrum Quest",
   "short_name": "Cerebrum",
-  "description": "A professional knowledge adventure game.",
+  "description": "A professional knowledge adventure game. Explore seven realms, answer questions, and level up!",
   "start_url": "./main.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0a0f1a",
-  "theme_color": "#f59e0b",
+  "theme_color": "#0a0f1a",
+  "categories": ["education", "games", "entertainment"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "./",
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2Y1OWUwYiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjAwIiBmaWxsPSJ3aGl0ZSI+Q1E8L3RleHQ+PC9zdmc+",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzBhMGYxYSIvPjxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSIxNjgiIHJ4PSIzMCIgZmlsbD0iI2Y1OWUwYiIvPjx0ZXh0IHg9Ijk2IiB5PSIxMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iODQiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMwYTBmMWEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5DUTwvdGV4dD48L3N2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMDAiIGZpbGw9IiMwYTBmMWEiLz48cmVjdCB4PSIzMiIgeT0iMzIiIHdpZHRoPSI0NDgiIGhlaWdodD0iNDQ4IiByeD0iODAiIGZpbGw9IiNmNTllMGIiLz48dGV4dCB4PSIyNTYiIHk9IjMxNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyMjAiIGZvbnQtd2VpZ2h0PSI4MDAiIGZpbGw9IiMwYTBmMWEiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj5DUTwvdGV4dD48L3N2Zz4=",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

@@ -65,6 +65,7 @@
     .nav-tab.active{border-bottom:none;border-top-color:var(--accent);}
     .nav-tab i{font-size:20px;}
     .nav-tab .tab-label{display:block;font-size:10px;}
+    .screen{height:100dvh;margin-top:0;padding-top:env(safe-area-inset-top, 12px);}
   }
 
   /* BUTTONS */
@@ -84,7 +85,7 @@
   .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
 
   /* SCREENS */
-  .screen{display:none;position:relative;z-index:1;height:calc(100dvh - 52px);padding:24px 20px 40px;animation:fadeIn .45s ease;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
+  .screen{display:none;position:relative;z-index:1;height:calc(100dvh - 52px);margin-top:52px;padding:24px 20px 40px;animation:fadeIn .45s ease;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
   .screen.active{display:flex;flex-direction:column;align-items:center;}
   .screen.active::-webkit-scrollbar{width:3px;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
@@ -443,9 +444,9 @@
     </div>
     
     
-<div style="display:flex;gap:12px;margin-bottom:20px;width:100%;">
-  <button class="btn btn-ghost btn-sm" id="llFifty" style="flex:1;border-color:var(--accent3);color:var(--accent3)"><i class="fas fa-percent"></i> 50/50 (20 <i class="fas fa-coins"></i>)</button>
-  <button class="btn btn-ghost btn-sm" id="llTime" style="flex:1;border-color:var(--accent2);color:var(--accent2)"><i class="fas fa-snowflake"></i> Freeze (20 <i class="fas fa-coins"></i>)</button>
+<div style="display:flex;gap:10px;margin-bottom:20px;width:100%;">
+  <button class="btn btn-ghost btn-sm" id="llFifty" style="flex:1;border-color:var(--accent3);color:var(--accent3);min-height:44px"><i class="fas fa-percent"></i> 50/50</button>
+  <button class="btn btn-ghost btn-sm" id="llTime" style="flex:1;border-color:var(--accent2);color:var(--accent2);min-height:44px"><i class="fas fa-snowflake"></i> Freeze</button>
 </div>
 <div class="progress-outer"><div class="progress-inner" id="qProgressBar" style="width:0%"></div></div>
     <div class="timer-container"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
@@ -595,6 +596,19 @@ function showToast(msg, dur=3000){
   document.body.appendChild(t);
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},dur);
 }
+
+let S = {
+  playerName:"Explorer", totalXP:0, curLevelNum:1, bestStreak:0,
+  totalCorrect:0, totalAnswered:0, totalQuizzes:0, perfectQuizzes:0, hardCorrect:0, fastAnswer:0,
+  curCat:null, curLevel:1,
+  categoryData: {},
+  tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
+  newAchievements: new Set(), unlockedAchievements: new Set(),
+  qs: [], qIndex: 0, quizScore: 0, quizStreak: 0, quizXP: 0,
+  quizStartTime: 0, timerInterval: null, timeLeft: 0, questionAnswered: false, lastQuizAnswers: [],
+  currentTab: "hub", quizStarted: false,
+  coins:0, unlockedAvatars:['A'], avatar:'A', lastDaily:0, dailyStreak:0, isDaily:false, lifelinesUsed:{fifty:0,time:0}
+};
 
 if(S.coins === undefined) S.coins = 0;
 if(!S.unlockedAvatars) S.unlockedAvatars = ['A'];
@@ -1102,18 +1116,6 @@ const PLAYER_RANKS = [
 ];
 const XP_MAP = { 1: 15, 2: 25, 3: 40, 4: 60, 5: 90 };
 const TIMER_DUR = { 1: 30, 2: 25, 3: 20, 4: 15, 5: 12 };
-
-let S = {
-  playerName:"Explorer", totalXP:0, curLevelNum:1, bestStreak:0,
-  totalCorrect:0, totalAnswered:0, totalQuizzes:0, perfectQuizzes:0, hardCorrect:0, fastAnswer:0,
-  curCat:null, curLevel:1,
-  categoryData: {},
-  tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
-  newAchievements: new Set(), unlockedAchievements: new Set(),
-  qs: [], qIndex: 0, quizScore: 0, quizStreak: 0, quizXP: 0,
-  quizStartTime: 0, timerInterval: null, timeLeft: 0, questionAnswered: false, lastQuizAnswers: [],
-  currentTab: "hub", quizStarted: false
-};
 
 // init category data
 Object.keys(CATEGORY_META).forEach(c => {
