@@ -1,15 +1,39 @@
 {
   "science": [
     {
-      "q": "What is the chemical symbol for gold?",
+      "q": "What is H2O commonly known as?",
       "opts": [
-        "Ag",
-        "Fe",
-        "Cu",
-        "Au"
+        "Water",
+        "Sugar",
+        "Salt",
+        "Air"
       ],
-      "a": 3,
-      "expl": "Au comes from the Latin 'aurum' meaning gold. Silver is Ag (argentum), Iron is Fe (ferrum), Copper is Cu (cuprum).",
+      "a": 0,
+      "expl": "H2O is water.",
+      "lvl": 1
+    },
+    {
+      "q": "What force keeps us on the ground?",
+      "opts": [
+        "Inertia",
+        "Gravity",
+        "Magnetism",
+        "Friction"
+      ],
+      "a": 1,
+      "expl": "Gravity pulls us down.",
+      "lvl": 1
+    },
+    {
+      "q": "What do bees collect from flowers?",
+      "opts": [
+        "Nectar",
+        "Honey",
+        "Pollen",
+        "Water"
+      ],
+      "a": 0,
+      "expl": "Bees collect nectar to make honey.",
       "lvl": 1
     },
     {
@@ -21,107 +45,395 @@
         "Saturn"
       ],
       "a": 0,
-      "expl": "Mars appears red due to iron oxide (rust) on its surface. It has the largest volcano in the solar system — Olympus Mons.",
+      "expl": "Mars has iron oxide causing a red color.",
       "lvl": 1
+    },
+    {
+      "q": "What state of matter is ice?",
+      "opts": [
+        "Gas",
+        "Plasma",
+        "Liquid",
+        "Solid"
+      ],
+      "a": 3,
+      "expl": "Ice is solid water.",
+      "lvl": 1
+    },
+    {
+      "q": "How many legs does a spider have?",
+      "opts": [
+        "10",
+        "6",
+        "8",
+        "4"
+      ],
+      "a": 2,
+      "expl": "Spiders are arachnids with 8 legs.",
+      "lvl": 1
+    },
+    {
+      "q": "What gas do humans need to breathe?",
+      "opts": [
+        "Helium",
+        "Carbon",
+        "Oxygen",
+        "Nitrogen"
+      ],
+      "a": 2,
+      "expl": "Humans breathe oxygen to survive.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the center of our solar system?",
+      "opts": [
+        "Moon",
+        "Sun",
+        "Jupiter",
+        "Earth"
+      ],
+      "a": 1,
+      "expl": "The Sun is at the center of the solar system.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the largest mammal?",
+      "opts": [
+        "Shark",
+        "Elephant",
+        "Blue Whale",
+        "Giraffe"
+      ],
+      "a": 2,
+      "expl": "The Blue Whale is the largest mammal.",
+      "lvl": 1
+    },
+    {
+      "q": "What part of the plant conducts photosynthesis?",
+      "opts": [
+        "Leaf",
+        "Flower",
+        "Root",
+        "Stem"
+      ],
+      "a": 0,
+      "expl": "Leaves contain chlorophyll for photosynthesis.",
+      "lvl": 1
+    },
+    {
+      "q": "What are clouds made of?",
+      "opts": [
+        "Cotton",
+        "Dust",
+        "Water drops",
+        "Smoke"
+      ],
+      "a": 2,
+      "expl": "Clouds are condensed water vapor.",
+      "lvl": 2
+    },
+    {
+      "q": "What do herbivores eat?",
+      "opts": [
+        "Plants",
+        "Meat",
+        "Insects",
+        "Everything"
+      ],
+      "a": 0,
+      "expl": "Herbivores exclusively eat vegetation.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the hardest natural substance?",
+      "opts": [
+        "Diamond",
+        "Iron",
+        "Gold",
+        "Quartz"
+      ],
+      "a": 0,
+      "expl": "Diamond is a very hard carbon lattice.",
+      "lvl": 2
+    },
+    {
+      "q": "What part of the cell contains DNA?",
+      "opts": [
+        "Cytoplasm",
+        "Membrane",
+        "Nucleus",
+        "Ribosome"
+      ],
+      "a": 2,
+      "expl": "The nucleus holds the cell's genetic info.",
+      "lvl": 2
+    },
+    {
+      "q": "What organ pumps blood?",
+      "opts": [
+        "Liver",
+        "Heart",
+        "Lung",
+        "Brain"
+      ],
+      "a": 1,
+      "expl": "The heart pumps blood through the body.",
+      "lvl": 2
+    },
+    {
+      "q": "How many bones in an adult human body?",
+      "opts": [
+        "210",
+        "206",
+        "205",
+        "208"
+      ],
+      "a": 1,
+      "expl": "Adults have exactly 206 bones.",
+      "lvl": 2
+    },
+    {
+      "q": "Which planet has prominent rings?",
+      "opts": [
+        "Saturn",
+        "Venus",
+        "Mars",
+        "Earth"
+      ],
+      "a": 0,
+      "expl": "Saturn is famous for its visible ring system.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the boiling point of water in C?",
+      "opts": [
+        "110",
+        "100",
+        "120",
+        "90"
+      ],
+      "a": 1,
+      "expl": "Water boils at 100 degrees Celsius at sea level.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the chemical symbol for Gold?",
+      "opts": [
+        "Au",
+        "Gd",
+        "Go",
+        "Ag"
+      ],
+      "a": 0,
+      "expl": "Au comes from the Latin word aurum.",
+      "lvl": 2
+    },
+    {
+      "q": "Who developed the theory of relativity?",
+      "opts": [
+        "Einstein",
+        "Galileo",
+        "Tesla",
+        "Newton"
+      ],
+      "a": 0,
+      "expl": "Albert Einstein developed it in the early 20th century.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the pH of pure water?",
+      "opts": [
+        "6",
+        "7",
+        "1",
+        "8"
+      ],
+      "a": 1,
+      "expl": "A pH of 7 is completely neutral.",
+      "lvl": 3
+    },
+    {
+      "q": "What type of wave is light?",
+      "opts": [
+        "Seismic",
+        "Electromagnetic",
+        "Mechanical",
+        "Sound"
+      ],
+      "a": 1,
+      "expl": "Light is an electromagnetic wave.",
+      "lvl": 3
+    },
+    {
+      "q": "How many planets are in our solar system?",
+      "opts": [
+        "10",
+        "9",
+        "8",
+        "7"
+      ],
+      "a": 2,
+      "expl": "There are 8 recognized planets.",
+      "lvl": 3
+    },
+    {
+      "q": "What does DNA stand for?",
+      "opts": [
+        "Dinitrogen acid",
+        "Deoxyribonucleic acid",
+        "Deoxynitric acid",
+        "Dinucleic acid"
+      ],
+      "a": 1,
+      "expl": "It stands for Deoxyribonucleic acid.",
+      "lvl": 3
+    },
+    {
+      "q": "What do we call a baby kangaroo?",
+      "opts": [
+        "Cub",
+        "Calf",
+        "Kid",
+        "Joey"
+      ],
+      "a": 3,
+      "expl": "Baby kangaroos are called joeys.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the rarest blood type?",
+      "opts": [
+        "O-",
+        "B+",
+        "AB-",
+        "A+"
+      ],
+      "a": 2,
+      "expl": "AB- is the rarest blood type globally.",
+      "lvl": 3
+    },
+    {
+      "q": "Which metal is liquid at room temp?",
+      "opts": [
+        "Mercury",
+        "Copper",
+        "Lead",
+        "Iron"
+      ],
+      "a": 0,
+      "expl": "Mercury is a heavy, liquid metal.",
+      "lvl": 3
     },
     {
       "q": "What is the powerhouse of the cell?",
       "opts": [
         "Nucleus",
+        "Golgi",
         "Ribosome",
-        "Golgi apparatus",
         "Mitochondria"
       ],
       "a": 3,
-      "expl": "Mitochondria generate most of the cell's ATP (adenosine triphosphate), the energy currency. They have their own DNA.",
-      "lvl": 1
+      "expl": "Mitochondria produce cellular energy (ATP).",
+      "lvl": 3
     },
     {
-      "q": "What particle has a negative charge?",
+      "q": "Who discovered penicillin?",
       "opts": [
-        "Proton",
+        "Pasteur",
+        "Fleming",
+        "Curie",
+        "Darwin"
+      ],
+      "a": 1,
+      "expl": "Alexander Fleming discovered it in 1928.",
+      "lvl": 3
+    },
+    {
+      "q": "What gas makes up most of Earth's atmosphere?",
+      "opts": [
+        "Carbon",
+        "Argon",
+        "Nitrogen",
+        "Oxygen"
+      ],
+      "a": 2,
+      "expl": "Nitrogen makes up about 78% of the air.",
+      "lvl": 3
+    },
+    {
+      "q": "What subatomic particle has no charge?",
+      "opts": [
+        "Positron",
         "Electron",
         "Neutron",
-        "Photon"
-      ],
-      "a": 1,
-      "expl": "Electrons carry a negative charge (-1). Protons are positive (+1), neutrons are neutral, and photons carry no charge.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the hardest natural substance on Earth?",
-      "opts": [
-        "Quartz",
-        "Topaz",
-        "Diamond",
-        "Corundum"
+        "Proton"
       ],
       "a": 2,
-      "expl": "Diamond rates 10 on the Mohs hardness scale. Its carbon atoms form a rigid tetrahedral structure making it extremely hard.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the speed of light approximately?",
-      "opts": [
-        "150,000 km/s",
-        "500,000 km/s",
-        "1,000,000 km/s",
-        "300,000 km/s"
-      ],
-      "a": 3,
-      "expl": "Light travels at approximately 299,792 km/s in a vacuum. This is the universal speed limit according to Einstein's relativity.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the most abundant gas in Earth's atmosphere?",
-      "opts": [
-        "Oxygen",
-        "Nitrogen",
-        "Carbon dioxide",
-        "Argon"
-      ],
-      "a": 1,
-      "expl": "Nitrogen makes up about 78% of Earth's atmosphere. Oxygen is about 21%, and argon roughly 0.93%.",
-      "lvl": 3
-    },
-    {
-      "q": "What phenomenon causes a rainbow?",
-      "opts": [
-        "Reflection only",
-        "Diffraction",
-        "Refraction and dispersion",
-        "Absorption"
-      ],
-      "a": 2,
-      "expl": "Rainbows form when sunlight is refracted, dispersed, and reflected inside water droplets, splitting white light into its component colors.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the atomic number of Carbon?",
-      "opts": [
-        "4",
-        "8",
-        "6",
-        "12"
-      ],
-      "a": 2,
-      "expl": "Carbon has 6 protons, giving it atomic number 6. It forms 4 covalent bonds, making it the backbone of organic chemistry.",
-      "lvl": 3
-    },
-    {
-      "q": "Which organ produces insulin?",
-      "opts": [
-        "Liver",
-        "Kidney",
-        "Spleen",
-        "Pancreas"
-      ],
-      "a": 3,
-      "expl": "The pancreas contains beta cells in the Islets of Langerhans that produce insulin to regulate blood sugar.",
+      "expl": "Neutrons are neutrally charged particles.",
       "lvl": 4
     },
     {
-      "q": "What type of bond involves sharing electrons?",
+      "q": "Who is the father of modern genetics?",
+      "opts": [
+        "Crick",
+        "Mendel",
+        "Darwin",
+        "Watson"
+      ],
+      "a": 1,
+      "expl": "Gregor Mendel studied inheritance in pea plants.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the most abundant element in the universe?",
+      "opts": [
+        "Carbon",
+        "Oxygen",
+        "Hydrogen",
+        "Helium"
+      ],
+      "a": 2,
+      "expl": "Hydrogen makes up about 75% of baryonic mass.",
+      "lvl": 4
+    },
+    {
+      "q": "What disease is caused by a lack of Vitamin C?",
+      "opts": [
+        "Rickets",
+        "Scurvy",
+        "Pellagra",
+        "Beriberi"
+      ],
+      "a": 1,
+      "expl": "Scurvy was common among sailors lacking fresh fruit.",
+      "lvl": 4
+    },
+    {
+      "q": "Which phylum do insects belong to?",
+      "opts": [
+        "Chordata",
+        "Annelida",
+        "Arthropoda",
+        "Mollusca"
+      ],
+      "a": 2,
+      "expl": "Insects are arthropods, meaning jointed legs.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the hardest bone in the human body?",
+      "opts": [
+        "Tibia",
+        "Skull",
+        "Jawbone",
+        "Femur"
+      ],
+      "a": 2,
+      "expl": "The mandible or jawbone is extremely dense.",
+      "lvl": 4
+    },
+    {
+      "q": "What type of chemical bond shares electrons?",
       "opts": [
         "Ionic",
         "Metallic",
@@ -129,1147 +441,3775 @@
         "Hydrogen"
       ],
       "a": 2,
-      "expl": "In covalent bonds, atoms share electron pairs. Ionic bonds involve electron transfer. Most bonds have some character of both.",
+      "expl": "Covalent bonds involve the sharing of electron pairs.",
       "lvl": 4
     },
     {
-      "q": "How many chromosomes do humans have?",
+      "q": "What is the heaviest naturally occurring element?",
       "opts": [
-        "23",
-        "44",
-        "46",
-        "48"
+        "Plutonium",
+        "Osmium",
+        "Uranium",
+        "Lead"
       ],
       "a": 2,
-      "expl": "Humans have 46 chromosomes (23 pairs). The 23rd pair determines biological sex. Chimpanzees have 48.",
+      "expl": "Uranium has the highest atomic weight of natural elements.",
       "lvl": 4
     },
     {
-      "q": "What is the second law of thermodynamics about?",
+      "q": "What is the half-life of Carbon-14?",
       "opts": [
-        "Conservation of energy",
-        "Entropy always increases",
-        "Absolute zero",
-        "Action and reaction"
+        "500 years",
+        "5730 years",
+        "1000 years",
+        "10000 years"
       ],
       "a": 1,
-      "expl": "The second law states that entropy (disorder) of an isolated system always increases. Heat flows naturally from hot to cold.",
+      "expl": "Carbon-14 decays with a half-life of 5730 years.",
+      "lvl": 4
+    },
+    {
+      "q": "What principle states you cannot know exactly both position and momentum?",
+      "opts": [
+        "Heisenberg's Uncertainty",
+        "Bohr",
+        "Aufbau",
+        "Pauli Exclusion"
+      ],
+      "a": 0,
+      "expl": "Werner Heisenberg formulated this principle.",
+      "lvl": 4
+    },
+    {
+      "q": "Who proposed the continental drift theory?",
+      "opts": [
+        "Darwin",
+        "Hutton",
+        "Wegener",
+        "Lyell"
+      ],
+      "a": 2,
+      "expl": "Alfred Wegener proposed it in 1912.",
       "lvl": 5
     },
     {
-      "q": "What is the Heisenberg Uncertainty Principle?",
+      "q": "What constant is approx 6.626 x 10^-34 J s?",
       "opts": [
-        "Energy is always conserved",
-        "You can't know both position and momentum exactly",
-        "Every action has a reaction",
-        "Electrons orbit in fixed paths"
-      ],
-      "a": 1,
-      "expl": "Heisenberg showed that precisely knowing a particle's position limits knowledge of its momentum, and vice versa — fundamental to quantum mechanics.",
-      "lvl": 5
-    },
-    {
-      "q": "What is dark matter?",
-      "opts": [
-        "Antimatter",
-        "Black holes",
-        "Empty space energy",
-        "Unseen matter detected by gravity"
+        "Avogadro's",
+        "Faraday's",
+        "Boltzmann's",
+        "Planck's"
       ],
       "a": 3,
-      "expl": "Dark matter doesn't interact with electromagnetic radiation but its existence is inferred from gravitational effects on visible matter. It makes up ~27% of the universe.",
+      "expl": "Planck's constant is foundational in quantum mechanics.",
+      "lvl": 5
+    },
+    {
+      "q": "What particle mediates the strong nuclear force?",
+      "opts": [
+        "Gluon",
+        "Boson",
+        "Quark",
+        "Photon"
+      ],
+      "a": 0,
+      "expl": "Gluons act as the exchange particles for the strong force.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the function of the Islets of Langerhans?",
+      "opts": [
+        "Produce insulin",
+        "Filter blood",
+        "Produce bile",
+        "Digest fat"
+      ],
+      "a": 0,
+      "expl": "They are regions in the pancreas containing endocrine cells.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the main component of natural gas?",
+      "opts": [
+        "Methane",
+        "Butane",
+        "Ethane",
+        "Propane"
+      ],
+      "a": 0,
+      "expl": "Methane makes up the vast majority of natural gas.",
+      "lvl": 5
+    },
+    {
+      "q": "What phenomenon explains the origin of mass?",
+      "opts": [
+        "String theory",
+        "Relativity",
+        "Higgs mechanism",
+        "Quantum gravity"
+      ],
+      "a": 2,
+      "expl": "The Higgs field gives mass to elementary particles.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the rarest naturally occurring element?",
+      "opts": [
+        "Francium",
+        "Promethium",
+        "Technetium",
+        "Astatine"
+      ],
+      "a": 3,
+      "expl": "Astatine is highly radioactive and extremely rare in the crust.",
+      "lvl": 5
+    },
+    {
+      "q": "What extinct hominin lived in Europe until 40,000 years ago?",
+      "opts": [
+        "Homo habilis",
+        "Neanderthal",
+        "Homo erectus",
+        "Australopithecus"
+      ],
+      "a": 1,
+      "expl": "Neanderthals lived alongside early modern humans.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the name of the largest known star?",
+      "opts": [
+        "Betelgeuse",
+        "VY Canis Majoris",
+        "Rigel",
+        "UY Scuti"
+      ],
+      "a": 3,
+      "expl": "UY Scuti is a red supergiant and one of the largest stars.",
+      "lvl": 5
+    },
+    {
+      "q": "What cycle describes carbon fixation in plants?",
+      "opts": [
+        "Nitrogen cycle",
+        "Krebs cycle",
+        "Water cycle",
+        "Calvin cycle"
+      ],
+      "a": 3,
+      "expl": "The Calvin cycle happens in chloroplasts during photosynthesis.",
       "lvl": 5
     }
   ],
   "history": [
     {
-      "q": "In which year did World War II end?",
+      "q": "Who sailed to America in 1492?",
       "opts": [
-        "1943",
-        "1945",
-        "1944",
-        "1946"
-      ],
-      "a": 1,
-      "expl": "WWII ended in 1945 — Germany surrendered in May (V-E Day) and Japan in August (V-J Day) after the atomic bombings.",
-      "lvl": 1
-    },
-    {
-      "q": "The ancient city of Machu Picchu is in which country?",
-      "opts": [
-        "Mexico",
-        "Colombia",
-        "Bolivia",
-        "Peru"
-      ],
-      "a": 3,
-      "expl": "Machu Picchu was built by the Inca Empire in the 15th century, sitting at 2,430m in the Andes Mountains of Peru.",
-      "lvl": 1
-    },
-    {
-      "q": "Which civilization built the pyramids of Giza?",
-      "opts": [
-        "Egyptian",
-        "Roman",
-        "Greek",
-        "Mesopotamian"
+        "Columbus",
+        "Magellan",
+        "Cook",
+        "Vespucci"
       ],
       "a": 0,
-      "expl": "The Great Pyramid was built around 2560 BC for Pharaoh Khufu. It was the tallest man-made structure for over 3,800 years.",
+      "expl": "Christopher Columbus crossed the Atlantic in 1492.",
       "lvl": 1
     },
     {
-      "q": "What was the Silk Road?",
+      "q": "Who was the Queen of the UK before Charles III?",
       "opts": [
-        "A highway in China",
-        "A river in Central Asia",
-        "A treaty between empires",
-        "Ancient trade route network"
+        "Mary",
+        "Victoria",
+        "Anne",
+        "Elizabeth II"
       ],
       "a": 3,
-      "expl": "The Silk Road was a network of trade routes connecting East Asia to the Mediterranean, facilitating exchange of goods and ideas for over 1,500 years.",
+      "expl": "Elizabeth II reigned for over 70 years.",
+      "lvl": 1
+    },
+    {
+      "q": "What ancient civilization built Machu Picchu?",
+      "opts": [
+        "Incas",
+        "Mayans",
+        "Olmecs",
+        "Aztecs"
+      ],
+      "a": 0,
+      "expl": "The Inca Empire built it in the 15th century.",
+      "lvl": 1
+    },
+    {
+      "q": "What structure was built in Egypt as tombs?",
+      "opts": [
+        "Pyramids",
+        "Temples",
+        "Ziggurats",
+        "Castles"
+      ],
+      "a": 0,
+      "expl": "The Pyramids were monumental tombs for pharaohs.",
+      "lvl": 1
+    },
+    {
+      "q": "Who was the first US President?",
+      "opts": [
+        "Adams",
+        "George Washington",
+        "Lincoln",
+        "Jefferson"
+      ],
+      "a": 1,
+      "expl": "George Washington served as the first president.",
+      "lvl": 1
+    },
+    {
+      "q": "Who was the first man on the moon?",
+      "opts": [
+        "Buzz Aldrin",
+        "Neil Armstrong",
+        "Yuri Gagarin",
+        "John Glenn"
+      ],
+      "a": 1,
+      "expl": "Armstrong stepped onto the lunar surface in 1969.",
+      "lvl": 1
+    },
+    {
+      "q": "What country gifted the Statue of Liberty to the US?",
+      "opts": [
+        "Spain",
+        "France",
+        "Germany",
+        "UK"
+      ],
+      "a": 1,
+      "expl": "It was a gift from the people of France.",
+      "lvl": 1
+    },
+    {
+      "q": "What famous ship sank on its maiden voyage in 1912?",
+      "opts": [
+        "Mayflower",
+        "Lusitania",
+        "Titanic",
+        "Santa Maria"
+      ],
+      "a": 2,
+      "expl": "The RMS Titanic hit an iceberg and sank.",
+      "lvl": 1
+    },
+    {
+      "q": "What ancient empire was centered in Rome?",
+      "opts": [
+        "Ottoman",
+        "Persian",
+        "Roman",
+        "Greek"
+      ],
+      "a": 2,
+      "expl": "The Roman Empire originated in the city of Rome.",
+      "lvl": 1
+    },
+    {
+      "q": "What wall divided a major German city until 1989?",
+      "opts": [
+        "Iron Curtain",
+        "Hadrian's Wall",
+        "Great Wall",
+        "Berlin Wall"
+      ],
+      "a": 3,
+      "expl": "The Berlin Wall physically and ideologically divided Berlin.",
+      "lvl": 1
+    },
+    {
+      "q": "What empire was led by Genghis Khan?",
+      "opts": [
+        "Ottoman",
+        "Roman",
+        "Persian",
+        "Mongol"
+      ],
+      "a": 3,
+      "expl": "He founded the vast Mongol Empire.",
       "lvl": 2
     },
     {
-      "q": "Which empire was ruled by Genghis Khan?",
+      "q": "Who led the French in the early 1800s?",
       "opts": [
-        "Ottoman",
-        "Mongol",
-        "Roman",
-        "Persian"
+        "Robespierre",
+        "Napoleon",
+        "Charlemagne",
+        "Louis XIV"
       ],
       "a": 1,
-      "expl": "Genghis Khan founded the Mongol Empire in 1206 — the largest contiguous land empire in history.",
+      "expl": "Napoleon Bonaparte became Emperor of the French.",
       "lvl": 2
+    },
+    {
+      "q": "What founding US document was signed in 1776?",
+      "opts": [
+        "Magna Carta",
+        "Declaration of Independence",
+        "Bill of Rights",
+        "Constitution"
+      ],
+      "a": 1,
+      "expl": "It formally severed ties with Great Britain.",
+      "lvl": 2
+    },
+    {
+      "q": "What disease killed millions in the Middle Ages?",
+      "opts": [
+        "Smallpox",
+        "Cholera",
+        "Spanish Flu",
+        "Black Death"
+      ],
+      "a": 3,
+      "expl": "The Black Death was a devastating plague pandemic.",
+      "lvl": 2
+    },
+    {
+      "q": "Who painted the Mona Lisa?",
+      "opts": [
+        "Michelangelo",
+        "Donatello",
+        "Da Vinci",
+        "Raphael"
+      ],
+      "a": 2,
+      "expl": "Leonardo da Vinci painted it in the early 16th century.",
+      "lvl": 2
+    },
+    {
+      "q": "Who was assassinated in 1963 in Dallas?",
+      "opts": [
+        "Lincoln",
+        "MLK",
+        "McKinley",
+        "JFK"
+      ],
+      "a": 3,
+      "expl": "President John F. Kennedy was fatally shot in Dallas.",
+      "lvl": 2
+    },
+    {
+      "q": "What event sparked the start of WWI?",
+      "opts": [
+        "Assassination of Archduke Ferdinand",
+        "Invasion of Poland",
+        "Fall of Rome",
+        "Sinking of Lusitania"
+      ],
+      "a": 0,
+      "expl": "His assassination in Sarajevo triggered the war.",
+      "lvl": 2
+    },
+    {
+      "q": "Who was the British Prime Minister during most of WWII?",
+      "opts": [
+        "Attlee",
+        "Churchill",
+        "Chamberlain",
+        "Thatcher"
+      ],
+      "a": 1,
+      "expl": "Winston Churchill led Britain to victory in WWII.",
+      "lvl": 2
+    },
+    {
+      "q": "What was the ancient writing system of Egypt?",
+      "opts": [
+        "Latin",
+        "Hieroglyphics",
+        "Runes",
+        "Cuneiform"
+      ],
+      "a": 1,
+      "expl": "Hieroglyphics used pictures to represent words.",
+      "lvl": 2
+    },
+    {
+      "q": "What war was fought between the North and South in the US?",
+      "opts": [
+        "WWI",
+        "WWII",
+        "Revolutionary",
+        "Civil War"
+      ],
+      "a": 3,
+      "expl": "The American Civil War lasted from 1861 to 1865.",
+      "lvl": 2
+    },
+    {
+      "q": "What war took place from 1950 to 1953?",
+      "opts": [
+        "WWII",
+        "Korean War",
+        "Gulf War",
+        "Vietnam War"
+      ],
+      "a": 1,
+      "expl": "The Korean War ended in an armistice.",
+      "lvl": 3
+    },
+    {
+      "q": "What year did WWII end?",
+      "opts": [
+        "1939",
+        "1944",
+        "1945",
+        "1950"
+      ],
+      "a": 2,
+      "expl": "The war ended with the surrender of the Axis powers in 1945.",
+      "lvl": 3
+    },
+    {
+      "q": "What civilization lived in ancient Mesopotamia?",
+      "opts": [
+        "Indus",
+        "Shang",
+        "Egyptians",
+        "Sumerians"
+      ],
+      "a": 3,
+      "expl": "Sumer is one of the oldest known civilizations.",
+      "lvl": 3
+    },
+    {
+      "q": "Who was the leader of the Soviet Union during WWII?",
+      "opts": [
+        "Khrushchev",
+        "Joseph Stalin",
+        "Gorbachev",
+        "Lenin"
+      ],
+      "a": 1,
+      "expl": "Stalin led the USSR from the 1920s to 1953.",
+      "lvl": 3
+    },
+    {
+      "q": "Who wrote the Communist Manifesto?",
+      "opts": [
+        "Stalin",
+        "Karl Marx",
+        "Lenin",
+        "Trotsky"
+      ],
+      "a": 1,
+      "expl": "Karl Marx and Friedrich Engels co-authored it.",
+      "lvl": 3
+    },
+    {
+      "q": "What was the longest reigning dynasty in China?",
+      "opts": [
+        "Zhou",
+        "Ming",
+        "Qing",
+        "Han"
+      ],
+      "a": 0,
+      "expl": "The Zhou dynasty lasted for over 789 years.",
+      "lvl": 3
+    },
+    {
+      "q": "What treaty effectively ended WWI?",
+      "opts": [
+        "Treaty of Ghent",
+        "Treaty of Tordesillas",
+        "Treaty of Versailles",
+        "Treaty of Paris"
+      ],
+      "a": 2,
+      "expl": "It was signed in the Palace of Versailles in 1919.",
+      "lvl": 3
+    },
+    {
+      "q": "Who was the first female Prime Minister of the UK?",
+      "opts": [
+        "Margaret Thatcher",
+        "Theresa May",
+        "Golda Meir",
+        "Indira Gandhi"
+      ],
+      "a": 0,
+      "expl": "Margaret Thatcher was known as the Iron Lady.",
+      "lvl": 3
+    },
+    {
+      "q": "Who was the second President of the US?",
+      "opts": [
+        "Thomas Jefferson",
+        "John Adams",
+        "James Madison",
+        "George Washington"
+      ],
+      "a": 1,
+      "expl": "John Adams served as the second US President.",
+      "lvl": 3
+    },
+    {
+      "q": "What queen ruled ancient Egypt alongside Julius Caesar?",
+      "opts": [
+        "Cleopatra",
+        "Isis",
+        "Hatshepsut",
+        "Nefertiti"
+      ],
+      "a": 0,
+      "expl": "Cleopatra VII was the last active ruler of the Ptolemaic Kingdom.",
+      "lvl": 3
     },
     {
       "q": "Who was the first Emperor of Rome?",
       "opts": [
-        "Julius Caesar",
         "Nero",
-        "Augustus",
-        "Caligula"
+        "Julius Caesar",
+        "Caligula",
+        "Augustus"
+      ],
+      "a": 3,
+      "expl": "Augustus founded the Roman Empire.",
+      "lvl": 4
+    },
+    {
+      "q": "Who was the US President during WWI?",
+      "opts": [
+        "Taft",
+        "FDR",
+        "Woodrow Wilson",
+        "Teddy Roosevelt"
       ],
       "a": 2,
-      "expl": "Augustus (born Octavian) became the first Roman Emperor in 27 BC. Julius Caesar was dictator but never emperor.",
-      "lvl": 2
+      "expl": "Wilson led the US through the First World War.",
+      "lvl": 4
     },
     {
-      "q": "What year did the Berlin Wall fall?",
+      "q": "What was the name of the first artificial Earth satellite?",
       "opts": [
-        "1989",
-        "1987",
-        "1988",
-        "1991"
+        "Explorer 1",
+        "Vostok 1",
+        "Sputnik 1",
+        "Apollo 11"
+      ],
+      "a": 2,
+      "expl": "The USSR launched Sputnik 1 in 1957.",
+      "lvl": 4
+    },
+    {
+      "q": "Who was the first King of a unified England?",
+      "opts": [
+        "William the Conqueror",
+        "Henry VIII",
+        "Alfred the Great",
+        "Athelstan"
+      ],
+      "a": 3,
+      "expl": "Athelstan became the first King of England in 927.",
+      "lvl": 4
+    },
+    {
+      "q": "Who was the last Tsar of Russia?",
+      "opts": [
+        "Alexander III",
+        "Ivan the Terrible",
+        "Peter the Great",
+        "Nicholas II"
+      ],
+      "a": 3,
+      "expl": "Nicholas II was forced to abdicate in 1917.",
+      "lvl": 4
+    },
+    {
+      "q": "What year did the French Revolution begin?",
+      "opts": [
+        "1812",
+        "1799",
+        "1789",
+        "1776"
+      ],
+      "a": 2,
+      "expl": "The storming of the Bastille occurred in 1789.",
+      "lvl": 4
+    },
+    {
+      "q": "What battle definitively ended Napoleon's rule?",
+      "opts": [
+        "Austerlitz",
+        "Leipzig",
+        "Trafalgar",
+        "Waterloo"
+      ],
+      "a": 3,
+      "expl": "He was defeated at the Battle of Waterloo in 1815.",
+      "lvl": 4
+    },
+    {
+      "q": "What was the first permanent English settlement in North America?",
+      "opts": [
+        "Plymouth",
+        "Jamestown",
+        "St. Augustine",
+        "Roanoke"
+      ],
+      "a": 1,
+      "expl": "Jamestown was established in Virginia in 1607.",
+      "lvl": 4
+    },
+    {
+      "q": "Who was the founder of the Ottoman Empire?",
+      "opts": [
+        "Selim I",
+        "Mehmed II",
+        "Osman I",
+        "Suleiman"
+      ],
+      "a": 2,
+      "expl": "Osman I established the empire in the 13th century.",
+      "lvl": 4
+    },
+    {
+      "q": "What devastating war was fought in Europe from 1618 to 1648?",
+      "opts": [
+        "Thirty Years' War",
+        "Hundred Years' War",
+        "Seven Years' War",
+        "War of the Roses"
       ],
       "a": 0,
-      "expl": "The Berlin Wall fell on November 9, 1989, symbolizing the end of the Cold War. Germany reunified in 1990.",
-      "lvl": 3
+      "expl": "It was one of the most destructive conflicts in human history.",
+      "lvl": 4
     },
     {
-      "q": "Who wrote the Declaration of Independence?",
+      "q": "What year was the Magna Carta signed?",
       "opts": [
-        "Benjamin Franklin",
+        "1776",
+        "1066",
+        "1215",
+        "1492"
+      ],
+      "a": 2,
+      "expl": "King John of England sealed the Magna Carta in 1215.",
+      "lvl": 5
+    },
+    {
+      "q": "Who was the last Emperor of the Aztec Empire?",
+      "opts": [
+        "Pachacuti",
+        "Montezuma II",
+        "Atahualpa",
+        "Cuauhtemoc"
+      ],
+      "a": 3,
+      "expl": "Cuauhtemoc was executed by the Spanish in 1525.",
+      "lvl": 5
+    },
+    {
+      "q": "What was the capital of the Byzantine Empire?",
+      "opts": [
+        "Athens",
+        "Constantinople",
+        "Rome",
+        "Alexandria"
+      ],
+      "a": 1,
+      "expl": "Constantinople was the capital for over a millennium.",
+      "lvl": 5
+    },
+    {
+      "q": "What was the name of the ship that brought the Pilgrims to America?",
+      "opts": [
+        "Mayflower",
+        "Discovery",
+        "Speedwell",
+        "Santa Maria"
+      ],
+      "a": 0,
+      "expl": "The Mayflower transported English Puritans in 1620.",
+      "lvl": 5
+    },
+    {
+      "q": "Who was the Japanese Emperor during WWII?",
+      "opts": [
+        "Mutsuhito",
+        "Hirohito",
+        "Yoshihito",
+        "Akihito"
+      ],
+      "a": 1,
+      "expl": "Emperor Hirohito presided over Japan during the war.",
+      "lvl": 5
+    },
+    {
+      "q": "What dynasty ruled Russia from 1613 to 1917?",
+      "opts": [
+        "Habsburg",
+        "Romanov",
+        "Rurik",
+        "Tudor"
+      ],
+      "a": 1,
+      "expl": "The Romanov dynasty ended with the Russian Revolution.",
+      "lvl": 5
+    },
+    {
+      "q": "Who was the primary author of the US Constitution?",
+      "opts": [
+        "James Madison",
         "Thomas Jefferson",
-        "John Adams",
-        "George Washington"
-      ],
-      "a": 1,
-      "expl": "Thomas Jefferson was the principal author, with edits by Franklin and Adams. It was adopted on July 4, 1776.",
-      "lvl": 3
-    },
-    {
-      "q": "What was the Renaissance?",
-      "opts": [
-        "A war in Italy",
-        "A religious reform",
-        "A cultural rebirth movement",
-        "A scientific experiment"
-      ],
-      "a": 2,
-      "expl": "The Renaissance (14th-17th century) was a cultural movement originating in Italy, marked by renewed interest in classical learning.",
-      "lvl": 3
-    },
-    {
-      "q": "Who was the first woman to fly solo across the Atlantic?",
-      "opts": [
-        "Amelia Earhart",
-        "Bessie Coleman",
-        "Harriet Quimby",
-        "Jacqueline Cochran"
+        "Ben Franklin",
+        "Alexander Hamilton"
       ],
       "a": 0,
-      "expl": "Amelia Earhart accomplished this in 1932. She later disappeared over the Pacific in 1937.",
-      "lvl": 4
-    },
-    {
-      "q": "What was the Magna Carta?",
-      "opts": [
-        "A charter limiting royal power",
-        "A map of the world",
-        "A religious text",
-        "A military strategy"
-      ],
-      "a": 0,
-      "expl": "Signed in 1215 by King John, the Magna Carta limited royal authority and established that everyone, including the king, was subject to law.",
-      "lvl": 4
-    },
-    {
-      "q": "What was the Cold War?",
-      "opts": [
-        "A war in Antarctica",
-        "A climate event",
-        "Geopolitical tension between US and USSR",
-        "An economic depression"
-      ],
-      "a": 2,
-      "expl": "The Cold War (1947-1991) was geopolitical tension between NATO and Warsaw Pact without direct military conflict between the superpowers.",
-      "lvl": 4
-    },
-    {
-      "q": "What caused the Black Death in medieval Europe?",
-      "opts": [
-        "Cholera bacteria",
-        "Yersinia pestis bacterium",
-        "Smallpox virus",
-        "Influenza virus"
-      ],
-      "a": 1,
-      "expl": "The Black Death (1347-1351) was caused by Yersinia pestis, transmitted by fleas on rats. It killed 30-60% of Europe's population.",
+      "expl": "Madison is hailed as the 'Father of the Constitution'.",
       "lvl": 5
     },
     {
-      "q": "Which country was first to grant women the right to vote nationally?",
+      "q": "What treaty divided newly discovered lands outside Europe between Portugal and Spain?",
       "opts": [
-        "New Zealand",
-        "United States",
-        "United Kingdom",
-        "Australia"
+        "Paris",
+        "Zaragoza",
+        "Tordesillas",
+        "Westphalia"
       ],
-      "a": 0,
-      "expl": "New Zealand became the first self-governing country to grant all women the right to vote in national elections in 1893.",
+      "a": 2,
+      "expl": "The Treaty of Tordesillas was signed in 1494.",
       "lvl": 5
     },
     {
-      "q": "In what year did the Battle of Thermopylae take place?",
+      "q": "Who was the longest-ruling female leader of Russia?",
       "opts": [
-        "300 BC",
-        "480 BC",
-        "490 BC",
-        "431 BC"
+        "Anna",
+        "Mary",
+        "Elizabeth",
+        "Catherine the Great"
       ],
-      "a": 1,
-      "expl": "Fought in 480 BC, this battle saw King Leonidas and 300 Spartans (along with other Greeks) delay the massive Persian army of Xerxes I.",
+      "a": 3,
+      "expl": "She reigned over Russia from 1762 until 1796.",
+      "lvl": 5
+    },
+    {
+      "q": "What ancient battle occurred in 331 BC where Alexander defeated Darius III?",
+      "opts": [
+        "Thermopylae",
+        "Granicus",
+        "Gaugamela",
+        "Issus"
+      ],
+      "a": 2,
+      "expl": "The Battle of Gaugamela sealed the fall of the Persian Empire.",
       "lvl": 5
     }
   ],
   "geography": [
     {
-      "q": "What is the largest ocean on Earth?",
+      "q": "What planet do we live on?",
       "opts": [
-        "Pacific",
+        "Venus",
+        "Jupiter",
+        "Earth",
+        "Mars"
+      ],
+      "a": 2,
+      "expl": "Earth is the third planet from the Sun.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the largest ocean?",
+      "opts": [
         "Atlantic",
         "Indian",
-        "Arctic"
-      ],
-      "a": 0,
-      "expl": "The Pacific Ocean covers about 165.25 million sq km — larger than all land area combined. It contains the Mariana Trench.",
-      "lvl": 1
-    },
-    {
-      "q": "Which is the longest river in the world?",
-      "opts": [
-        "Amazon",
-        "Mississippi",
-        "Yangtze",
-        "Nile"
+        "Arctic",
+        "Pacific"
       ],
       "a": 3,
-      "expl": "The Nile stretches approximately 6,650 km through northeastern Africa. The Amazon is the largest by water volume but slightly shorter.",
+      "expl": "The Pacific Ocean covers more than 30% of the Earth.",
       "lvl": 1
     },
     {
-      "q": "Which desert is the largest hot desert?",
+      "q": "What is the capital of France?",
       "opts": [
-        "Gobi",
-        "Sahara",
-        "Kalahari",
-        "Arabian"
+        "London",
+        "Berlin",
+        "Rome",
+        "Paris"
+      ],
+      "a": 3,
+      "expl": "Paris is the capital and most populous city of France.",
+      "lvl": 1
+    },
+    {
+      "q": "What continent is also a country?",
+      "opts": [
+        "Antarctica",
+        "Australia",
+        "Asia",
+        "Europe"
       ],
       "a": 1,
-      "expl": "The Sahara covers about 9.2 million sq km across North Africa. Antarctica is the largest desert overall (cold desert).",
+      "expl": "Australia is unique as both a country and a continent.",
       "lvl": 1
     },
     {
-      "q": "Which strait separates Europe from Africa?",
+      "q": "What are the two poles called?",
       "opts": [
-        "Strait of Hormuz",
-        "Bosphorus Strait",
-        "Strait of Malacca",
-        "Strait of Gibraltar"
+        "East and West",
+        "Up and Down",
+        "North and South",
+        "Top and Bottom"
+      ],
+      "a": 2,
+      "expl": "Earth has a North Pole and a South Pole.",
+      "lvl": 1
+    },
+    {
+      "q": "What continent is Egypt in?",
+      "opts": [
+        "Africa",
+        "Asia",
+        "South America",
+        "Europe"
+      ],
+      "a": 0,
+      "expl": "Egypt is located in the northeast corner of Africa.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the largest country by area?",
+      "opts": [
+        "Canada",
+        "Russia",
+        "China",
+        "USA"
+      ],
+      "a": 1,
+      "expl": "Russia spans eleven time zones across two continents.",
+      "lvl": 1
+    },
+    {
+      "q": "What desert covers much of North Africa?",
+      "opts": [
+        "Sahara",
+        "Gobi",
+        "Mojave",
+        "Kalahari"
+      ],
+      "a": 0,
+      "expl": "The Sahara is the largest hot desert in the world.",
+      "lvl": 1
+    },
+    {
+      "q": "What river flows through Egypt?",
+      "opts": [
+        "Nile",
+        "Yangtze",
+        "Amazon",
+        "Mississippi"
+      ],
+      "a": 0,
+      "expl": "The Nile River was the lifeline of ancient Egypt.",
+      "lvl": 1
+    },
+    {
+      "q": "What country has the most people?",
+      "opts": [
+        "India",
+        "Brazil",
+        "China",
+        "USA"
+      ],
+      "a": 0,
+      "expl": "India recently surpassed China as the most populous country.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the capital of Japan?",
+      "opts": [
+        "Seoul",
+        "Beijing",
+        "Bangkok",
+        "Tokyo"
       ],
       "a": 3,
-      "expl": "The Strait of Gibraltar is only 14.3km at its narrowest, connecting the Atlantic to the Mediterranean.",
+      "expl": "Tokyo is the bustling capital of Japan.",
       "lvl": 2
     },
     {
-      "q": "What is the capital of Australia?",
+      "q": "What is the capital of Italy?",
       "opts": [
-        "Canberra",
-        "Sydney",
-        "Melbourne",
-        "Brisbane"
+        "Milan",
+        "Naples",
+        "Rome",
+        "Venice"
+      ],
+      "a": 2,
+      "expl": "Rome is Italy's capital and a major historical center.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the longest river in South America?",
+      "opts": [
+        "Orinoco",
+        "Colorado",
+        "Parana",
+        "Amazon"
+      ],
+      "a": 3,
+      "expl": "The Amazon River runs through South America.",
+      "lvl": 2
+    },
+    {
+      "q": "What country is the Taj Mahal located in?",
+      "opts": [
+        "India",
+        "Pakistan",
+        "Bangladesh",
+        "Nepal"
       ],
       "a": 0,
-      "expl": "Canberra was purpose-built as a compromise between rivals Sydney and Melbourne. It became the seat of government in 1927.",
+      "expl": "The Taj Mahal is an ivory-white marble mausoleum in Agra, India.",
+      "lvl": 2
+    },
+    {
+      "q": "What continent is Brazil in?",
+      "opts": [
+        "Africa",
+        "Europe",
+        "South America",
+        "North America"
+      ],
+      "a": 2,
+      "expl": "Brazil is the largest country in South America.",
+      "lvl": 2
+    },
+    {
+      "q": "What country is famous for the maple leaf?",
+      "opts": [
+        "Canada",
+        "USA",
+        "France",
+        "UK"
+      ],
+      "a": 0,
+      "expl": "The maple leaf is on Canada's national flag.",
+      "lvl": 2
+    },
+    {
+      "q": "What country is known as the Land Down Under?",
+      "opts": [
+        "Argentina",
+        "New Zealand",
+        "South Africa",
+        "Australia"
+      ],
+      "a": 3,
+      "expl": "Australia is located in the Southern Hemisphere.",
       "lvl": 2
     },
     {
       "q": "What is the smallest country in the world?",
       "opts": [
-        "Monaco",
-        "San Marino",
         "Vatican City",
-        "Liechtenstein"
+        "Nauru",
+        "Tuvalu",
+        "Monaco"
       ],
-      "a": 2,
-      "expl": "Vatican City covers only 0.44 sq km and has about 800 residents. It became an independent state in 1929.",
+      "a": 0,
+      "expl": "Vatican City is an independent city-state enclaved within Rome.",
       "lvl": 2
     },
     {
-      "q": "What is the Ring of Fire?",
+      "q": "What ocean is on the east coast of the US?",
       "opts": [
-        "A desert in Australia",
-        "A volcanic zone around the Pacific",
-        "A mountain range in Africa",
-        "An ocean current"
-      ],
-      "a": 1,
-      "expl": "The Ring of Fire is a horseshoe-shaped zone where about 75% of the world's volcanoes and 90% of earthquakes occur.",
-      "lvl": 3
-    },
-    {
-      "q": "Which continent has the most countries?",
-      "opts": [
-        "Asia",
-        "Africa",
-        "Europe",
-        "South America"
-      ],
-      "a": 1,
-      "expl": "Africa has 54 recognized countries. Asia has 48, Europe has 44-50, and South America has 12.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the deepest point in the ocean?",
-      "opts": [
-        "Mariana Trench",
-        "Tonga Trench",
-        "Puerto Rico Trench",
-        "Java Trench"
+        "Atlantic",
+        "Arctic",
+        "Pacific",
+        "Indian"
       ],
       "a": 0,
-      "expl": "The Challenger Deep in the Mariana Trench reaches about 10,994m below sea level — deeper than Mount Everest is tall.",
+      "expl": "The Atlantic Ocean borders the Eastern US.",
+      "lvl": 2
+    },
+    {
+      "q": "What mountain range is Mount Everest in?",
+      "opts": [
+        "Himalayas",
+        "Andes",
+        "Alps",
+        "Rockies"
+      ],
+      "a": 0,
+      "expl": "The Himalayas separate the Indian subcontinent from the Tibetan Plateau.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the capital of Canada?",
+      "opts": [
+        "Ottawa",
+        "Vancouver",
+        "Montreal",
+        "Toronto"
+      ],
+      "a": 0,
+      "expl": "Ottawa is located in the province of Ontario.",
       "lvl": 3
     },
     {
-      "q": "What country is both in Europe and Asia?",
+      "q": "What desert is the largest hot desert in the world?",
       "opts": [
-        "Russia",
-        "Both A and B",
-        "Turkey",
-        "Egypt"
+        "Gobi",
+        "Arabian",
+        "Kalahari",
+        "Sahara"
+      ],
+      "a": 3,
+      "expl": "The Sahara spans across North Africa.",
+      "lvl": 3
+    },
+    {
+      "q": "What sea separates Europe from Africa?",
+      "opts": [
+        "Mediterranean Sea",
+        "Red Sea",
+        "Caspian Sea",
+        "Black Sea"
+      ],
+      "a": 0,
+      "expl": "The Mediterranean Sea connects to the Atlantic Ocean.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the largest country in South America?",
+      "opts": [
+        "Peru",
+        "Colombia",
+        "Argentina",
+        "Brazil"
+      ],
+      "a": 3,
+      "expl": "Brazil covers nearly half of South America's landmass.",
+      "lvl": 3
+    },
+    {
+      "q": "What river flows through London?",
+      "opts": [
+        "Seine",
+        "Thames",
+        "Danube",
+        "Rhine"
       ],
       "a": 1,
-      "expl": "Both Russia and Turkey span Europe and Asia. Russia's Ural Mountains divide the continents; Istanbul straddles the Bosphorus.",
+      "expl": "The River Thames flows through central London.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the highest mountain in Africa?",
+      "opts": [
+        "Mount Kilimanjaro",
+        "Mount Kenya",
+        "Atlas",
+        "Ruwenzori"
+      ],
+      "a": 0,
+      "expl": "Kilimanjaro is a dormant volcano in Tanzania.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the capital of Australia?",
+      "opts": [
+        "Melbourne",
+        "Sydney",
+        "Canberra",
+        "Perth"
+      ],
+      "a": 2,
+      "expl": "Canberra was chosen as a compromise between Sydney and Melbourne.",
+      "lvl": 3
+    },
+    {
+      "q": "In which country is the Suez Canal located?",
+      "opts": [
+        "Egypt",
+        "Turkey",
+        "Israel",
+        "Panama"
+      ],
+      "a": 0,
+      "expl": "The Suez Canal connects the Mediterranean Sea to the Red Sea.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the smallest continent by land area?",
+      "opts": [
+        "Australia",
+        "Antarctica",
+        "South America",
+        "Europe"
+      ],
+      "a": 0,
+      "expl": "Australia is the world's smallest continent.",
+      "lvl": 3
+    },
+    {
+      "q": "Which two countries share the longest international border?",
+      "opts": [
+        "India and Bangladesh",
+        "Russia and China",
+        "Argentina and Chile",
+        "Canada and USA"
+      ],
+      "a": 3,
+      "expl": "The US-Canada border is the longest in the world.",
+      "lvl": 3
+    },
+    {
+      "q": "Which country has the most lakes in the world?",
+      "opts": [
+        "USA",
+        "Russia",
+        "Finland",
+        "Canada"
+      ],
+      "a": 3,
+      "expl": "Canada has over 2 million lakes.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the largest island in the world?",
+      "opts": [
+        "Madagascar",
+        "Borneo",
+        "New Guinea",
+        "Greenland"
+      ],
+      "a": 3,
+      "expl": "Greenland is an autonomous territory of Denmark.",
+      "lvl": 4
+    },
+    {
+      "q": "Which European country is divided into cantons?",
+      "opts": [
+        "Austria",
+        "Netherlands",
+        "Belgium",
+        "Switzerland"
+      ],
+      "a": 3,
+      "expl": "Switzerland is a federal republic of 26 cantons.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the capital of Argentina?",
+      "opts": [
+        "Lima",
+        "Santiago",
+        "Bogota",
+        "Buenos Aires"
+      ],
+      "a": 3,
+      "expl": "Buenos Aires is located on the western shore of the Rio de la Plata.",
       "lvl": 4
     },
     {
       "q": "What is the highest waterfall in the world?",
       "opts": [
-        "Niagara Falls",
         "Angel Falls",
         "Victoria Falls",
-        "Iguazu Falls"
-      ],
-      "a": 1,
-      "expl": "Angel Falls in Venezuela drops 979m, named after aviator Jimmie Angel. Victoria Falls is the widest continuous curtain of water.",
-      "lvl": 4
-    },
-    {
-      "q": "What country has the most time zones?",
-      "opts": [
-        "Russia",
-        "USA",
-        "France",
-        "China"
-      ],
-      "a": 2,
-      "expl": "France has 12 time zones due to overseas territories. Russia has 11 contiguous zones. The USA has 9 including territories.",
-      "lvl": 4
-    },
-    {
-      "q": "Which country has the most islands?",
-      "opts": [
-        "Indonesia",
-        "Philippines",
-        "Finland",
-        "Sweden"
-      ],
-      "a": 3,
-      "expl": "Sweden has approximately 267,570 islands, though only about 984 are inhabited. Indonesia has about 17,500 islands.",
-      "lvl": 5
-    },
-    {
-      "q": "Which African country was never colonized?",
-      "opts": [
-        "Ethiopia",
-        "Nigeria",
-        "Kenya",
-        "Ghana"
+        "Iguazu Falls",
+        "Niagara Falls"
       ],
       "a": 0,
-      "expl": "Ethiopia is one of only two African countries (along with Liberia) never colonized by a European power. It defeated Italy at Adwa in 1896.",
+      "expl": "Angel Falls is located in Venezuela.",
+      "lvl": 4
+    },
+    {
+      "q": "What mountain range separates Europe and Asia?",
+      "opts": [
+        "Himalayas",
+        "Caucasus",
+        "Alps",
+        "Ural Mountains"
+      ],
+      "a": 3,
+      "expl": "The Urals act as a natural boundary in Russia.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the capital of New Zealand?",
+      "opts": [
+        "Hamilton",
+        "Wellington",
+        "Auckland",
+        "Christchurch"
+      ],
+      "a": 1,
+      "expl": "Wellington is located at the southern tip of the North Island.",
+      "lvl": 4
+    },
+    {
+      "q": "Which ocean is the Mariana Trench located in?",
+      "opts": [
+        "Pacific Ocean",
+        "Indian Ocean",
+        "Southern Ocean",
+        "Atlantic Ocean"
+      ],
+      "a": 0,
+      "expl": "The Mariana Trench is the deepest oceanic trench on Earth.",
+      "lvl": 4
+    },
+    {
+      "q": "Which African country has the largest population?",
+      "opts": [
+        "Ethiopia",
+        "South Africa",
+        "Egypt",
+        "Nigeria"
+      ],
+      "a": 3,
+      "expl": "Nigeria is the most populous country in Africa.",
+      "lvl": 4
+    },
+    {
+      "q": "What river flows through the Grand Canyon?",
+      "opts": [
+        "Mississippi",
+        "Rio Grande",
+        "Colorado River",
+        "Snake"
+      ],
+      "a": 2,
+      "expl": "The Colorado River carved the Grand Canyon over millions of years.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the capital of Mongolia?",
+      "opts": [
+        "Bishkek",
+        "Astana",
+        "Tashkent",
+        "Ulaanbaatar"
+      ],
+      "a": 3,
+      "expl": "Ulaanbaatar is the coldest capital city in the world.",
       "lvl": 5
     },
     {
-      "q": "What is the primary cause of Earth's seasons?",
+      "q": "What mountain is the highest peak in North America?",
       "opts": [
-        "Distance from the Sun",
-        "Axial tilt",
-        "Ocean currents",
-        "Solar flares"
+        "Denali",
+        "Mount Logan",
+        "Mount Whitney",
+        "Mount Elbert"
+      ],
+      "a": 0,
+      "expl": "Denali, formerly Mount McKinley, is in Alaska.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the name of the microstate situated between France and Spain?",
+      "opts": [
+        "Andorra",
+        "Monaco",
+        "Liechtenstein",
+        "San Marino"
+      ],
+      "a": 0,
+      "expl": "Andorra is located in the Pyrenees mountains.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the only country that borders both the Caspian Sea and the Persian Gulf?",
+      "opts": [
+        "Saudi Arabia",
+        "Iraq",
+        "Oman",
+        "Iran"
+      ],
+      "a": 3,
+      "expl": "Iran occupies this strategic geographic position.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the capital of Burkina Faso?",
+      "opts": [
+        "Bamako",
+        "Dakar",
+        "Ouagadougou",
+        "Niamey"
+      ],
+      "a": 2,
+      "expl": "Ouagadougou is the cultural and economic center of the nation.",
+      "lvl": 5
+    },
+    {
+      "q": "Which African country was formerly known as Abyssinia?",
+      "opts": [
+        "Ethiopia",
+        "Kenya",
+        "Sudan",
+        "Somalia"
+      ],
+      "a": 0,
+      "expl": "Ethiopia has a long and continuous independent history.",
+      "lvl": 5
+    },
+    {
+      "q": "Which sea is the lowest body of water on Earth's surface?",
+      "opts": [
+        "Caspian Sea",
+        "Salton Sea",
+        "Aral Sea",
+        "Dead Sea"
+      ],
+      "a": 3,
+      "expl": "The Dead Sea's surface is over 400 meters below sea level.",
+      "lvl": 5
+    },
+    {
+      "q": "Which country completely surrounds the enclave of Lesotho?",
+      "opts": [
+        "South Africa",
+        "Namibia",
+        "Swaziland",
+        "Botswana"
+      ],
+      "a": 0,
+      "expl": "Lesotho is an independent nation completely landlocked by South Africa.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the most populous island in the world?",
+      "opts": [
+        "Luzon",
+        "Java",
+        "Honshu",
+        "Great Britain"
       ],
       "a": 1,
-      "expl": "Earth's 23.5-degree axial tilt means different hemispheres receive more direct sunlight at different times of the year. Distance from the sun has little effect.",
+      "expl": "Java, in Indonesia, is home to over half of the country's population.",
+      "lvl": 5
+    },
+    {
+      "q": "Which strait separates Tierra del Fuego from mainland South America?",
+      "opts": [
+        "Drake Passage",
+        "Bering Strait",
+        "Strait of Magellan",
+        "Beagle Channel"
+      ],
+      "a": 2,
+      "expl": "Ferdinand Magellan navigated it during his global circumnavigation.",
       "lvl": 5
     }
   ],
   "math": [
     {
-      "q": "What is the value of Pi to two decimal places?",
+      "q": "What is 6 + 6?",
       "opts": [
-        "3.14",
-        "3.12",
-        "3.16",
-        "3.18"
-      ],
-      "a": 0,
-      "expl": "Pi (π) ≈ 3.14159... It's the ratio of a circle's circumference to its diameter and is an irrational number.",
-      "lvl": 1
-    },
-    {
-      "q": "What is the square root of 144?",
-      "opts": [
-        "12",
+        "13",
         "10",
         "11",
-        "14"
+        "12"
       ],
-      "a": 0,
-      "expl": "12 × 12 = 144. Perfect squares like 144 have integer square roots.",
+      "a": 3,
+      "expl": "Double six is twelve.",
       "lvl": 1
     },
     {
-      "q": "What is a prime number?",
+      "q": "What is 1 + 8?",
       "opts": [
-        "Any odd number",
-        "Any number greater than 1",
-        "Divisible by 1 and itself only",
-        "A number divisible by 2"
-      ],
-      "a": 2,
-      "expl": "A prime has exactly two factors: 1 and itself. The smallest prime is 2 (the only even prime). Examples: 2,3,5,7,11...",
-      "lvl": 1
-    },
-    {
-      "q": "What is 15% of 200?",
-      "opts": [
-        "30",
-        "25",
-        "35",
-        "40"
-      ],
-      "a": 0,
-      "expl": "15% of 200 = 0.15 × 200 = 30. Quick trick: 10% is 20, 5% is 10, so 15% = 30.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the sum of angles in a triangle?",
-      "opts": [
-        "90°",
-        "180°",
-        "270°",
-        "360°"
-      ],
-      "a": 1,
-      "expl": "The interior angles of any triangle in Euclidean geometry always sum to 180°. This was proven by Euclid around 300 BC.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the Fibonacci sequence?",
-      "opts": [
-        "Each number doubles",
-        "Each number increases by 1",
-        "Each number is the sum of the two before",
-        "Each number is squared"
-      ],
-      "a": 2,
-      "expl": "The Fibonacci: 0,1,1,2,3,5,8,13,21... Each number is the sum of the two preceding ones. It appears throughout nature.",
-      "lvl": 2
-    },
-    {
-      "q": "What is the Pythagorean theorem?",
-      "opts": [
-        "a + b = c",
-        "a × b = c",
-        "a² - b² = c²",
-        "a² + b² = c²"
-      ],
-      "a": 3,
-      "expl": "In a right triangle, a² + b² = c² where c is the hypotenuse. Example: 3² + 4² = 5² (9 + 16 = 25).",
-      "lvl": 3
-    },
-    {
-      "q": "What is 2 to the power of 10?",
-      "opts": [
-        "1024",
-        "512",
-        "2048",
-        "256"
-      ],
-      "a": 0,
-      "expl": "2¹⁰ = 1024. This is why 1 kilobyte = 1024 bytes in computing. Powers of 2 are fundamental in computer science.",
-      "lvl": 3
-    },
-    {
-      "q": "What is a parallelogram?",
-      "opts": [
-        "A shape with all equal sides",
-        "A triangle with two equal sides",
-        "A shape with four right angles",
-        "A quadrilateral with opposite sides parallel"
-      ],
-      "a": 3,
-      "expl": "A parallelogram has both pairs of opposite sides parallel and equal. Squares, rectangles, and rhombuses are special parallelograms.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the factorial of 5 (5!)?",
-      "opts": [
-        "25",
-        "120",
-        "60",
-        "720"
-      ],
-      "a": 1,
-      "expl": "5! = 5×4×3×2×1 = 120. Factorials grow extremely fast and are essential in combinatorics and probability.",
-      "lvl": 4
-    },
-    {
-      "q": "What is the golden ratio approximately?",
-      "opts": [
-        "1.414",
-        "1.732",
-        "2.236",
-        "1.618"
-      ],
-      "a": 3,
-      "expl": "The golden ratio (φ) ≈ 1.618. It appears in art, architecture, and nature — in spirals, proportions, and growth patterns.",
-      "lvl": 4
-    },
-    {
-      "q": "What does the integral calculate?",
-      "opts": [
-        "The slope of a curve",
-        "The rate of change",
-        "The area under a curve",
-        "The maximum value"
-      ],
-      "a": 2,
-      "expl": "Integration calculates the accumulated area under a curve. It's the reverse of differentiation. Together they form calculus.",
-      "lvl": 4
-    },
-    {
-      "q": "What is Euler's number (e) approximately?",
-      "opts": [
-        "2.414",
-        "3.141",
-        "1.618",
-        "2.718"
-      ],
-      "a": 3,
-      "expl": "e ≈ 2.71828... It's the base of natural logarithms. eˣ is its own derivative, making it central to calculus.",
-      "lvl": 5
-    },
-    {
-      "q": "How many faces does a dodecahedron have?",
-      "opts": [
-        "12",
+        "7",
         "8",
         "10",
-        "20"
+        "9"
+      ],
+      "a": 3,
+      "expl": "One plus eight is nine.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 4 + 5?",
+      "opts": [
+        "10",
+        "7",
+        "8",
+        "9"
+      ],
+      "a": 3,
+      "expl": "Four plus five equals nine.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 9 - 5?",
+      "opts": [
+        "3",
+        "5",
+        "4",
+        "6"
+      ],
+      "a": 2,
+      "expl": "Nine minus five leaves four.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 5 + 5?",
+      "opts": [
+        "10",
+        "8",
+        "9",
+        "11"
       ],
       "a": 0,
-      "expl": "A regular dodecahedron has 12 pentagonal faces, 30 edges, and 20 vertices. It's one of the five Platonic solids.",
+      "expl": "Five plus five is ten.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 2 + 2?",
+      "opts": [
+        "5",
+        "6",
+        "3",
+        "4"
+      ],
+      "a": 3,
+      "expl": "Two plus two equals four.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 10 - 2?",
+      "opts": [
+        "9",
+        "6",
+        "8",
+        "7"
+      ],
+      "a": 2,
+      "expl": "Ten minus two leaves eight.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 7 - 3?",
+      "opts": [
+        "6",
+        "3",
+        "4",
+        "5"
+      ],
+      "a": 2,
+      "expl": "Seven minus three leaves four.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 3 + 4?",
+      "opts": [
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "a": 1,
+      "expl": "Three plus four is seven.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 10 - 10?",
+      "opts": [
+        "1",
+        "5",
+        "10",
+        "0"
+      ],
+      "a": 3,
+      "expl": "Any number minus itself is zero.",
+      "lvl": 1
+    },
+    {
+      "q": "What is 10 / 2?",
+      "opts": [
+        "4",
+        "8",
+        "5",
+        "6"
+      ],
+      "a": 2,
+      "expl": "Ten divided by two is five.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 5 x 5?",
+      "opts": [
+        "30",
+        "20",
+        "10",
+        "25"
+      ],
+      "a": 3,
+      "expl": "Five times five is twenty-five.",
+      "lvl": 2
+    },
+    {
+      "q": "What is half of 50?",
+      "opts": [
+        "15",
+        "25",
+        "20",
+        "30"
+      ],
+      "a": 1,
+      "expl": "Half of fifty is twenty-five.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 15 + 16?",
+      "opts": [
+        "31",
+        "32",
+        "30",
+        "29"
+      ],
+      "a": 0,
+      "expl": "Fifteen plus sixteen is thirty-one.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 9 x 9?",
+      "opts": [
+        "64",
+        "72",
+        "81",
+        "90"
+      ],
+      "a": 2,
+      "expl": "Nine times nine is eighty-one.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 40 / 8?",
+      "opts": [
+        "5",
+        "4",
+        "6",
+        "7"
+      ],
+      "a": 0,
+      "expl": "Forty divided by eight is five.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 8 x 8?",
+      "opts": [
+        "48",
+        "64",
+        "56",
+        "72"
+      ],
+      "a": 1,
+      "expl": "Eight times eight equals sixty-four.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 100 - 45?",
+      "opts": [
+        "45",
+        "55",
+        "65",
+        "50"
+      ],
+      "a": 1,
+      "expl": "One hundred minus forty-five is fifty-five.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 3 x 7?",
+      "opts": [
+        "18",
+        "28",
+        "21",
+        "24"
+      ],
+      "a": 2,
+      "expl": "Three times seven is twenty-one.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 12 x 12?",
+      "opts": [
+        "120",
+        "132",
+        "144",
+        "100"
+      ],
+      "a": 2,
+      "expl": "Twelve times twelve is one hundred forty-four.",
+      "lvl": 2
+    },
+    {
+      "q": "What is 2 cubed (2^3)?",
+      "opts": [
+        "4",
+        "16",
+        "8",
+        "6"
+      ],
+      "a": 2,
+      "expl": "Two times two times two is eight.",
+      "lvl": 3
+    },
+    {
+      "q": "What is x if 2x = 10?",
+      "opts": [
+        "5",
+        "4",
+        "8",
+        "6"
+      ],
+      "a": 0,
+      "expl": "Divide both sides by two to get five.",
+      "lvl": 3
+    },
+    {
+      "q": "What is 15% of 100?",
+      "opts": [
+        "20",
+        "10",
+        "15",
+        "5"
+      ],
+      "a": 2,
+      "expl": "Percent means per hundred, so 15% of 100 is 15.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the next prime number after 7?",
+      "opts": [
+        "13",
+        "8",
+        "9",
+        "11"
+      ],
+      "a": 3,
+      "expl": "Eleven is only divisible by 1 and itself.",
+      "lvl": 3
+    },
+    {
+      "q": "What is 10 squared (10^2)?",
+      "opts": [
+        "50",
+        "1000",
+        "100",
+        "20"
+      ],
+      "a": 2,
+      "expl": "Ten times ten is one hundred.",
+      "lvl": 3
+    },
+    {
+      "q": "What is 3/4 as a decimal?",
+      "opts": [
+        "0.80",
+        "0.75",
+        "0.50",
+        "0.25"
+      ],
+      "a": 1,
+      "expl": "Three divided by four is 0.75.",
+      "lvl": 3
+    },
+    {
+      "q": "What is 1/2 + 1/4?",
+      "opts": [
+        "2/6",
+        "2/4",
+        "3/4",
+        "1/3"
+      ],
+      "a": 2,
+      "expl": "Two fourths plus one fourth equals three fourths.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the area of a rectangle with sides 5 and 6?",
+      "opts": [
+        "25",
+        "36",
+        "11",
+        "30"
+      ],
+      "a": 3,
+      "expl": "Area is length times width: 5 x 6 = 30.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the square root of 64?",
+      "opts": [
+        "8",
+        "7",
+        "6",
+        "9"
+      ],
+      "a": 0,
+      "expl": "Eight times eight is sixty-four.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the perimeter of a square with side length 4?",
+      "opts": [
+        "12",
+        "20",
+        "16",
+        "8"
+      ],
+      "a": 2,
+      "expl": "Four sides of length four equals sixteen.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the square root of 169?",
+      "opts": [
+        "15",
+        "12",
+        "13",
+        "14"
+      ],
+      "a": 2,
+      "expl": "13 times 13 equals 169.",
+      "lvl": 4
+    },
+    {
+      "q": "What is 5! (5 factorial)?",
+      "opts": [
+        "100",
+        "120",
+        "60",
+        "24"
+      ],
+      "a": 1,
+      "expl": "5 x 4 x 3 x 2 x 1 equals 120.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the value of pi to two decimal places?",
+      "opts": [
+        "3.14",
+        "3.16",
+        "3.15",
+        "3.13"
+      ],
+      "a": 0,
+      "expl": "Pi is approximately 3.14159...",
+      "lvl": 4
+    },
+    {
+      "q": "What is the probability of flipping a coin and getting heads?",
+      "opts": [
+        "1/4",
+        "1/3",
+        "1/2",
+        "1"
+      ],
+      "a": 2,
+      "expl": "There are 2 outcomes, so heads is 1/2.",
+      "lvl": 4
+    },
+    {
+      "q": "What is 2^5?",
+      "opts": [
+        "32",
+        "16",
+        "64",
+        "10"
+      ],
+      "a": 0,
+      "expl": "Two multiplied by itself five times is 32.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the sine of 90 degrees?",
+      "opts": [
+        "-1",
+        "1",
+        "0.5",
+        "0"
+      ],
+      "a": 1,
+      "expl": "The sine of a 90-degree angle is 1.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the area of a circle with radius r?",
+      "opts": [
+        "pi*d",
+        "r^2",
+        "2*pi*r",
+        "pi*r^2"
+      ],
+      "a": 3,
+      "expl": "Area of a circle is pi times the radius squared.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the sum of interior angles of a triangle?",
+      "opts": [
+        "90",
+        "180",
+        "270",
+        "360"
+      ],
+      "a": 1,
+      "expl": "The angles of any plane triangle add to 180 degrees.",
+      "lvl": 4
+    },
+    {
+      "q": "What is x if 3x + 2 = 11?",
+      "opts": [
+        "3",
+        "5",
+        "4",
+        "2"
+      ],
+      "a": 0,
+      "expl": "Subtract 2 to get 9, then divide by 3 to get 3.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the hypotenuse of a right triangle with sides 3 and 4?",
+      "opts": [
+        "6",
+        "8",
+        "5",
+        "7"
+      ],
+      "a": 2,
+      "expl": "By the Pythagorean theorem, 3^2 + 4^2 = 5^2.",
+      "lvl": 4
+    },
+    {
+      "q": "What is i^2?",
+      "opts": [
+        "-i",
+        "-1",
+        "1",
+        "i"
+      ],
+      "a": 1,
+      "expl": "By definition, the imaginary unit squared equals -1.",
       "lvl": 5
     },
     {
-      "q": "What is the derivative of x³?",
+      "q": "What is Euler's number 'e' to 2 decimals?",
       "opts": [
-        "x²",
-        "3x²",
-        "3x",
-        "x³/3"
+        "3.14",
+        "2.73",
+        "2.71",
+        "2.72"
+      ],
+      "a": 3,
+      "expl": "Euler's number is approximately 2.718...",
+      "lvl": 5
+    },
+    {
+      "q": "What is the derivative of sin(x)?",
+      "opts": [
+        "sec^2(x)",
+        "-sin(x)",
+        "cos(x)",
+        "-cos(x)"
+      ],
+      "a": 2,
+      "expl": "Calculus rules state the derivative of sine is cosine.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the formula for the volume of a sphere?",
+      "opts": [
+        "4/3*pi*r^3",
+        "pi*r^2*h",
+        "4*pi*r^2",
+        "1/3*pi*r^2*h"
+      ],
+      "a": 0,
+      "expl": "This formula calculates the 3D space inside a sphere.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the integral of e^x?",
+      "opts": [
+        "xe^x",
+        "e^x + C",
+        "e",
+        "e^x"
       ],
       "a": 1,
-      "expl": "Using the power rule: d/dx(xⁿ) = nxⁿ⁻¹. So d/dx(x³) = 3x². The derivative gives the instantaneous rate of change.",
+      "expl": "The integral of e^x is e^x plus a constant.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the 10th Fibonacci number?",
+      "opts": [
+        "55",
+        "34",
+        "89",
+        "21"
+      ],
+      "a": 0,
+      "expl": "The sequence goes 1, 1, 2, 3, 5, 8, 13, 21, 34, 55.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the base of the natural logarithm?",
+      "opts": [
+        "pi",
+        "10",
+        "2",
+        "e"
+      ],
+      "a": 3,
+      "expl": "The natural logarithm uses Euler's number (e) as its base.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the determinant of a 2x2 matrix [[a,b],[c,d]]?",
+      "opts": [
+        "a+d",
+        "ac-bd",
+        "ab-cd",
+        "ad-bc"
+      ],
+      "a": 3,
+      "expl": "The determinant formula for 2x2 matrices is ad minus bc.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the sum of interior angles of a hexagon?",
+      "opts": [
+        "720",
+        "540",
+        "900",
+        "360"
+      ],
+      "a": 0,
+      "expl": "Formula: (n-2)*180, so (6-2)*180 = 720.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the Pythagorean trigonometric identity?",
+      "opts": [
+        "sec(x)=csc(x)",
+        "sin(x)=cos(x)",
+        "tan(x)=1",
+        "sin^2(x)+cos^2(x)=1"
+      ],
+      "a": 3,
+      "expl": "This fundamental identity is based on the Pythagorean theorem.",
       "lvl": 5
     }
   ],
   "language": [
     {
-      "q": "What is a palindrome?",
+      "q": "What is a noun?",
       "opts": [
-        "A word that reads the same forward and backward",
-        "A word with no vowels",
-        "A very long word",
-        "A word with double letters"
+        "A describing word",
+        "A person, place, or thing",
+        "An action",
+        "A joining word"
+      ],
+      "a": 1,
+      "expl": "Nouns name entities.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the plural of 'cat'?",
+      "opts": [
+        "Cates",
+        "Cats",
+        "Cat",
+        "Catti"
+      ],
+      "a": 1,
+      "expl": "Add an 's' to make 'cat' plural.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the past tense of 'run'?",
+      "opts": [
+        "Ran",
+        "Running",
+        "Runned",
+        "Runs"
       ],
       "a": 0,
-      "expl": "A palindrome reads the same forwards and backwards. Examples: 'racecar', 'madam', 'level'.",
+      "expl": "'Ran' is the irregular past tense of run.",
       "lvl": 1
     },
     {
-      "q": "What is an onomatopoeia?",
+      "q": "What do you use a dictionary for?",
       "opts": [
-        "A word with opposite meaning",
-        "A repeated word",
-        "A word that imitates a sound",
-        "A word with multiple meanings"
-      ],
-      "a": 2,
-      "expl": "Onomatopoeia imitate sounds: 'buzz', 'hiss', 'bang', 'whisper'. Different languages often have different onomatopoeia for the same sounds.",
-      "lvl": 1
-    },
-    {
-      "q": "What is a homophone?",
-      "opts": [
-        "Words with the same meaning",
-        "Words that sound the same but differ in meaning",
-        "Words spelled the same",
-        "Words with opposite meaning"
-      ],
-      "a": 1,
-      "expl": "Homophones sound identical but have different meanings/spellings: 'to/too/two', 'their/there/they're', 'bare/bear'.",
-      "lvl": 1
-    },
-    {
-      "q": "What is a portmanteau word?",
-      "opts": [
-        "A very formal word",
-        "A blend of two words",
-        "A borrowed word",
-        "An invented nonsense word"
-      ],
-      "a": 1,
-      "expl": "Portmanteau words blend two words: 'brunch' (breakfast+lunch), 'smog' (smoke+fog), 'motel' (motor+hotel).",
-      "lvl": 2
-    },
-    {
-      "q": "What is the most spoken language by native speakers?",
-      "opts": [
-        "English",
-        "Spanish",
-        "Hindi",
-        "Mandarin Chinese"
+        "Maps",
+        "Math",
+        "History",
+        "Definitions"
       ],
       "a": 3,
-      "expl": "Mandarin Chinese has about 920 million native speakers. English has ~380 million native but ~1.5 billion total speakers.",
-      "lvl": 2
+      "expl": "Dictionaries list words and their meanings.",
+      "lvl": 1
     },
     {
-      "q": "Which language has the most words?",
+      "q": "What is the opposite of hot?",
       "opts": [
-        "Spanish",
-        "French",
+        "Cold",
+        "Fire",
+        "Sun",
+        "Warm"
+      ],
+      "a": 0,
+      "expl": "Cold is the antonym of hot.",
+      "lvl": 1
+    },
+    {
+      "q": "What language is spoken in Spain?",
+      "opts": [
         "German",
-        "English"
+        "English",
+        "French",
+        "Spanish"
       ],
       "a": 3,
-      "expl": "English has an estimated 600,000+ words, largely due to borrowing from Latin, French, Germanic, and many other languages.",
-      "lvl": 2
+      "expl": "Spanish is the official language.",
+      "lvl": 1
     },
     {
-      "q": "What is the origin of the word 'alphabet'?",
+      "q": "What is a synonym for 'happy'?",
       "opts": [
-        "Latin letters",
-        "Greek alpha + beta",
-        "Old English",
-        "Sanskrit"
+        "Tired",
+        "Angry",
+        "Sad",
+        "Joyful"
+      ],
+      "a": 3,
+      "expl": "Joyful means feeling or expressing happiness.",
+      "lvl": 1
+    },
+    {
+      "q": "What do you call a person who writes books?",
+      "opts": [
+        "Publisher",
+        "Author",
+        "Reader",
+        "Editor"
       ],
       "a": 1,
-      "expl": "From the first two Greek letters: alpha (α) and beta (β). The Greek alphabet was adapted from Phoenician around 800 BC.",
-      "lvl": 3
+      "expl": "An author creates and writes books.",
+      "lvl": 1
     },
     {
-      "q": "What is a semicolon used for?",
+      "q": "What is the first letter of the alphabet?",
       "opts": [
-        "Ending a sentence",
-        "Indicating a question",
-        "Connecting related independent clauses",
-        "Creating a pause shorter than a period"
+        "C",
+        "B",
+        "Z",
+        "A"
       ],
-      "a": 2,
-      "expl": "Semicolons connect two related independent clauses: 'It was getting late; we decided to leave.' They also separate items in complex lists.",
-      "lvl": 3
+      "a": 3,
+      "expl": "The English alphabet begins with A.",
+      "lvl": 1
     },
     {
-      "q": "What language family does English belong to?",
+      "q": "How many main vowels are in the English alphabet?",
       "opts": [
-        "Romance",
-        "Slavic",
-        "Germanic",
-        "Celtic"
-      ],
-      "a": 2,
-      "expl": "English is West Germanic, along with German and Dutch. Despite heavy French/Latin influence, its core grammar and basic vocabulary are Germanic.",
-      "lvl": 3
-    },
-    {
-      "q": "What is etymology?",
-      "opts": [
-        "Study of word origins",
-        "Study of insect words",
-        "Study of sentence structure",
-        "Study of speech sounds"
-      ],
-      "a": 0,
-      "expl": "Etymology traces word origins and meaning changes. E.g., 'nice' comes from Latin 'nescius' (ignorant), evolving through 'foolish' to 'pleasant'.",
-      "lvl": 4
-    },
-    {
-      "q": "How many official languages does the UN have?",
-      "opts": [
-        "4",
         "5",
         "7",
+        "4",
         "6"
       ],
-      "a": 3,
-      "expl": "The UN has 6 official languages: Arabic, Chinese, English, French, Russian, and Spanish, chosen for geographic representation.",
-      "lvl": 4
+      "a": 0,
+      "expl": "A, E, I, O, U are the five main vowels.",
+      "lvl": 1
     },
     {
-      "q": "How many letters are in the Japanese Hiragana syllabary?",
+      "q": "What is an adjective?",
       "opts": [
-        "26",
-        "46",
-        "50",
-        "33"
+        "Noun",
+        "Pronoun",
+        "Describing word",
+        "Action word"
+      ],
+      "a": 2,
+      "expl": "Adjectives modify nouns.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the antonym of 'fast'?",
+      "opts": [
+        "Quick",
+        "Rapid",
+        "Slow",
+        "Swift"
+      ],
+      "a": 2,
+      "expl": "Slow is the opposite of fast.",
+      "lvl": 2
+    },
+    {
+      "q": "What does 'bi' mean in 'bicycle'?",
+      "opts": [
+        "One",
+        "Three",
+        "Four",
+        "Two"
+      ],
+      "a": 3,
+      "expl": "'Bi-' is a prefix meaning two.",
+      "lvl": 2
+    },
+    {
+      "q": "What punctuation ends a question?",
+      "opts": [
+        "-",
+        ",",
+        "?",
+        "!"
+      ],
+      "a": 2,
+      "expl": "A question mark denotes an interrogative sentence.",
+      "lvl": 2
+    },
+    {
+      "q": "How many syllables in 'banana'?",
+      "opts": [
+        "2",
+        "1",
+        "3",
+        "4"
+      ],
+      "a": 2,
+      "expl": "Ba-na-na has three syllables.",
+      "lvl": 2
+    },
+    {
+      "q": "What is a verb?",
+      "opts": [
+        "Place",
+        "Describing word",
+        "Action word",
+        "Person"
+      ],
+      "a": 2,
+      "expl": "Verbs indicate action or state of being.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the past tense of 'go'?",
+      "opts": [
+        "Going",
+        "Went",
+        "Gone",
+        "Goed"
       ],
       "a": 1,
-      "expl": "Hiragana has 46 basic characters, each representing a syllable. Japanese uses three writing systems: Hiragana, Katakana, and Kanji.",
+      "expl": "'Went' is the irregular past tense of go.",
+      "lvl": 2
+    },
+    {
+      "q": "What language has the most native speakers?",
+      "opts": [
+        "Spanish",
+        "English",
+        "Hindi",
+        "Mandarin"
+      ],
+      "a": 3,
+      "expl": "Mandarin Chinese has the most native speakers worldwide.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the plural of 'mouse'?",
+      "opts": [
+        "Mice",
+        "Meese",
+        "Mouse",
+        "Mouses"
+      ],
+      "a": 0,
+      "expl": "The plural is irregular: mice.",
+      "lvl": 2
+    },
+    {
+      "q": "What do you call a word that sounds the same but has different meaning?",
+      "opts": [
+        "Homophone",
+        "Pronoun",
+        "Antonym",
+        "Synonym"
+      ],
+      "a": 0,
+      "expl": "'Homo' means same, 'phone' means sound.",
+      "lvl": 2
+    },
+    {
+      "q": "What is a pronoun?",
+      "opts": [
+        "Action word",
+        "Describes noun",
+        "Takes place of noun",
+        "Joins sentences"
+      ],
+      "a": 2,
+      "expl": "E.g., he, she, it, they.",
+      "lvl": 3
+    },
+    {
+      "q": "What does the prefix 'pre-' mean?",
+      "opts": [
+        "Before",
+        "Not",
+        "Again",
+        "After"
+      ],
+      "a": 0,
+      "expl": "'Pre-' means prior to or before.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the past participle of 'eat'?",
+      "opts": [
+        "Eaten",
+        "Eated",
+        "Ate",
+        "Eating"
+      ],
+      "a": 0,
+      "expl": "'I have eaten' uses the past participle.",
+      "lvl": 3
+    },
+    {
+      "q": "What is an adverb?",
+      "opts": [
+        "Modifies a noun",
+        "Connects sentences",
+        "Names a person",
+        "Modifies a verb"
+      ],
+      "a": 3,
+      "expl": "Adverbs describe verbs, adjectives, or other adverbs.",
+      "lvl": 3
+    },
+    {
+      "q": "What is a haiku?",
+      "opts": [
+        "A song",
+        "A 3-line poem",
+        "A short story",
+        "A play"
+      ],
+      "a": 1,
+      "expl": "A haiku has a 5-7-5 syllable structure.",
+      "lvl": 3
+    },
+    {
+      "q": "What is a metaphor?",
+      "opts": [
+        "Exaggeration",
+        "Comparison without like/as",
+        "Rhyme",
+        "Comparison with like/as"
+      ],
+      "a": 1,
+      "expl": "A metaphor says one thing IS another.",
+      "lvl": 3
+    },
+    {
+      "q": "What is a palindrome?",
+      "opts": [
+        "A synonym",
+        "A poem",
+        "An old word",
+        "Spelled same backwards"
+      ],
+      "a": 3,
+      "expl": "E.g., racecar reads the same forward and backward.",
+      "lvl": 3
+    },
+    {
+      "q": "What language is the root of many European languages?",
+      "opts": [
+        "Sanskrit",
+        "Latin",
+        "Greek",
+        "Arabic"
+      ],
+      "a": 1,
+      "expl": "Latin spawned the Romance languages.",
+      "lvl": 3
+    },
+    {
+      "q": "Who wrote Romeo and Juliet?",
+      "opts": [
+        "Dickens",
+        "Austen",
+        "Twain",
+        "Shakespeare"
+      ],
+      "a": 3,
+      "expl": "William Shakespeare wrote the famous tragedy.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the longest word in English?",
+      "opts": [
+        "Pneumonoultramicroscopicsilicovolcanoconiosis",
+        "Hippopotomonstrosesquippedaliophobia",
+        "Antidisestablishmentarianism",
+        "Supercalifragilisticexpialidocious"
+      ],
+      "a": 0,
+      "expl": "It refers to a lung disease caused by inhaling ash.",
+      "lvl": 3
+    },
+    {
+      "q": "What is a gerund?",
+      "opts": [
+        "Preposition",
+        "Verb ending in -ing acting as noun",
+        "Past tense verb",
+        "Adjective"
+      ],
+      "a": 1,
+      "expl": "E.g., 'Running is fun.'",
       "lvl": 4
     },
     {
-      "q": "What is the subjunctive mood?",
+      "q": "What is a tautology?",
       "opts": [
-        "Expressing facts",
-        "Expressing commands",
-        "Expressing questions",
-        "Expressing wishes or hypotheticals"
+        "A contradiction",
+        "A rhyme",
+        "Saying the same thing twice",
+        "A metaphor"
+      ],
+      "a": 2,
+      "expl": "E.g., 'free gift' is a tautology.",
+      "lvl": 4
+    },
+    {
+      "q": "What does the suffix '-ology' mean?",
+      "opts": [
+        "Made of",
+        "Study of",
+        "Love of",
+        "Fear of"
+      ],
+      "a": 1,
+      "expl": "From Greek 'logia', meaning study of.",
+      "lvl": 4
+    },
+    {
+      "q": "What does 'quid pro quo' mean?",
+      "opts": [
+        "All for one",
+        "Something for something",
+        "Nothing for nothing",
+        "Seize the day"
+      ],
+      "a": 1,
+      "expl": "It's a Latin phrase meaning an exchange.",
+      "lvl": 4
+    },
+    {
+      "q": "What is syntax?",
+      "opts": [
+        "Arrangement of words",
+        "Spelling",
+        "Meaning of words",
+        "Origin of words"
+      ],
+      "a": 0,
+      "expl": "Syntax governs sentence structure.",
+      "lvl": 4
+    },
+    {
+      "q": "Who wrote '1984'?",
+      "opts": [
+        "Aldous Huxley",
+        "J.K. Rowling",
+        "George Orwell",
+        "Ray Bradbury"
+      ],
+      "a": 2,
+      "expl": "George Orwell wrote the dystopian novel.",
+      "lvl": 4
+    },
+    {
+      "q": "What is an oxymoron?",
+      "opts": [
+        "A long sentence",
+        "A synonym",
+        "Contradictory terms together",
+        "A type of fool"
+      ],
+      "a": 2,
+      "expl": "E.g., 'jumbo shrimp' or 'deafening silence'.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the study of word origins called?",
+      "opts": [
+        "Etymology",
+        "Philology",
+        "Entomology",
+        "Semantics"
+      ],
+      "a": 0,
+      "expl": "Etymology traces the history of words.",
+      "lvl": 4
+    },
+    {
+      "q": "Who wrote 'Pride and Prejudice'?",
+      "opts": [
+        "Mary Shelley",
+        "Virginia Woolf",
+        "Charlotte Bronte",
+        "Jane Austen"
       ],
       "a": 3,
-      "expl": "The subjunctive expresses wishes/demands/hypotheticals: 'If I were rich' (not 'was'), 'I suggest that he study' (not 'studies').",
+      "expl": "Jane Austen published it in 1813.",
+      "lvl": 4
+    },
+    {
+      "q": "What is iambic pentameter?",
+      "opts": [
+        "A grammar rule",
+        "A punctuation mark",
+        "A type of novel",
+        "A poetic meter"
+      ],
+      "a": 3,
+      "expl": "It has five iambs (unstressed-stressed) per line.",
+      "lvl": 4
+    },
+    {
+      "q": "What is a synecdoche?",
+      "opts": [
+        "A short poem",
+        "A rhyme",
+        "A part represents the whole",
+        "A type of joke"
+      ],
+      "a": 2,
+      "expl": "E.g., 'all hands on deck'.",
       "lvl": 5
     },
     {
-      "q": "Which ancient script remains undeciphered?",
+      "q": "Who wrote 'Ulysses'?",
       "opts": [
-        "Linear A",
-        "Egyptian hieroglyphs",
-        "Cuneiform",
-        "Linear B"
+        "F. Scott Fitzgerald",
+        "T.S. Eliot",
+        "Ernest Hemingway",
+        "James Joyce"
+      ],
+      "a": 3,
+      "expl": "James Joyce authored this modernist masterpiece.",
+      "lvl": 5
+    },
+    {
+      "q": "What does 'lingua franca' mean?",
+      "opts": [
+        "Common language between different speakers",
+        "A French dialect",
+        "A dead language",
+        "A formal language"
       ],
       "a": 0,
-      "expl": "Linear A, used by the Minoan civilization (c. 1800-1450 BC), remains undeciphered. Linear B was decoded in 1952.",
+      "expl": "It serves as a bridge language.",
       "lvl": 5
     },
     {
       "q": "What is a 'hapax legomenon'?",
       "opts": [
-        "A grammatical error",
-        "A type of ancient poetry",
-        "A word that appears only once in a text or corpus",
-        "A lost language"
+        "Word occurring once in a text",
+        "A grammar error",
+        "A poetic device",
+        "A dead language"
+      ],
+      "a": 0,
+      "expl": "A rare word seen only once in a given context.",
+      "lvl": 5
+    },
+    {
+      "q": "What is a portmanteau?",
+      "opts": [
+        "A long story",
+        "A suitcase",
+        "A French poem",
+        "Word blending sounds/meanings"
+      ],
+      "a": 3,
+      "expl": "E.g., 'smog' from smoke + fog.",
+      "lvl": 5
+    },
+    {
+      "q": "What is an anachronism?",
+      "opts": [
+        "A paradox",
+        "A synonym",
+        "Something out of historical time",
+        "A spelling mistake"
       ],
       "a": 2,
-      "expl": "It's a word that occurs only once within a context, either in the written record of an entire language, in the works of an author, or in a single text.",
+      "expl": "E.g., a clock in a play about ancient Rome.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the oldest recorded language?",
+      "opts": [
+        "Sanskrit",
+        "Egyptian",
+        "Sumerian",
+        "Chinese"
+      ],
+      "a": 2,
+      "expl": "Sumerian dates back to at least 3000 BC.",
+      "lvl": 5
+    },
+    {
+      "q": "What is semantic shift?",
+      "opts": [
+        "Grammar rules",
+        "Translating languages",
+        "Changing accents",
+        "Change in word meaning over time"
+      ],
+      "a": 3,
+      "expl": "Words can naturally change definitions over centuries.",
+      "lvl": 5
+    },
+    {
+      "q": "Who wrote 'The Canterbury Tales'?",
+      "opts": [
+        "Dante Alighieri",
+        "Geoffrey Chaucer",
+        "John Milton",
+        "William Shakespeare"
+      ],
+      "a": 1,
+      "expl": "Chaucer wrote it in Middle English.",
+      "lvl": 5
+    },
+    {
+      "q": "What is morphology in linguistics?",
+      "opts": [
+        "Study of sounds",
+        "Study of meaning",
+        "Study of sentences",
+        "Study of word forms"
+      ],
+      "a": 3,
+      "expl": "It looks at root words, prefixes, and suffixes.",
       "lvl": 5
     }
   ],
   "nature": [
     {
-      "q": "What is photosynthesis?",
+      "q": "What animal says 'moo'?",
       "opts": [
-        "Plants releasing CO2",
-        "Animals making food",
-        "Plants converting light to chemical energy",
-        "Water evaporating from leaves"
+        "Cow",
+        "Pig",
+        "Horse",
+        "Sheep"
+      ],
+      "a": 0,
+      "expl": "Cows make a mooing sound.",
+      "lvl": 1
+    },
+    {
+      "q": "What is a baby dog called?",
+      "opts": [
+        "Calf",
+        "Puppy",
+        "Kitten",
+        "Cub"
+      ],
+      "a": 1,
+      "expl": "Young dogs are called puppies.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the green part of a plant?",
+      "opts": [
+        "Stem",
+        "Flower",
+        "Leaf",
+        "Root"
       ],
       "a": 2,
-      "expl": "Photosynthesis: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. It's the primary source of Earth's oxygen.",
+      "expl": "Leaves are green due to chlorophyll.",
       "lvl": 1
+    },
+    {
+      "q": "What drops from clouds when it rains?",
+      "opts": [
+        "Dirt",
+        "Snow",
+        "Water",
+        "Ice"
+      ],
+      "a": 2,
+      "expl": "Rain is liquid water droplets falling.",
+      "lvl": 1
+    },
+    {
+      "q": "What do birds use to fly?",
+      "opts": [
+        "Legs",
+        "Beaks",
+        "Tails",
+        "Wings"
+      ],
+      "a": 3,
+      "expl": "Wings create lift for flight.",
+      "lvl": 1
+    },
+    {
+      "q": "What do trees grow from?",
+      "opts": [
+        "Rocks",
+        "Seeds",
+        "Dirt",
+        "Water"
+      ],
+      "a": 1,
+      "expl": "Most trees begin as a small seed.",
+      "lvl": 1
+    },
+    {
+      "q": "What gives us light during the day?",
+      "opts": [
+        "The Sun",
+        "Fire",
+        "The Moon",
+        "Stars"
+      ],
+      "a": 0,
+      "expl": "The Sun is our primary light source.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the largest ocean animal?",
+      "opts": [
+        "Shark",
+        "Whale",
+        "Dolphin",
+        "Seal"
+      ],
+      "a": 1,
+      "expl": "The blue whale is the largest animal on Earth.",
+      "lvl": 1
+    },
+    {
+      "q": "What insect makes honey?",
+      "opts": [
+        "Fly",
+        "Bee",
+        "Butterfly",
+        "Ant"
+      ],
+      "a": 1,
+      "expl": "Honeybees produce honey from nectar.",
+      "lvl": 1
+    },
+    {
+      "q": "What season comes after winter?",
+      "opts": [
+        "Autumn",
+        "Fall",
+        "Spring",
+        "Summer"
+      ],
+      "a": 2,
+      "expl": "Spring brings warmer weather and blooming plants.",
+      "lvl": 1
+    },
+    {
+      "q": "What do you call a baby cat?",
+      "opts": [
+        "Puppy",
+        "Kitten",
+        "Cub",
+        "Foal"
+      ],
+      "a": 1,
+      "expl": "Young cats are called kittens.",
+      "lvl": 2
+    },
+    {
+      "q": "What do pandas mainly eat?",
+      "opts": [
+        "Meat",
+        "Bamboo",
+        "Fish",
+        "Leaves"
+      ],
+      "a": 1,
+      "expl": "Bamboo makes up 99% of a panda's diet.",
+      "lvl": 2
+    },
+    {
+      "q": "What kind of animal is a frog?",
+      "opts": [
+        "Amphibian",
+        "Fish",
+        "Reptile",
+        "Mammal"
+      ],
+      "a": 0,
+      "expl": "Amphibians live in water and on land.",
+      "lvl": 2
+    },
+    {
+      "q": "What animal has a long trunk?",
+      "opts": [
+        "Elephant",
+        "Giraffe",
+        "Hippo",
+        "Rhino"
+      ],
+      "a": 0,
+      "expl": "Elephants use their trunk for grasping and drinking.",
+      "lvl": 2
     },
     {
       "q": "What is the fastest land animal?",
       "opts": [
-        "Lion",
-        "Pronghorn",
+        "Tiger",
         "Horse",
+        "Lion",
         "Cheetah"
       ],
       "a": 3,
-      "expl": "Cheetahs reach 100-120 km/h in short bursts. Pronghorns sustain 88 km/h for much longer distances.",
-      "lvl": 1
-    },
-    {
-      "q": "What is symbiosis?",
-      "opts": [
-        "Close long-term interaction between species",
-        "Two organisms fighting",
-        "A species living alone",
-        "Rapid evolution"
-      ],
-      "a": 0,
-      "expl": "Symbiosis includes mutualism (both benefit), commensalism (one benefits, one unaffected), and parasitism (one benefits, one harmed).",
-      "lvl": 1
-    },
-    {
-      "q": "Which bird can fly backwards?",
-      "opts": [
-        "Hummingbird",
-        "Eagle",
-        "Penguin",
-        "Owl"
-      ],
-      "a": 0,
-      "expl": "Hummingbirds can fly in any direction including backwards. Their wings rotate in a figure-8 pattern, beating up to 80 times/second.",
+      "expl": "Cheetahs can run up to 70 mph.",
       "lvl": 2
     },
     {
-      "q": "What is biodiversity?",
+      "q": "What do you call a group of wolves?",
       "opts": [
-        "Variety of life in an ecosystem",
-        "Different types of diet",
-        "The number of predators",
-        "Plant growth rate"
-      ],
-      "a": 0,
-      "expl": "Biodiversity includes species, genetic, and ecosystem diversity. The Amazon alone contains 10% of all known species.",
-      "lvl": 2
-    },
-    {
-      "q": "How many hearts does an octopus have?",
-      "opts": [
-        "1",
-        "3",
-        "2",
-        "4"
-      ],
-      "a": 1,
-      "expl": "Octopuses have 3 hearts: one systemic heart for the body, two branchial hearts for the gills. They also have blue blood from copper-based hemocyanin.",
-      "lvl": 2
-    },
-    {
-      "q": "What layer of the Amazon rainforest receives the least sunlight?",
-      "opts": [
-        "The forest floor",
-        "The canopy",
-        "The emergent layer",
-        "The understory"
-      ],
-      "a": 0,
-      "expl": "The forest floor receives only 2-5% of sunlight. It's dark, humid, and covered in decomposing matter despite being the 'deepest' layer.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the purpose of a flower's nectar?",
-      "opts": [
-        "To attract pollinators",
-        "To feed the plant",
-        "To store water",
-        "To produce seeds"
-      ],
-      "a": 0,
-      "expl": "Nectar attracts pollinators like bees and hummingbirds. In exchange, they transfer pollen between flowers, enabling fertilization.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the tusk of a narwhal?",
-      "opts": [
-        "A horn",
-        "A bone projection",
-        "An elongated tooth",
-        "A modified fin"
+        "Swarm",
+        "Herd",
+        "Pack",
+        "Flock"
       ],
       "a": 2,
-      "expl": "The narwhal tusk is an elongated left canine tooth with up to 10 million nerve endings, likely functioning as a sensory organ.",
+      "expl": "Wolves live and hunt in packs.",
+      "lvl": 2
+    },
+    {
+      "q": "What bird can mimic human speech?",
+      "opts": [
+        "Eagle",
+        "Owl",
+        "Crow",
+        "Parrot"
+      ],
+      "a": 3,
+      "expl": "Parrots have a syrinx that allows vocal mimicry.",
+      "lvl": 2
+    },
+    {
+      "q": "What do caterpillars turn into?",
+      "opts": [
+        "Butterflies",
+        "Flies",
+        "Beetles",
+        "Worms"
+      ],
+      "a": 0,
+      "expl": "They undergo metamorphosis into butterflies or moths.",
+      "lvl": 2
+    },
+    {
+      "q": "What has a hard shell on its back?",
+      "opts": [
+        "Frog",
+        "Snake",
+        "Turtle",
+        "Lizard"
+      ],
+      "a": 2,
+      "expl": "Turtles have a protective shell.",
+      "lvl": 2
+    },
+    {
+      "q": "What animal is known for building dams?",
+      "opts": [
+        "Bear",
+        "Otter",
+        "Beaver",
+        "Rat"
+      ],
+      "a": 2,
+      "expl": "Beavers construct dams to create still, deep water.",
+      "lvl": 2
+    },
+    {
+      "q": "What is a baby swan called?",
+      "opts": [
+        "Duckling",
+        "Chick",
+        "Cygnet",
+        "Gosling"
+      ],
+      "a": 2,
+      "expl": "A young swan is a cygnet.",
       "lvl": 3
     },
     {
-      "q": "What causes the Northern Lights?",
+      "q": "What is a marsupial?",
       "opts": [
-        "Reflection of city lights",
-        "Volcanic gases",
-        "Ice crystals reflecting moonlight",
-        "Solar particles interacting with the atmosphere"
+        "Lays eggs",
+        "Lives in water",
+        "Carries young in pouch",
+        "Has cold blood"
       ],
-      "a": 3,
-      "expl": "Auroras occur when charged solar particles interact with Earth's magnetic field, exciting atmospheric gases. Green = oxygen at ~100km; red = oxygen higher; purple = nitrogen.",
-      "lvl": 4
+      "a": 2,
+      "expl": "Kangaroos and koalas are marsupials.",
+      "lvl": 3
     },
     {
-      "q": "What is an apex predator?",
+      "q": "Which bird lays the largest eggs?",
       "opts": [
-        "The smallest predator",
-        "A predator that only eats plants",
-        "A predator in the ocean",
-        "A predator at the top of the food chain"
-      ],
-      "a": 3,
-      "expl": "Apex predators have no natural predators: lions, great whites, polar bears. They regulate prey populations and maintain ecosystem balance.",
-      "lvl": 4
-    },
-    {
-      "q": "What is the largest living organism on Earth?",
-      "opts": [
-        "Honey fungus",
-        "Blue whale",
-        "Giant sequoia",
-        "Elephant"
-      ],
-      "a": 0,
-      "expl": "A honey fungus in Oregon spans about 2,385 acres and is estimated at 2,400-8,650 years old. Blue whales are the largest animals.",
-      "lvl": 4
-    },
-    {
-      "q": "What animal can sleep for up to 3 years?",
-      "opts": [
-        "Koala",
-        "Snail",
-        "Bear",
-        "Bat"
+        "Penguin",
+        "Ostrich",
+        "Emu",
+        "Eagle"
       ],
       "a": 1,
-      "expl": "Some snail species can estivate for up to 3 years during drought, sealing their shells with mucus to retain moisture.",
+      "expl": "Ostrich eggs are the largest of any living bird.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the largest land animal?",
+      "opts": [
+        "Giraffe",
+        "African Elephant",
+        "Rhino",
+        "Hippo"
+      ],
+      "a": 1,
+      "expl": "The African Elephant is the largest terrestrial animal.",
+      "lvl": 3
+    },
+    {
+      "q": "How many legs does an insect have?",
+      "opts": [
+        "4",
+        "6",
+        "10",
+        "8"
+      ],
+      "a": 1,
+      "expl": "All adult insects have 6 legs.",
+      "lvl": 3
+    },
+    {
+      "q": "What do you call a group of lions?",
+      "opts": [
+        "Flock",
+        "Pride",
+        "Pack",
+        "Herd"
+      ],
+      "a": 1,
+      "expl": "A family group of lions is a pride.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the only mammal capable of true flight?",
+      "opts": [
+        "Lemur",
+        "Sugar glider",
+        "Flying squirrel",
+        "Bat"
+      ],
+      "a": 3,
+      "expl": "Bats have wings made of webbed skin.",
+      "lvl": 3
+    },
+    {
+      "q": "What do you call animals that eat both plants and meat?",
+      "opts": [
+        "Omnivores",
+        "Insectivores",
+        "Carnivores",
+        "Herbivores"
+      ],
+      "a": 0,
+      "expl": "Omni means all, vore means eater.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the longest venomous snake?",
+      "opts": [
+        "King Cobra",
+        "Mamba",
+        "Rattlesnake",
+        "Python"
+      ],
+      "a": 0,
+      "expl": "King Cobras can grow over 18 feet long.",
+      "lvl": 3
+    },
+    {
+      "q": "What animal can change its color?",
+      "opts": [
+        "Gecko",
+        "Iguana",
+        "Skink",
+        "Chameleon"
+      ],
+      "a": 3,
+      "expl": "Chameleons alter their skin color for communication or camouflage.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the fastest bird in a dive?",
+      "opts": [
+        "Eagle",
+        "Swift",
+        "Peregrine Falcon",
+        "Hawk"
+      ],
+      "a": 2,
+      "expl": "It can dive at speeds over 240 mph.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the largest living species of lizard?",
+      "opts": [
+        "Monitor Lizard",
+        "Gila Monster",
+        "Komodo Dragon",
+        "Iguana"
+      ],
+      "a": 2,
+      "expl": "Komodo dragons can grow up to 10 feet long.",
+      "lvl": 4
+    },
+    {
+      "q": "What marine animal is known as the 'killer whale'?",
+      "opts": [
+        "Blue Whale",
+        "Dolphin",
+        "Great White",
+        "Orca"
+      ],
+      "a": 3,
+      "expl": "The orca is actually the largest dolphin species.",
+      "lvl": 4
+    },
+    {
+      "q": "What type of animal is a 'Portuguese man o' war'?",
+      "opts": [
+        "Siphonophore",
+        "Jellyfish",
+        "Squid",
+        "Octopus"
+      ],
+      "a": 0,
+      "expl": "It is a colonial organism, not a single jellyfish.",
+      "lvl": 4
+    },
+    {
+      "q": "What is a monotreme?",
+      "opts": [
+        "A flightless insect",
+        "An egg-laying mammal",
+        "A reptile",
+        "A type of bird"
+      ],
+      "a": 1,
+      "expl": "Platypuses and echidnas are the only monotremes.",
+      "lvl": 4
+    },
+    {
+      "q": "What extinct bird was native to Mauritius?",
+      "opts": [
+        "Dodo",
+        "Moa",
+        "Great Auk",
+        "Passenger Pigeon"
+      ],
+      "a": 0,
+      "expl": "The Dodo was hunted to extinction in the 17th century.",
+      "lvl": 4
+    },
+    {
+      "q": "What tree is known to be the tallest in the world?",
+      "opts": [
+        "Sequoia",
+        "Eucalyptus",
+        "Coast Redwood",
+        "Oak"
+      ],
+      "a": 2,
+      "expl": "Hyperion, a Coast Redwood, is over 380 feet tall.",
+      "lvl": 4
+    },
+    {
+      "q": "Which insect is known for its long, epic migrations?",
+      "opts": [
+        "Honeybee",
+        "Locust",
+        "Dragonfly",
+        "Monarch Butterfly"
+      ],
+      "a": 3,
+      "expl": "Monarchs migrate thousands of miles to Mexico.",
+      "lvl": 4
+    },
+    {
+      "q": "What biome has very low temperatures and little precipitation?",
+      "opts": [
+        "Desert",
+        "Taiga",
+        "Tundra",
+        "Savanna"
+      ],
+      "a": 2,
+      "expl": "The tundra is a cold, treeless biome.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the world's largest coral reef system?",
+      "opts": [
+        "Mesoamerican Reef",
+        "Great Barrier Reef",
+        "Florida Reef",
+        "Red Sea Coral"
+      ],
+      "a": 1,
+      "expl": "It is located off the coast of Queensland, Australia.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the technical term for the shedding of an exoskeleton?",
+      "opts": [
+        "Ecdysis",
+        "Autotomy",
+        "Molting",
+        "Metamorphosis"
+      ],
+      "a": 0,
+      "expl": "Ecdysis allows arthropods to grow.",
       "lvl": 5
     },
     {
-      "q": "How do chameleons change color?",
+      "q": "What is the only bird that can fly backwards?",
       "opts": [
-        "Changing skin pigment",
-        "Reflecting light differently",
-        "Producing new pigments",
-        "Shifting nanocrystals in skin cells"
+        "Kingfisher",
+        "Swift",
+        "Woodpecker",
+        "Hummingbird"
       ],
       "a": 3,
-      "expl": "Chameleons have iridophores with nanocrystals. Adjusting crystal spacing reflects different wavelengths, changing apparent color.",
+      "expl": "Their wing structure allows multidirectional flight.",
       "lvl": 5
     },
     {
-      "q": "Which animal has the fastest punch in the animal kingdom?",
+      "q": "What deep-sea creature is known for biological immortality?",
       "opts": [
-        "Kangaroo",
-        "Pistol shrimp",
-        "Boxer crab",
-        "Mantis shrimp"
+        "Coelacanth",
+        "Turritopsis dohrnii",
+        "Giant squid",
+        "Anglerfish"
+      ],
+      "a": 1,
+      "expl": "This jellyfish can revert to its polyp stage.",
+      "lvl": 5
+    },
+    {
+      "q": "What animal has the most powerful bite force relative to its size?",
+      "opts": [
+        "Hippo",
+        "Hyena",
+        "Saltwater Crocodile",
+        "Lion"
+      ],
+      "a": 2,
+      "expl": "Crocodilians have incredibly powerful jaw muscles.",
+      "lvl": 5
+    },
+    {
+      "q": "Which tree species can live for over 5,000 years?",
+      "opts": [
+        "Banyan",
+        "Bristlecone pine",
+        "Baobab",
+        "Yew"
+      ],
+      "a": 1,
+      "expl": "Methuselah is a famous, ancient bristlecone pine.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the main diet of the critically endangered Kakapo?",
+      "opts": [
+        "Fish",
+        "Small rodents",
+        "Plants/seeds",
+        "Insects"
+      ],
+      "a": 2,
+      "expl": "The Kakapo is an herbivorous, flightless parrot.",
+      "lvl": 5
+    },
+    {
+      "q": "What crustacean creates a cavitation bubble that produces light?",
+      "opts": [
+        "Lobster",
+        "King crab",
+        "Mantis shrimp",
+        "Pistol shrimp"
       ],
       "a": 3,
-      "expl": "The mantis shrimp can strike at 80 km/h (50 mph) underwater, generating a cavitation bubble that reaches temperatures nearly as hot as the surface of the sun.",
+      "expl": "The snapping claw produces sonoluminescence.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the term for a plant that grows on another plant without being parasitic?",
+      "opts": [
+        "Xerophyte",
+        "Halophyte",
+        "Epiphyte",
+        "Saprophyte"
+      ],
+      "a": 2,
+      "expl": "Orchids and bromeliads are often epiphytes.",
+      "lvl": 5
+    },
+    {
+      "q": "What rare mammal has venomous spurs on its hind legs?",
+      "opts": [
+        "Echidna",
+        "Platypus",
+        "Solenodon",
+        "Slow loris"
+      ],
+      "a": 1,
+      "expl": "Male platypuses use venom during mating season combat.",
+      "lvl": 5
+    },
+    {
+      "q": "What phenomenon involves a sudden, massive insect emergence every 13/17 years?",
+      "opts": [
+        "Locust swarms",
+        "Moth migration",
+        "Mayfly hatch",
+        "Periodical cicadas"
+      ],
+      "a": 3,
+      "expl": "Brood X is a famous group of 17-year cicadas.",
       "lvl": 5
     }
   ],
   "culture": [
     {
-      "q": "Who painted the Mona Lisa?",
+      "q": "What do you wear on your head?",
       "opts": [
-        "Michelangelo",
-        "Leonardo da Vinci",
-        "Raphael",
-        "Botticelli"
+        "Gloves",
+        "Socks",
+        "Shoes",
+        "Hat"
       ],
-      "a": 1,
-      "expl": "Leonardo da Vinci painted it between 1503-1519. It hangs in the Louvre, Paris, protected by bulletproof glass.",
+      "a": 3,
+      "expl": "Hats provide warmth or shade.",
       "lvl": 1
     },
     {
-      "q": "What is the Japanese art of paper folding called?",
+      "q": "What instrument has black and white keys?",
       "opts": [
-        "Ikebana",
-        "Bonsai",
-        "Origami",
-        "Kintsugi"
+        "Piano",
+        "Flute",
+        "Guitar",
+        "Drum"
+      ],
+      "a": 0,
+      "expl": "Pianos typically have 88 keys.",
+      "lvl": 1
+    },
+    {
+      "q": "What is a popular Italian dish with a round crust?",
+      "opts": [
+        "Tacos",
+        "Sushi",
+        "Pizza",
+        "Burgers"
       ],
       "a": 2,
-      "expl": "Origami: 'ori' (folding) + 'kami' (paper). Traditional origami uses a single square sheet with no cuts or glue.",
+      "expl": "Pizza originated in Naples, Italy.",
       "lvl": 1
     },
     {
-      "q": "In which country did the Olympic Games originate?",
+      "q": "Who delivers presents on Christmas?",
+      "opts": [
+        "Tooth Fairy",
+        "Santa Claus",
+        "Easter Bunny",
+        "Sandman"
+      ],
+      "a": 1,
+      "expl": "Santa Claus is said to bring gifts to children.",
+      "lvl": 1
+    },
+    {
+      "q": "What color means 'stop' at a traffic light?",
+      "opts": [
+        "Red",
+        "Yellow",
+        "Green",
+        "Blue"
+      ],
+      "a": 0,
+      "expl": "Red universally means stop.",
+      "lvl": 1
+    },
+    {
+      "q": "What do people use an umbrella for?",
+      "opts": [
+        "Cold",
+        "Rain",
+        "Snow",
+        "Wind"
+      ],
+      "a": 1,
+      "expl": "Umbrellas protect you from precipitation.",
+      "lvl": 1
+    },
+    {
+      "q": "What is the traditional Halloween activity?",
+      "opts": [
+        "Egg hunt",
+        "Fireworks",
+        "Trick-or-treating",
+        "Caroling"
+      ],
+      "a": 2,
+      "expl": "Children dress up and ask for candy.",
+      "lvl": 1
+    },
+    {
+      "q": "What holiday is on December 25th?",
+      "opts": [
+        "Halloween",
+        "Christmas",
+        "Easter",
+        "Thanksgiving"
+      ],
+      "a": 1,
+      "expl": "Christmas is an annual festival commemorating the birth of Jesus.",
+      "lvl": 1
+    },
+    {
+      "q": "What is a place where you borrow books?",
+      "opts": [
+        "Bank",
+        "Supermarket",
+        "Gym",
+        "Library"
+      ],
+      "a": 3,
+      "expl": "Libraries loan books to the public.",
+      "lvl": 1
+    },
+    {
+      "q": "What sport uses a black and white ball you kick?",
+      "opts": [
+        "Basketball",
+        "Soccer",
+        "Baseball",
+        "Tennis"
+      ],
+      "a": 1,
+      "expl": "Soccer, or association football, is the world's most popular sport.",
+      "lvl": 1
+    },
+    {
+      "q": "What language is 'hola' from?",
+      "opts": [
+        "French",
+        "German",
+        "Spanish",
+        "Italian"
+      ],
+      "a": 2,
+      "expl": "Hola means hello in Spanish.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the currency of the USA?",
+      "opts": [
+        "Euro",
+        "Yen",
+        "Pound",
+        "Dollar"
+      ],
+      "a": 3,
+      "expl": "The United States Dollar is the official currency.",
+      "lvl": 2
+    },
+    {
+      "q": "What genre of music uses a lot of electric guitars and drums?",
+      "opts": [
+        "Classical",
+        "Country",
+        "Rock",
+        "Jazz"
+      ],
+      "a": 2,
+      "expl": "Rock music evolved in the 1950s.",
+      "lvl": 2
+    },
+    {
+      "q": "What do you call a person who directs an orchestra?",
+      "opts": [
+        "Singer",
+        "Conductor",
+        "Musician",
+        "Composer"
+      ],
+      "a": 1,
+      "expl": "Conductors lead the orchestra with a baton.",
+      "lvl": 2
+    },
+    {
+      "q": "What instrument does a guitarist play?",
+      "opts": [
+        "Drum",
+        "Piano",
+        "Flute",
+        "Guitar"
+      ],
+      "a": 3,
+      "expl": "Guitars are stringed musical instruments.",
+      "lvl": 2
+    },
+    {
+      "q": "What holiday is associated with Cupid?",
+      "opts": [
+        "Halloween",
+        "Valentine's Day",
+        "Easter",
+        "Christmas"
+      ],
+      "a": 1,
+      "expl": "Valentine's Day celebrates romance and love.",
+      "lvl": 2
+    },
+    {
+      "q": "What city is famous for the Eiffel Tower?",
+      "opts": [
+        "Berlin",
+        "Paris",
+        "Rome",
+        "London"
+      ],
+      "a": 1,
+      "expl": "The tower was built for the 1889 World's Fair in Paris.",
+      "lvl": 2
+    },
+    {
+      "q": "What is the famous painting of a woman with a mysterious smile?",
+      "opts": [
+        "Last Supper",
+        "Starry Night",
+        "Mona Lisa",
+        "The Scream"
+      ],
+      "a": 2,
+      "expl": "The Mona Lisa is displayed in the Louvre.",
+      "lvl": 2
+    },
+    {
+      "q": "Who wrote the Harry Potter books?",
+      "opts": [
+        "Roald Dahl",
+        "J.R.R. Tolkien",
+        "Stephen King",
+        "J.K. Rowling"
+      ],
+      "a": 3,
+      "expl": "J.K. Rowling created the famous wizarding world.",
+      "lvl": 2
+    },
+    {
+      "q": "What color is the traditional wedding dress in Western culture?",
+      "opts": [
+        "Blue",
+        "White",
+        "Black",
+        "Red"
+      ],
+      "a": 1,
+      "expl": "Queen Victoria popularized the white wedding dress.",
+      "lvl": 2
+    },
+    {
+      "q": "What city is known as the Big Apple?",
+      "opts": [
+        "Los Angeles",
+        "New York City",
+        "Chicago",
+        "Miami"
+      ],
+      "a": 1,
+      "expl": "The nickname originated in the 1920s.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the national sport of Japan?",
+      "opts": [
+        "Judo",
+        "Sumo wrestling",
+        "Karate",
+        "Baseball"
+      ],
+      "a": 1,
+      "expl": "Sumo is deeply tied to Shinto traditions.",
+      "lvl": 3
+    },
+    {
+      "q": "Who composed the 'Four Seasons'?",
+      "opts": [
+        "Vivaldi",
+        "Beethoven",
+        "Mozart",
+        "Bach"
+      ],
+      "a": 0,
+      "expl": "Antonio Vivaldi wrote these famous violin concertos.",
+      "lvl": 3
+    },
+    {
+      "q": "What festival is known as the Festival of Colors?",
+      "opts": [
+        "Holi",
+        "Diwali",
+        "Hanukkah",
+        "Ramadan"
+      ],
+      "a": 0,
+      "expl": "Holi is a popular ancient Hindu festival.",
+      "lvl": 3
+    },
+    {
+      "q": "In Greek mythology, who is the king of the gods?",
+      "opts": [
+        "Apollo",
+        "Poseidon",
+        "Zeus",
+        "Hades"
+      ],
+      "a": 2,
+      "expl": "Zeus ruled from Mount Olympus.",
+      "lvl": 3
+    },
+    {
+      "q": "What religion was founded by Siddhartha Gautama?",
+      "opts": [
+        "Hinduism",
+        "Buddhism",
+        "Christianity",
+        "Islam"
+      ],
+      "a": 1,
+      "expl": "He became known as the Buddha.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the currency of the UK?",
+      "opts": [
+        "Euro",
+        "Pound",
+        "Franc",
+        "Dollar"
+      ],
+      "a": 1,
+      "expl": "The Pound Sterling is the oldest currency still in use.",
+      "lvl": 3
+    },
+    {
+      "q": "What artist is famous for cutting off part of his ear?",
+      "opts": [
+        "Picasso",
+        "Van Gogh",
+        "Dali",
+        "Monet"
+      ],
+      "a": 1,
+      "expl": "Vincent van Gogh famously mutilated his ear.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the traditional clothing of Japan?",
+      "opts": [
+        "Hanbok",
+        "Kilt",
+        "Kimono",
+        "Sari"
+      ],
+      "a": 2,
+      "expl": "A kimono is a traditional Japanese garment.",
+      "lvl": 3
+    },
+    {
+      "q": "What dance originated in Argentina?",
+      "opts": [
+        "Flamenco",
+        "Waltz",
+        "Tango",
+        "Salsa"
+      ],
+      "a": 2,
+      "expl": "The tango originated in the border area of Argentina and Uruguay.",
+      "lvl": 3
+    },
+    {
+      "q": "What is the currency of Japan?",
+      "opts": [
+        "Baht",
+        "Yen",
+        "Won",
+        "Yuan"
+      ],
+      "a": 1,
+      "expl": "The Japanese yen is the official currency.",
+      "lvl": 4
+    },
+    {
+      "q": "Who wrote the epic poem 'The Divine Comedy'?",
+      "opts": [
+        "Milton",
+        "Virgil",
+        "Dante Alighieri",
+        "Homer"
+      ],
+      "a": 2,
+      "expl": "Dante wrote it in the 14th century.",
+      "lvl": 4
+    },
+    {
+      "q": "In Norse mythology, what is the name of Thor's hammer?",
+      "opts": [
+        "Gungnir",
+        "Excalibur",
+        "Aegis",
+        "Mjolnir"
+      ],
+      "a": 3,
+      "expl": "Mjolnir is depicted as one of the most fearsome weapons.",
+      "lvl": 4
+    },
+    {
+      "q": "What famous architect designed the Sagrada Familia?",
+      "opts": [
+        "Antoni Gaudi",
+        "Le Corbusier",
+        "I.M. Pei",
+        "Frank Lloyd Wright"
+      ],
+      "a": 0,
+      "expl": "Gaudi's masterpiece is still under construction in Barcelona.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the primary language spoken in Brazil?",
+      "opts": [
+        "Portuguese",
+        "English",
+        "French",
+        "Spanish"
+      ],
+      "a": 0,
+      "expl": "Brazil was colonized by Portugal.",
+      "lvl": 4
+    },
+    {
+      "q": "Who painted the ceiling of the Sistine Chapel?",
+      "opts": [
+        "Raphael",
+        "Michelangelo",
+        "Da Vinci",
+        "Donatello"
+      ],
+      "a": 1,
+      "expl": "Michelangelo painted it in the early 16th century.",
+      "lvl": 4
+    },
+    {
+      "q": "What ancient wonder was located in Alexandria?",
+      "opts": [
+        "Hanging Gardens",
+        "Pyramid",
+        "Colossus",
+        "Lighthouse"
+      ],
+      "a": 3,
+      "expl": "The Lighthouse of Alexandria was built by the Ptolemaic Kingdom.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the name of the traditional Maori war dance?",
+      "opts": [
+        "Corroboree",
+        "Haka",
+        "Hula",
+        "Siva"
+      ],
+      "a": 1,
+      "expl": "The haka is performed by New Zealanders, famously by the All Blacks.",
+      "lvl": 4
+    },
+    {
+      "q": "What philosophy is associated with yin and yang?",
+      "opts": [
+        "Confucianism",
+        "Shinto",
+        "Buddhism",
+        "Daoism/Taoism"
+      ],
+      "a": 3,
+      "expl": "Yin and yang describe interconnected opposite forces.",
+      "lvl": 4
+    },
+    {
+      "q": "What Indian festival is known as the Festival of Lights?",
+      "opts": [
+        "Dussehra",
+        "Holi",
+        "Diwali",
+        "Navratri"
+      ],
+      "a": 2,
+      "expl": "Diwali symbolizes the spiritual victory of light over darkness.",
+      "lvl": 4
+    },
+    {
+      "q": "What is the name of the sacred text of Islam?",
+      "opts": [
+        "Vedas",
+        "Quran",
+        "Torah",
+        "Bible"
+      ],
+      "a": 1,
+      "expl": "Muslims believe the Quran was revealed to Muhammad.",
+      "lvl": 5
+    },
+    {
+      "q": "What museum houses the Rosetta Stone?",
+      "opts": [
+        "British Museum",
+        "Smithsonian",
+        "Metropolitan",
+        "Louvre"
+      ],
+      "a": 0,
+      "expl": "It has been on public display at the British Museum since 1802.",
+      "lvl": 5
+    },
+    {
+      "q": "What is the term for a Japanese poetic form of 5, 7, and 5 syllables?",
+      "opts": [
+        "Senryu",
+        "Renga",
+        "Haiku",
+        "Tanka"
+      ],
+      "a": 2,
+      "expl": "Haiku focus on nature or a specific moment in time.",
+      "lvl": 5
+    },
+    {
+      "q": "What was the first full-length animated feature film by Disney?",
+      "opts": [
+        "Fantasia",
+        "Dumbo",
+        "Snow White and the Seven Dwarfs",
+        "Pinocchio"
+      ],
+      "a": 2,
+      "expl": "It was released in 1937 and revolutionized animation.",
+      "lvl": 5
+    },
+    {
+      "q": "Who wrote the existentialist novel 'The Stranger'?",
+      "opts": [
+        "Albert Camus",
+        "Simone de Beauvoir",
+        "Jean-Paul Sartre",
+        "Franz Kafka"
+      ],
+      "a": 0,
+      "expl": "Camus published 'L'Etranger' in 1942.",
+      "lvl": 5
+    },
+    {
+      "q": "In which country did the Renaissance movement begin?",
       "opts": [
         "Italy",
-        "Egypt",
-        "Turkey",
-        "Greece"
-      ],
-      "a": 3,
-      "expl": "Ancient Olympics began in 776 BC in Olympia, Greece. The modern Olympics were revived in 1896 in Athens.",
-      "lvl": 1
-    },
-    {
-      "q": "What instrument has 88 keys?",
-      "opts": [
-        "Harpsichord",
-        "Organ",
-        "Accordion",
-        "Piano"
-      ],
-      "a": 3,
-      "expl": "A standard piano has 88 keys: 52 white and 36 black, spanning over 7 octaves. Bösendorfer makes a 97-key model.",
-      "lvl": 2
-    },
-    {
-      "q": "Who wrote 'Romeo and Juliet'?",
-      "opts": [
-        "Charles Dickens",
-        "William Shakespeare",
-        "Jane Austen",
-        "Mark Twain"
-      ],
-      "a": 1,
-      "expl": "Shakespeare wrote it around 1594-96, adapting from Arthur Brooke's 1562 poem. It's his most performed play.",
-      "lvl": 2
-    },
-    {
-      "q": "What is calligraphy?",
-      "opts": [
-        "Sculpture making",
-        "Pottery decoration",
-        "The art of beautiful handwriting",
-        "Fabric weaving"
-      ],
-      "a": 2,
-      "expl": "Calligraphy means 'beautiful writing' from Greek. Major traditions include Chinese, Arabic, and Western calligraphy.",
-      "lvl": 2
-    },
-    {
-      "q": "What does red symbolize in Chinese culture?",
-      "opts": [
-        "Mourning",
-        "Danger",
-        "Good luck and prosperity",
-        "Royalty only"
-      ],
-      "a": 2,
-      "expl": "Red symbolizes good fortune and prosperity in Chinese culture. It's used in weddings, Lunar New Year, and red envelopes (hongbao).",
-      "lvl": 3
-    },
-    {
-      "q": "What is Diwali?",
-      "opts": [
-        "A Chinese festival",
-        "Hindu festival of lights",
-        "A Japanese holiday",
-        "A Buddhist meditation"
-      ],
-      "a": 1,
-      "expl": "Diwali celebrates the victory of light over darkness. It lasts 5 days, featuring lamps (diyas), fireworks, rangoli art, and sweets.",
-      "lvl": 3
-    },
-    {
-      "q": "What does 'Renaissance' literally mean?",
-      "opts": [
-        "New beginning",
-        "Golden age",
-        "Enlightenment",
-        "Rebirth"
-      ],
-      "a": 3,
-      "expl": "Renaissance means 'rebirth' in French, referring to the revival of classical Greek and Roman culture beginning in 14th-century Italy.",
-      "lvl": 3
-    },
-    {
-      "q": "What is the Day of the Dead (Día de los Muertos)?",
-      "opts": [
-        "Mexican celebration honoring deceased loved ones",
-        "A horror movie",
-        "A day of mourning",
-        "A war remembrance"
+        "Greece",
+        "Spain",
+        "France"
       ],
       "a": 0,
-      "expl": "This Mexican holiday (Nov 1-2) celebrates deceased loved ones with ofrendas, marigolds, and sugar skulls, blending Aztec and Catholic traditions.",
-      "lvl": 4
-    },
-    {
-      "q": "Which country invented tea?",
-      "opts": [
-        "India",
-        "Japan",
-        "China",
-        "England"
-      ],
-      "a": 2,
-      "expl": "Legend says Emperor Shen Nung discovered tea in 2737 BC when leaves blew into his boiling water. China cultivated tea for millennia.",
-      "lvl": 4
-    },
-    {
-      "q": "What is the significance of the Torah?",
-      "opts": [
-        "Islamic holy book",
-        "A Buddhist text",
-        "First five books of the Hebrew Bible",
-        "A Hindu epic"
-      ],
-      "a": 2,
-      "expl": "The Torah contains Genesis, Exodus, Leviticus, Numbers, and Deuteronomy — the foundation of Jewish law and tradition.",
-      "lvl": 4
-    },
-    {
-      "q": "What is Maori haka?",
-      "opts": [
-        "A type of food",
-        "A musical instrument",
-        "A form of painting",
-        "A traditional dance/challenge"
-      ],
-      "a": 3,
-      "expl": "The haka is a ceremonial Maori war dance with rhythmic movements and chanting, performed at significant events including rugby matches.",
+      "expl": "The Renaissance started in Florence, Italy, in the 14th century.",
       "lvl": 5
     },
     {
-      "q": "What is Kintsugi?",
+      "q": "What traditional Korean fermented side dish is made of vegetables and seasonings?",
       "opts": [
-        "Japanese art of repairing pottery with gold",
-        "Japanese sword-making",
-        "A tea ceremony",
-        "Martial arts"
+        "Bulgogi",
+        "Kimchi",
+        "Tteokbokki",
+        "Bibimbap"
       ],
-      "a": 0,
-      "expl": "Kintsugi repairs broken pottery with lacquer mixed with gold, embracing imperfection — breakage becomes part of the object's beautiful history.",
+      "a": 1,
+      "expl": "Kimchi is a staple in Korean cuisine.",
       "lvl": 5
     },
     {
-      "q": "What architectural style is the Sagrada Família?",
+      "q": "What instrument is used to play classical Indian music, popularised by Ravi Shankar?",
+      "opts": [
+        "Sarod",
+        "Sitar",
+        "Tabla",
+        "Flute"
+      ],
+      "a": 1,
+      "expl": "The sitar is a plucked stringed instrument.",
+      "lvl": 5
+    },
+    {
+      "q": "What Mesoamerican civilization is known for its complex calendar system?",
+      "opts": [
+        "Inca",
+        "Aztec",
+        "Olmec",
+        "Maya"
+      ],
+      "a": 3,
+      "expl": "The Maya calendar system is extremely precise.",
+      "lvl": 5
+    },
+    {
+      "q": "Which architectural style is characterized by pointed arches and flying buttresses?",
       "opts": [
         "Gothic",
+        "Neoclassical",
         "Baroque",
-        "Art Nouveau / Modernisme",
-        "Neoclassical"
+        "Romanesque"
       ],
-      "a": 2,
-      "expl": "Gaudí's Sagrada Família blends Art Nouveau with organic natural forms. Begun in 1882, it's still under construction.",
+      "a": 0,
+      "expl": "Gothic architecture flourished in Europe during the High and Late Middle Ages.",
       "lvl": 5
     }
   ]

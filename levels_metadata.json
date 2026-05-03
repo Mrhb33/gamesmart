@@ -1,0 +1,51 @@
+{
+  "science": [
+    { "title": "Apprentice", "subtitle": "Spark of Discovery", "theme": "Introduction to the natural laws.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Atomic Horizons", "theme": "Journey into the building blocks.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Genetic Code", "theme": "Unraveling the mysteries of life.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Cosmic Expanse", "theme": "Looking out into the infinite.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Quantum Summit", "theme": "The ultimate test of physical reality.", "bossIndex": 9 }
+  ],
+  "history": [
+    { "title": "Apprentice", "subtitle": "Dawn of Time", "theme": "First steps of human civilization.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Empires Rise", "theme": "The age of conquest and kings.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Age of Discovery", "theme": "Sailing into the unknown.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Industrial Forge", "theme": "The world transforms rapidly.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Modern Era", "theme": "The complexities of the 20th century.", "bossIndex": 9 }
+  ],
+  "geography": [
+    { "title": "Apprentice", "subtitle": "Local Mapper", "theme": "Knowing your immediate surroundings.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Continental Drift", "theme": "Crossing vast landmasses.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Ocean Depths", "theme": "The secrets of the seven seas.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "High Peaks", "theme": "Scaling the tallest mountains.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Global Atlas", "theme": "Mastery over the entire Earth.", "bossIndex": 9 }
+  ],
+  "math": [
+    { "title": "Apprentice", "subtitle": "Number Sense", "theme": "The foundational arithmetic.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Geometry Basics", "theme": "Shapes, angles, and spaces.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Algebraic Logic", "theme": "Solving for the unknown variables.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Calculus Flow", "theme": "The mathematics of change.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Abstract Theory", "theme": "Entering the realm of pure logic.", "bossIndex": 9 }
+  ],
+  "language": [
+    { "title": "Apprentice", "subtitle": "First Words", "theme": "Building vocabulary and grammar.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Syntax Structure", "theme": "Forming complex sentences.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Literary Arts", "theme": "Exploring poetry and prose.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Linguistic Roots", "theme": "The origins of human speech.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Polyglot's Mind", "theme": "Mastery of communication nuances.", "bossIndex": 9 }
+  ],
+  "nature": [
+    { "title": "Apprentice", "subtitle": "Backyard Biology", "theme": "Flora and fauna nearby.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Forest Canopy", "theme": "Deep into the woods.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Desert Sands", "theme": "Life finding a way in harsh conditions.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Ocean Reefs", "theme": "Biodiversity beneath the waves.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Ecosystem Balance", "theme": "The interconnected web of life.", "bossIndex": 9 }
+  ],
+  "culture": [
+    { "title": "Apprentice", "subtitle": "Local Traditions", "theme": "Customs close to home.", "bossIndex": 9 },
+    { "title": "Explorer", "subtitle": "Global Festivities", "theme": "How the world celebrates.", "bossIndex": 9 },
+    { "title": "Scholar", "subtitle": "Culinary Arts", "theme": "The taste of different societies.", "bossIndex": 9 },
+    { "title": "Master", "subtitle": "Fine Arts", "theme": "Masterpieces of human creativity.", "bossIndex": 9 },
+    { "title": "Grandmaster", "subtitle": "Human Heritage", "theme": "The shared cultural tapestry.", "bossIndex": 9 }
+  ]
+}

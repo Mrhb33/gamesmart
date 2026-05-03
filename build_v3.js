@@ -1,16 +1,44 @@
+#!/usr/bin/env node
+/**
+ * build_v3.js — Builds the production Cerebrum Quest HTML.
+ *
+ * Usage:
+ *   node build_v3.js [--input template.html] [--output main.html] [--questions questions.json]
+ *
+ * Defaults to files in the script's own directory.
+ */
+
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
+
+// Parse CLI args
+const args = process.argv.slice(2);
+function getArg(flag, def) {
+  const idx = args.indexOf(flag);
+  if (idx !== -1 && args[idx + 1]) return path.resolve(args[idx + 1]);
+  return def;
+}
+
+const inputFile  = getArg('--input',  path.join(__dirname, 'template.html'));
+const outputFile = getArg('--output', path.join(__dirname, 'main.html'));
+const questionsFile = getArg('--questions', path.join(__dirname, 'questions.json'));
 
 // Validate questions before building
 console.log('Validating question set...');
 try {
-  execSync('node validate_questions.js', { stdio: 'inherit', cwd: __dirname });
+  execSync(`node "${path.join(__dirname, 'validate_questions.js')}" "${questionsFile}"`, { stdio: 'inherit' });
 } catch (e) {
-  console.error('\nBUILD ABORTED: Question validation failed. Fix questions.json before building.');
+  console.error('\nBUILD ABORTED: Question validation failed. Fix questions before building.');
   process.exit(1);
 }
 
-let html = fs.readFileSync('c:/smartgame/main.html', 'utf8');
+if (!fs.existsSync(inputFile)) {
+  console.error(`BUILD ABORTED: Input file not found: ${inputFile}`);
+  process.exit(1);
+}
+
+let html = fs.readFileSync(inputFile, 'utf8');
 
 // Helper: insert once (replace marker if already injected)
 function injectAfter(html, marker, content, uniqueId) {
@@ -20,10 +48,6 @@ function injectAfter(html, marker, content, uniqueId) {
 function injectBefore(html, marker, content, uniqueId) {
   if (html.includes(uniqueId)) return html;
   return html.replace(marker, content + '\n' + marker);
-}
-function replaceOnce(html, search, replace, uniqueId) {
-  if (html.includes(uniqueId)) return html;
-  return html.replace(search, replace);
 }
 
 // 1. PWA manifest
@@ -59,12 +83,9 @@ if (!html.includes('id="sShop"')) {
 }
 
 // 5. Add Coins to Results (only once)
-if (!document.getElementById ? true : !html.includes('id="resCoins"')) {
-  // Add coins result box before correct box if not already there
+if (!html.includes('id="resCoins"')) {
   let coinsBox = '<div class="result-detail-box"><div class="val" style="color:#eab308" id="resCoins">0</div><div class="lbl">Coins</div></div>';
-  if (!html.includes('id="resCoins"')) {
-    html = html.replace('<div class="result-detail-box"><div class="val" style="color:var(--accent2)" id="resCorrect">', coinsBox + '\n      <div class="result-detail-box"><div class="val" style="color:var(--accent2)" id="resCorrect">');
-  }
+  html = html.replace('<div class="result-detail-box"><div class="val" style="color:var(--accent2)" id="resCorrect">', coinsBox + '\n      <div class="result-detail-box"><div class="val" style="color:var(--accent2)" id="resCorrect">');
 }
 
 // 6. Add Share button (only once)
@@ -104,7 +125,7 @@ function loadState() {
       S.newAchievements = new Set(S.newAchievements||[]);
       S.unlockedAchievements = new Set(S.unlockedAchievements||[]);
     }
-  }catch(e){localStorage.removeItem('cerebrum_save');}
+  }catch(e){}
 }
 loadState(); document.addEventListener('DOMContentLoaded', () => { if(S.playerName !== 'Explorer') updateAvatars(); });
 
@@ -123,7 +144,7 @@ function renderShop() {
     let card = document.createElement('div'); card.className = 'category-card';
     card.innerHTML = \`<div class="cat-icon"><i class="fas \${a.icon}"></i></div>
       <div class="cat-name">Avatar \${a.id}</div>
-      <div style="margin-top:12px;">\${unl ? (S.avatar===a.id ? '<button class="btn btn-gold btn-sm disabled">Equipped</button>' : '<button class="btn btn-ghost btn-sm" onclick="equipAva(\\''+a.id+'\\')">Equip</button>') : '<button class="btn btn-gold btn-sm" onclick="buyAva(\\''+a.id+'\\', '+a.cost+')"><i class="fas fa-coins"></i> '+a.cost+'</button>'}</div>\`;
+      <div style="margin-top:12px;">\${unl ? (S.avatar===a.id ? '<button class="btn btn-gold btn-sm disabled">Equipped</button>' : '<button class="btn btn-ghost btn-sm" onclick="equipAva(\\''+a.id+'\\')">Equip</button>') : '<button class="btn btn-gold btn-sm" onclick="buyAva(\\''+a.id+'\\', '+a.cost+')"><i class="fas fa-coins"></i> '+cost+'</button>'}</div>\`;
     grid.appendChild(card);
   });
 }
@@ -140,11 +161,10 @@ function updateAvatars() {
 }
 
 function startDaily() {
-  if(!requireQuestions()) return;
   sfxK();
   let today = new Date().toDateString();
   if(S.lastDaily === today) { showToast('Daily Challenge already completed!'); return; }
-  S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex=0; S.quizScore=0; S.quizStreak=0; S.quizXP=0; S.lastQuizAnswers=[]; S.quizStarted=false;
+  S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex=0; S.quizScore=0; S.quizStreak=0; S.quizXP=0; S.lastQuizAnswers=[];
 
   let allHard = [];
   Object.values(QUESTIONS).forEach(arr => allHard.push(...arr.filter(q=>q.lvl>=4)));
@@ -240,9 +260,6 @@ if (html.includes("else if (t === 'achievements')") && !html.includes("else if (
   html = html.replace("else if (t === 'achievements')", "else if (t === 'shop') isActive = id === 'sShop';\n    else if (t === 'achievements')");
 }
 
-// Update loadQ to call updateLL (only once - just ensure it's there)
-// This is handled in the loadQ function itself
-
 // Connect shareBtn (only once)
 if (!html.includes("let sBtn = document.getElementById('shareBtn');")) {
   html = html.replace("document.getElementById('reviewBtn').onclick", "let sBtn = document.getElementById('shareBtn'); if(sBtn) sBtn.onclick=tryShare;\n  document.getElementById('reviewBtn').onclick");
@@ -258,5 +275,5 @@ if (!html.includes("document.getElementById('profileName').textContent=S.playerN
   html = html.replace("document.getElementById('profileName').textContent=S.playerName;", "document.getElementById('profileName').textContent=S.playerName; updateAvatars();");
 }
 
-fs.writeFileSync('c:/smartgame/main.html', html);
-console.log('Successfully built v3 HTML.');
+fs.writeFileSync(outputFile, html, 'utf8');
+console.log(`Successfully built: ${outputFile}`);

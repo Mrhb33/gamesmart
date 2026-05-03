@@ -10,15 +10,34 @@
  *   5. Answer positions are reasonably balanced across A/B/C/D
  *   6. No duplicated questions in the same category
  *   7. Questions are mobile-friendly (not too long, not empty)
+ *   8. Every category has exactly 5 levels
+ *   9. Every level has the target number of questions (default: 7)
+ *  10. Each level uses at least 2–3 different correct answer positions
+ *  11. No duplicate options within a question
+ *  12. Explanations are present and not too long
+ *  13. No suspicious phrases like "Both A and B" unless whitelisted
  *
- * Usage:  node validate_questions.js [questions.json]
+ * Usage:  node validate_questions.js [questions.json] [--target N]
  * Exit code 1 if unhealthy, 0 if OK.
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const file = process.argv[2] || path.join(__dirname, 'questions.json');
+const args = process.argv.slice(2);
+const fileArg = args.find(a => !a.startsWith('--'));
+const targetArg = args.find(a => a.startsWith('--target'));
+const TARGET_QUESTIONS = targetArg ? parseInt(targetArg.split('=')[1] || targetArg.split(' ')[1], 10) : 10;
+const file = fileArg || path.join(__dirname, 'questions.json');
+
+const SUSPICIOUS_PHRASES = [
+  'both a and b',
+  'both b and c',
+  'both c and d',
+  'both a and c',
+  'all of the above',
+  'none of the above',
+];
 
 if (!fs.existsSync(file)) {
   console.error(`FAIL: File not found: ${file}`);
@@ -42,6 +61,7 @@ if (typeof data !== 'object' || Array.isArray(data)) {
 }
 
 const categories = Object.keys(data);
+const EXPECTED_LEVELS = 5;
 
 categories.forEach(cat => {
   const arr = data[cat];
@@ -52,6 +72,35 @@ categories.forEach(cat => {
   if (arr.length === 0) {
     errors.push(`${cat}: empty question array`);
     return;
+  }
+
+  // 8. Check exactly 5 levels
+  const levelsFound = new Set(arr.map(q => q.lvl));
+  for (let l = 1; l <= EXPECTED_LEVELS; l++) {
+    if (!levelsFound.has(l)) {
+      errors.push(`${cat}: missing level ${l}`);
+    }
+  }
+  for (const l of levelsFound) {
+    if (l < 1 || l > EXPECTED_LEVELS) {
+      errors.push(`${cat}: unexpected level ${l}`);
+    }
+  }
+
+  // 9. Check target question count per level
+  const levelCounts = {};
+  arr.forEach(q => {
+    if (typeof q.lvl === 'number') {
+      levelCounts[q.lvl] = (levelCounts[q.lvl] || 0) + 1;
+    }
+  });
+  for (let l = 1; l <= EXPECTED_LEVELS; l++) {
+    const count = levelCounts[l] || 0;
+    if (count < TARGET_QUESTIONS) {
+      errors.push(`${cat} level ${l}: has ${count} questions, expected at least ${TARGET_QUESTIONS}`);
+    } else if (count > TARGET_QUESTIONS) {
+      warnings.push(`${cat} level ${l}: has ${count} questions, target is ${TARGET_QUESTIONS}`);
+    }
   }
 
   const seen = new Set();
@@ -87,6 +136,16 @@ categories.forEach(cat => {
           warnings.push(`${label}: opts[${oi}] is ${opt.length} chars (over 100, may be hard to read on mobile)`);
         }
       });
+
+      // 11. No duplicate options within a question
+      const optTexts = q.opts.map(o => (typeof o === 'string' ? o.trim().toLowerCase() : ''));
+      for (let a = 0; a < optTexts.length; a++) {
+        for (let b = a + 1; b < optTexts.length; b++) {
+          if (optTexts[a] && optTexts[a] === optTexts[b]) {
+            errors.push(`${label}: duplicate options "${q.opts[a]}" at positions ${a} and ${b}`);
+          }
+        }
+      }
     }
 
     // 3. a is integer 0–3
@@ -95,8 +154,39 @@ categories.forEach(cat => {
     }
 
     // 1. lvl check
-    if (typeof q.lvl !== 'number' || !Number.isInteger(q.lvl) || q.lvl < 1 || q.lvl > 5) {
-      errors.push(`${label}: level "lvl" is ${q.lvl}, expected 1–5`);
+    if (typeof q.lvl !== 'number' || !Number.isInteger(q.lvl) || q.lvl < 1 || q.lvl > EXPECTED_LEVELS) {
+      errors.push(`${label}: level "lvl" is ${q.lvl}, expected 1–${EXPECTED_LEVELS}`);
+    }
+
+    // 12. Explanations present and not too long
+    if (q.expl !== undefined && q.expl !== null) {
+      if (typeof q.expl !== 'string' || q.expl.trim().length === 0) {
+        errors.push(`${label}: explanation is empty`);
+      } else if (q.expl.length > 300) {
+        warnings.push(`${label}: explanation is ${q.expl.length} chars (over 300, may be too long)`);
+      }
+    }
+
+    // 13. Suspicious phrases
+    if (typeof q.q === 'string') {
+      const qLower = q.q.toLowerCase();
+      SUSPICIOUS_PHRASES.forEach(phrase => {
+        if (qLower.includes(phrase)) {
+          warnings.push(`${label}: question contains suspicious phrase "${phrase}"`);
+        }
+      });
+    }
+    if (Array.isArray(q.opts)) {
+      q.opts.forEach((opt, oi) => {
+        if (typeof opt === 'string') {
+          const oLower = opt.toLowerCase();
+          SUSPICIOUS_PHRASES.forEach(phrase => {
+            if (oLower.includes(phrase)) {
+              warnings.push(`${label}: opts[${oi}] contains suspicious phrase "${phrase}"`);
+            }
+          });
+        }
+      });
     }
 
     // 6. Duplicate detection
@@ -127,14 +217,21 @@ categories.forEach(cat => {
     }
   }
 
-  // Also check per-level
+  // Per-level answer diversity
   const levels = {};
   arr.forEach(q => {
     if (!levels[q.lvl]) levels[q.lvl] = [];
     levels[q.lvl].push(q.a);
   });
   Object.entries(levels).forEach(([lvl, answers]) => {
-    const unique = new Set(answers);
+    const unique = new Set(answers.filter(a => typeof a === 'number' && a >= 0 && a <= 3));
+    // 10. Each level needs at least 2-3 different positions
+    if (answers.length >= 3 && unique.size < 2) {
+      errors.push(`${cat} level ${lvl}: only ${unique.size} answer position(s) used — need at least 2`);
+    }
+    if (answers.length >= 5 && unique.size < 3) {
+      warnings.push(`${cat} level ${lvl}: only ${unique.size} answer positions used across ${answers.length} questions — consider using 3+`);
+    }
     if (answers.length >= 3 && unique.size === 1) {
       errors.push(`${cat} level ${lvl}: all ${answers.length} answers at position ${answers[0]}`);
     }
@@ -144,11 +241,15 @@ categories.forEach(cat => {
 // Summary
 console.log(`\n=== Question Set Validation ===`);
 console.log(`File: ${file}`);
+console.log(`Target questions per level: ${TARGET_QUESTIONS}`);
 console.log(`Categories: ${categories.length}`);
 let totalQ = 0;
 categories.forEach(c => {
+  const lvlCounts = {};
+  data[c].forEach(q => { lvlCounts[q.lvl] = (lvlCounts[q.lvl] || 0) + 1; });
   totalQ += data[c].length;
-  console.log(`  ${c}: ${data[c].length} questions`);
+  const lvlSummary = Array.from({length: EXPECTED_LEVELS}, (_, i) => `L${i+1}:${lvlCounts[i+1] || 0}`).join(' ');
+  console.log(`  ${c}: ${data[c].length} questions [${lvlSummary}]`);
 });
 console.log(`Total questions: ${totalQ}`);
 
@@ -160,6 +261,10 @@ categories.forEach(cat => {
   });
 });
 console.log(`Answer distribution: A=${globalDist[0]} B=${globalDist[1]} C=${globalDist[2]} D=${globalDist[3]}`);
+const totalAnswers = Object.values(globalDist).reduce((a, b) => a + b, 0);
+if (totalAnswers > 0) {
+  console.log(`Answer percentages: A=${Math.round(globalDist[0]/totalAnswers*100)}% B=${Math.round(globalDist[1]/totalAnswers*100)}% C=${Math.round(globalDist[2]/totalAnswers*100)}% D=${Math.round(globalDist[3]/totalAnswers*100)}%`);
+}
 
 if (warnings.length > 0) {
   console.log(`\n--- Warnings (${warnings.length}) ---`);
