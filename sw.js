@@ -1,5 +1,5 @@
-const CACHE_NAME = 'cerebrum-dynamic';
-const PRECACHE_ASSETS = ['./main.html', './manifest.json'];
+const CACHE_NAME = 'cerebrum-v4';
+const PRECACHE_ASSETS = ['./main.html', './manifest.json', './questions.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -15,6 +15,11 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(names =>
+      Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n)))
+    )
+  );
   self.clients.claim();
 });
 

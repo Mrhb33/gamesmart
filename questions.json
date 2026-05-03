@@ -3,24 +3,24 @@
     {
       "q": "What is the chemical symbol for gold?",
       "opts": [
-        "Au",
         "Ag",
         "Fe",
-        "Cu"
+        "Cu",
+        "Au"
       ],
-      "a": 0,
+      "a": 3,
       "expl": "Au comes from the Latin 'aurum' meaning gold. Silver is Ag (argentum), Iron is Fe (ferrum), Copper is Cu (cuprum).",
       "lvl": 1
     },
     {
       "q": "What planet is known as the Red Planet?",
       "opts": [
-        "Venus",
         "Mars",
+        "Venus",
         "Jupiter",
         "Saturn"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Mars appears red due to iron oxide (rust) on its surface. It has the largest volcano in the solar system — Olympus Mons.",
       "lvl": 1
     },
@@ -29,10 +29,10 @@
       "opts": [
         "Nucleus",
         "Ribosome",
-        "Mitochondria",
-        "Golgi apparatus"
+        "Golgi apparatus",
+        "Mitochondria"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Mitochondria generate most of the cell's ATP (adenosine triphosphate), the energy currency. They have their own DNA.",
       "lvl": 1
     },
@@ -40,11 +40,11 @@
       "q": "What particle has a negative charge?",
       "opts": [
         "Proton",
-        "Neutron",
         "Electron",
+        "Neutron",
         "Photon"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Electrons carry a negative charge (-1). Protons are positive (+1), neutrons are neutral, and photons carry no charge.",
       "lvl": 2
     },
@@ -63,12 +63,12 @@
     {
       "q": "What is the speed of light approximately?",
       "opts": [
-        "300,000 km/s",
         "150,000 km/s",
         "500,000 km/s",
-        "1,000,000 km/s"
+        "1,000,000 km/s",
+        "300,000 km/s"
       ],
-      "a": 0,
+      "a": 3,
       "expl": "Light travels at approximately 299,792 km/s in a vacuum. This is the universal speed limit according to Einstein's relativity.",
       "lvl": 2
     },
@@ -76,11 +76,11 @@
       "q": "What is the most abundant gas in Earth's atmosphere?",
       "opts": [
         "Oxygen",
-        "Carbon dioxide",
         "Nitrogen",
+        "Carbon dioxide",
         "Argon"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Nitrogen makes up about 78% of Earth's atmosphere. Oxygen is about 21%, and argon roughly 0.93%.",
       "lvl": 3
     },
@@ -88,11 +88,11 @@
       "q": "What phenomenon causes a rainbow?",
       "opts": [
         "Reflection only",
-        "Refraction and dispersion",
         "Diffraction",
+        "Refraction and dispersion",
         "Absorption"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Rainbows form when sunlight is refracted, dispersed, and reflected inside water droplets, splitting white light into its component colors.",
       "lvl": 3
     },
@@ -100,11 +100,11 @@
       "q": "What is the atomic number of Carbon?",
       "opts": [
         "4",
-        "6",
         "8",
+        "6",
         "12"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Carbon has 6 protons, giving it atomic number 6. It forms 4 covalent bonds, making it the backbone of organic chemistry.",
       "lvl": 3
     },
@@ -113,10 +113,10 @@
       "opts": [
         "Liver",
         "Kidney",
-        "Pancreas",
-        "Spleen"
+        "Spleen",
+        "Pancreas"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "The pancreas contains beta cells in the Islets of Langerhans that produce insulin to regulate blood sugar.",
       "lvl": 4
     },
@@ -124,11 +124,11 @@
       "q": "What type of bond involves sharing electrons?",
       "opts": [
         "Ionic",
-        "Covalent",
         "Metallic",
+        "Covalent",
         "Hydrogen"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "In covalent bonds, atoms share electron pairs. Ionic bonds involve electron transfer. Most bonds have some character of both.",
       "lvl": 4
     },
@@ -159,12 +159,12 @@
     {
       "q": "What is the Heisenberg Uncertainty Principle?",
       "opts": [
-        "You can't know both position and momentum exactly",
         "Energy is always conserved",
+        "You can't know both position and momentum exactly",
         "Every action has a reaction",
         "Electrons orbit in fixed paths"
       ],
-      "a": 0,
+      "a": 1,
       "expl": "Heisenberg showed that precisely knowing a particle's position limits knowledge of its momentum, and vice versa — fundamental to quantum mechanics.",
       "lvl": 5
     },
@@ -172,11 +172,11 @@
       "q": "What is dark matter?",
       "opts": [
         "Antimatter",
-        "Unseen matter detected by gravity",
         "Black holes",
-        "Empty space energy"
+        "Empty space energy",
+        "Unseen matter detected by gravity"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "Dark matter doesn't interact with electromagnetic radiation but its existence is inferred from gravitational effects on visible matter. It makes up ~27% of the universe.",
       "lvl": 5
     }
@@ -186,11 +186,11 @@
       "q": "In which year did World War II end?",
       "opts": [
         "1943",
-        "1944",
         "1945",
+        "1944",
         "1946"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "WWII ended in 1945 — Germany surrendered in May (V-E Day) and Japan in August (V-J Day) after the atomic bombings.",
       "lvl": 1
     },
@@ -199,22 +199,22 @@
       "opts": [
         "Mexico",
         "Colombia",
-        "Peru",
-        "Bolivia"
+        "Bolivia",
+        "Peru"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Machu Picchu was built by the Inca Empire in the 15th century, sitting at 2,430m in the Andes Mountains of Peru.",
       "lvl": 1
     },
     {
       "q": "Which civilization built the pyramids of Giza?",
       "opts": [
+        "Egyptian",
         "Roman",
         "Greek",
-        "Egyptian",
         "Mesopotamian"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "The Great Pyramid was built around 2560 BC for Pharaoh Khufu. It was the tallest man-made structure for over 3,800 years.",
       "lvl": 1
     },
@@ -222,11 +222,11 @@
       "q": "What was the Silk Road?",
       "opts": [
         "A highway in China",
-        "Ancient trade route network",
         "A river in Central Asia",
-        "A treaty between empires"
+        "A treaty between empires",
+        "Ancient trade route network"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "The Silk Road was a network of trade routes connecting East Asia to the Mediterranean, facilitating exchange of goods and ideas for over 1,500 years.",
       "lvl": 2
     },
@@ -234,11 +234,11 @@
       "q": "Which empire was ruled by Genghis Khan?",
       "opts": [
         "Ottoman",
-        "Roman",
         "Mongol",
+        "Roman",
         "Persian"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Genghis Khan founded the Mongol Empire in 1206 — the largest contiguous land empire in history.",
       "lvl": 2
     },
@@ -246,23 +246,23 @@
       "q": "Who was the first Emperor of Rome?",
       "opts": [
         "Julius Caesar",
-        "Augustus",
         "Nero",
+        "Augustus",
         "Caligula"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Augustus (born Octavian) became the first Roman Emperor in 27 BC. Julius Caesar was dictator but never emperor.",
       "lvl": 2
     },
     {
       "q": "What year did the Berlin Wall fall?",
       "opts": [
+        "1989",
         "1987",
         "1988",
-        "1989",
         "1991"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "The Berlin Wall fell on November 9, 1989, symbolizing the end of the Cold War. Germany reunified in 1990.",
       "lvl": 3
     },
@@ -270,11 +270,11 @@
       "q": "Who wrote the Declaration of Independence?",
       "opts": [
         "Benjamin Franklin",
-        "John Adams",
         "Thomas Jefferson",
+        "John Adams",
         "George Washington"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Thomas Jefferson was the principal author, with edits by Franklin and Adams. It was adopted on July 4, 1776.",
       "lvl": 3
     },
@@ -282,35 +282,35 @@
       "q": "What was the Renaissance?",
       "opts": [
         "A war in Italy",
-        "A cultural rebirth movement",
         "A religious reform",
+        "A cultural rebirth movement",
         "A scientific experiment"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "The Renaissance (14th-17th century) was a cultural movement originating in Italy, marked by renewed interest in classical learning.",
       "lvl": 3
     },
     {
       "q": "Who was the first woman to fly solo across the Atlantic?",
       "opts": [
-        "Bessie Coleman",
         "Amelia Earhart",
+        "Bessie Coleman",
         "Harriet Quimby",
         "Jacqueline Cochran"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Amelia Earhart accomplished this in 1932. She later disappeared over the Pacific in 1937.",
       "lvl": 4
     },
     {
       "q": "What was the Magna Carta?",
       "opts": [
-        "A map of the world",
         "A charter limiting royal power",
+        "A map of the world",
         "A religious text",
         "A military strategy"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Signed in 1215 by King John, the Magna Carta limited royal authority and established that everyone, including the king, was subject to law.",
       "lvl": 4
     },
@@ -318,11 +318,11 @@
       "q": "What was the Cold War?",
       "opts": [
         "A war in Antarctica",
-        "Geopolitical tension between US and USSR",
         "A climate event",
+        "Geopolitical tension between US and USSR",
         "An economic depression"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "The Cold War (1947-1991) was geopolitical tension between NATO and Warsaw Pact without direct military conflict between the superpowers.",
       "lvl": 4
     },
@@ -341,24 +341,24 @@
     {
       "q": "Which country was first to grant women the right to vote nationally?",
       "opts": [
+        "New Zealand",
         "United States",
         "United Kingdom",
-        "New Zealand",
         "Australia"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "New Zealand became the first self-governing country to grant all women the right to vote in national elections in 1893.",
       "lvl": 5
     },
     {
       "q": "In what year did the Battle of Thermopylae take place?",
       "opts": [
-        "480 BC",
         "300 BC",
+        "480 BC",
         "490 BC",
         "431 BC"
       ],
-      "a": 0,
+      "a": 1,
       "expl": "Fought in 480 BC, this battle saw King Leonidas and 300 Spartans (along with other Greeks) delay the massive Persian army of Xerxes I.",
       "lvl": 5
     }
@@ -367,12 +367,12 @@
     {
       "q": "What is the largest ocean on Earth?",
       "opts": [
+        "Pacific",
         "Atlantic",
         "Indian",
-        "Pacific",
         "Arctic"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "The Pacific Ocean covers about 165.25 million sq km — larger than all land area combined. It contains the Mariana Trench.",
       "lvl": 1
     },
@@ -380,11 +380,11 @@
       "q": "Which is the longest river in the world?",
       "opts": [
         "Amazon",
-        "Nile",
         "Mississippi",
-        "Yangtze"
+        "Yangtze",
+        "Nile"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "The Nile stretches approximately 6,650 km through northeastern Africa. The Amazon is the largest by water volume but slightly shorter.",
       "lvl": 1
     },
@@ -392,11 +392,11 @@
       "q": "Which desert is the largest hot desert?",
       "opts": [
         "Gobi",
-        "Kalahari",
         "Sahara",
+        "Kalahari",
         "Arabian"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "The Sahara covers about 9.2 million sq km across North Africa. Antarctica is the largest desert overall (cold desert).",
       "lvl": 1
     },
@@ -404,23 +404,23 @@
       "q": "Which strait separates Europe from Africa?",
       "opts": [
         "Strait of Hormuz",
-        "Strait of Gibraltar",
         "Bosphorus Strait",
-        "Strait of Malacca"
+        "Strait of Malacca",
+        "Strait of Gibraltar"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "The Strait of Gibraltar is only 14.3km at its narrowest, connecting the Atlantic to the Mediterranean.",
       "lvl": 2
     },
     {
       "q": "What is the capital of Australia?",
       "opts": [
+        "Canberra",
         "Sydney",
         "Melbourne",
-        "Canberra",
         "Brisbane"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "Canberra was purpose-built as a compromise between rivals Sydney and Melbourne. It became the seat of government in 1927.",
       "lvl": 2
     },
@@ -428,23 +428,23 @@
       "q": "What is the smallest country in the world?",
       "opts": [
         "Monaco",
-        "Vatican City",
         "San Marino",
+        "Vatican City",
         "Liechtenstein"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Vatican City covers only 0.44 sq km and has about 800 residents. It became an independent state in 1929.",
       "lvl": 2
     },
     {
       "q": "What is the Ring of Fire?",
       "opts": [
-        "A volcanic zone around the Pacific",
         "A desert in Australia",
+        "A volcanic zone around the Pacific",
         "A mountain range in Africa",
         "An ocean current"
       ],
-      "a": 0,
+      "a": 1,
       "expl": "The Ring of Fire is a horseshoe-shaped zone where about 75% of the world's volcanoes and 90% of earthquakes occur.",
       "lvl": 3
     },
@@ -452,23 +452,23 @@
       "q": "Which continent has the most countries?",
       "opts": [
         "Asia",
-        "Europe",
         "Africa",
+        "Europe",
         "South America"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Africa has 54 recognized countries. Asia has 48, Europe has 44-50, and South America has 12.",
       "lvl": 3
     },
     {
       "q": "What is the deepest point in the ocean?",
       "opts": [
-        "Tonga Trench",
         "Mariana Trench",
+        "Tonga Trench",
         "Puerto Rico Trench",
         "Java Trench"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "The Challenger Deep in the Mariana Trench reaches about 10,994m below sea level — deeper than Mount Everest is tall.",
       "lvl": 3
     },
@@ -476,11 +476,11 @@
       "q": "What country is both in Europe and Asia?",
       "opts": [
         "Russia",
+        "Both A and B",
         "Turkey",
-        "Egypt",
-        "Both A and B"
+        "Egypt"
       ],
-      "a": 3,
+      "a": 1,
       "expl": "Both Russia and Turkey span Europe and Asia. Russia's Ural Mountains divide the continents; Istanbul straddles the Bosphorus.",
       "lvl": 4
     },
@@ -488,11 +488,11 @@
       "q": "What is the highest waterfall in the world?",
       "opts": [
         "Niagara Falls",
-        "Victoria Falls",
         "Angel Falls",
+        "Victoria Falls",
         "Iguazu Falls"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Angel Falls in Venezuela drops 979m, named after aviator Jimmie Angel. Victoria Falls is the widest continuous curtain of water.",
       "lvl": 4
     },
@@ -513,34 +513,34 @@
       "opts": [
         "Indonesia",
         "Philippines",
-        "Sweden",
-        "Finland"
+        "Finland",
+        "Sweden"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Sweden has approximately 267,570 islands, though only about 984 are inhabited. Indonesia has about 17,500 islands.",
       "lvl": 5
     },
     {
       "q": "Which African country was never colonized?",
       "opts": [
-        "Nigeria",
         "Ethiopia",
+        "Nigeria",
         "Kenya",
         "Ghana"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Ethiopia is one of only two African countries (along with Liberia) never colonized by a European power. It defeated Italy at Adwa in 1896.",
       "lvl": 5
     },
     {
       "q": "What is the primary cause of Earth's seasons?",
       "opts": [
-        "Axial tilt",
         "Distance from the Sun",
+        "Axial tilt",
         "Ocean currents",
         "Solar flares"
       ],
-      "a": 0,
+      "a": 1,
       "expl": "Earth's 23.5-degree axial tilt means different hemispheres receive more direct sunlight at different times of the year. Distance from the sun has little effect.",
       "lvl": 5
     }
@@ -549,48 +549,48 @@
     {
       "q": "What is the value of Pi to two decimal places?",
       "opts": [
-        "3.12",
         "3.14",
+        "3.12",
         "3.16",
         "3.18"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Pi (π) ≈ 3.14159... It's the ratio of a circle's circumference to its diameter and is an irrational number.",
       "lvl": 1
     },
     {
       "q": "What is the square root of 144?",
       "opts": [
+        "12",
         "10",
         "11",
-        "12",
         "14"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "12 × 12 = 144. Perfect squares like 144 have integer square roots.",
       "lvl": 1
     },
     {
       "q": "What is a prime number?",
       "opts": [
-        "Divisible by 1 and itself only",
         "Any odd number",
         "Any number greater than 1",
+        "Divisible by 1 and itself only",
         "A number divisible by 2"
       ],
-      "a": 0,
+      "a": 2,
       "expl": "A prime has exactly two factors: 1 and itself. The smallest prime is 2 (the only even prime). Examples: 2,3,5,7,11...",
       "lvl": 1
     },
     {
       "q": "What is 15% of 200?",
       "opts": [
-        "25",
         "30",
+        "25",
         "35",
         "40"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "15% of 200 = 0.15 × 200 = 30. Quick trick: 10% is 20, 5% is 10, so 15% = 30.",
       "lvl": 2
     },
@@ -609,12 +609,12 @@
     {
       "q": "What is the Fibonacci sequence?",
       "opts": [
-        "Each number is the sum of the two before",
         "Each number doubles",
         "Each number increases by 1",
+        "Each number is the sum of the two before",
         "Each number is squared"
       ],
-      "a": 0,
+      "a": 2,
       "expl": "The Fibonacci: 0,1,1,2,3,5,8,13,21... Each number is the sum of the two preceding ones. It appears throughout nature.",
       "lvl": 2
     },
@@ -622,23 +622,23 @@
       "q": "What is the Pythagorean theorem?",
       "opts": [
         "a + b = c",
-        "a² + b² = c²",
         "a × b = c",
-        "a² - b² = c²"
+        "a² - b² = c²",
+        "a² + b² = c²"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "In a right triangle, a² + b² = c² where c is the hypotenuse. Example: 3² + 4² = 5² (9 + 16 = 25).",
       "lvl": 3
     },
     {
       "q": "What is 2 to the power of 10?",
       "opts": [
-        "512",
         "1024",
+        "512",
         "2048",
         "256"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "2¹⁰ = 1024. This is why 1 kilobyte = 1024 bytes in computing. Powers of 2 are fundamental in computer science.",
       "lvl": 3
     },
@@ -646,11 +646,11 @@
       "q": "What is a parallelogram?",
       "opts": [
         "A shape with all equal sides",
-        "A quadrilateral with opposite sides parallel",
         "A triangle with two equal sides",
-        "A shape with four right angles"
+        "A shape with four right angles",
+        "A quadrilateral with opposite sides parallel"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "A parallelogram has both pairs of opposite sides parallel and equal. Squares, rectangles, and rhombuses are special parallelograms.",
       "lvl": 3
     },
@@ -658,11 +658,11 @@
       "q": "What is the factorial of 5 (5!)?",
       "opts": [
         "25",
-        "60",
         "120",
+        "60",
         "720"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "5! = 5×4×3×2×1 = 120. Factorials grow extremely fast and are essential in combinatorics and probability.",
       "lvl": 4
     },
@@ -670,11 +670,11 @@
       "q": "What is the golden ratio approximately?",
       "opts": [
         "1.414",
-        "1.618",
         "1.732",
-        "2.236"
+        "2.236",
+        "1.618"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "The golden ratio (φ) ≈ 1.618. It appears in art, architecture, and nature — in spirals, proportions, and growth patterns.",
       "lvl": 4
     },
@@ -682,11 +682,11 @@
       "q": "What does the integral calculate?",
       "opts": [
         "The slope of a curve",
-        "The area under a curve",
         "The rate of change",
+        "The area under a curve",
         "The maximum value"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Integration calculates the accumulated area under a curve. It's the reverse of differentiation. Together they form calculus.",
       "lvl": 4
     },
@@ -694,23 +694,23 @@
       "q": "What is Euler's number (e) approximately?",
       "opts": [
         "2.414",
-        "2.718",
         "3.141",
-        "1.618"
+        "1.618",
+        "2.718"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "e ≈ 2.71828... It's the base of natural logarithms. eˣ is its own derivative, making it central to calculus.",
       "lvl": 5
     },
     {
       "q": "How many faces does a dodecahedron have?",
       "opts": [
+        "12",
         "8",
         "10",
-        "12",
         "20"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "A regular dodecahedron has 12 pentagonal faces, 30 edges, and 20 vertices. It's one of the five Platonic solids.",
       "lvl": 5
     },
@@ -743,24 +743,24 @@
     {
       "q": "What is an onomatopoeia?",
       "opts": [
-        "A word that imitates a sound",
         "A word with opposite meaning",
         "A repeated word",
+        "A word that imitates a sound",
         "A word with multiple meanings"
       ],
-      "a": 0,
+      "a": 2,
       "expl": "Onomatopoeia imitate sounds: 'buzz', 'hiss', 'bang', 'whisper'. Different languages often have different onomatopoeia for the same sounds.",
       "lvl": 1
     },
     {
       "q": "What is a homophone?",
       "opts": [
-        "Words that sound the same but differ in meaning",
         "Words with the same meaning",
+        "Words that sound the same but differ in meaning",
         "Words spelled the same",
         "Words with opposite meaning"
       ],
-      "a": 0,
+      "a": 1,
       "expl": "Homophones sound identical but have different meanings/spellings: 'to/too/two', 'their/there/they're', 'bare/bear'.",
       "lvl": 1
     },
@@ -781,10 +781,10 @@
       "opts": [
         "English",
         "Spanish",
-        "Mandarin Chinese",
-        "Hindi"
+        "Hindi",
+        "Mandarin Chinese"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Mandarin Chinese has about 920 million native speakers. English has ~380 million native but ~1.5 billion total speakers.",
       "lvl": 2
     },
@@ -793,10 +793,10 @@
       "opts": [
         "Spanish",
         "French",
-        "English",
-        "German"
+        "German",
+        "English"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "English has an estimated 600,000+ words, largely due to borrowing from Latin, French, Germanic, and many other languages.",
       "lvl": 2
     },
@@ -816,11 +816,11 @@
       "q": "What is a semicolon used for?",
       "opts": [
         "Ending a sentence",
-        "Connecting related independent clauses",
         "Indicating a question",
+        "Connecting related independent clauses",
         "Creating a pause shorter than a period"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Semicolons connect two related independent clauses: 'It was getting late; we decided to leave.' They also separate items in complex lists.",
       "lvl": 3
     },
@@ -839,12 +839,12 @@
     {
       "q": "What is etymology?",
       "opts": [
-        "Study of insect words",
         "Study of word origins",
+        "Study of insect words",
         "Study of sentence structure",
         "Study of speech sounds"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Etymology traces word origins and meaning changes. E.g., 'nice' comes from Latin 'nescius' (ignorant), evolving through 'foolish' to 'pleasant'.",
       "lvl": 4
     },
@@ -853,10 +853,10 @@
       "opts": [
         "4",
         "5",
-        "6",
-        "7"
+        "7",
+        "6"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "The UN has 6 official languages: Arabic, Chinese, English, French, Russian, and Spanish, chosen for geographic representation.",
       "lvl": 4
     },
@@ -876,35 +876,35 @@
       "q": "What is the subjunctive mood?",
       "opts": [
         "Expressing facts",
-        "Expressing wishes or hypotheticals",
         "Expressing commands",
-        "Expressing questions"
+        "Expressing questions",
+        "Expressing wishes or hypotheticals"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "The subjunctive expresses wishes/demands/hypotheticals: 'If I were rich' (not 'was'), 'I suggest that he study' (not 'studies').",
       "lvl": 5
     },
     {
       "q": "Which ancient script remains undeciphered?",
       "opts": [
-        "Egyptian hieroglyphs",
         "Linear A",
+        "Egyptian hieroglyphs",
         "Cuneiform",
         "Linear B"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Linear A, used by the Minoan civilization (c. 1800-1450 BC), remains undeciphered. Linear B was decoded in 1952.",
       "lvl": 5
     },
     {
       "q": "What is a 'hapax legomenon'?",
       "opts": [
-        "A word that appears only once in a text or corpus",
         "A grammatical error",
         "A type of ancient poetry",
+        "A word that appears only once in a text or corpus",
         "A lost language"
       ],
-      "a": 0,
+      "a": 2,
       "expl": "It's a word that occurs only once within a context, either in the written record of an entire language, in the works of an author, or in a single text.",
       "lvl": 5
     }
@@ -914,11 +914,11 @@
       "q": "What is photosynthesis?",
       "opts": [
         "Plants releasing CO2",
-        "Plants converting light to chemical energy",
         "Animals making food",
+        "Plants converting light to chemical energy",
         "Water evaporating from leaves"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Photosynthesis: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. It's the primary source of Earth's oxygen.",
       "lvl": 1
     },
@@ -927,46 +927,46 @@
       "opts": [
         "Lion",
         "Pronghorn",
-        "Cheetah",
-        "Horse"
+        "Horse",
+        "Cheetah"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Cheetahs reach 100-120 km/h in short bursts. Pronghorns sustain 88 km/h for much longer distances.",
       "lvl": 1
     },
     {
       "q": "What is symbiosis?",
       "opts": [
-        "Two organisms fighting",
         "Close long-term interaction between species",
+        "Two organisms fighting",
         "A species living alone",
         "Rapid evolution"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Symbiosis includes mutualism (both benefit), commensalism (one benefits, one unaffected), and parasitism (one benefits, one harmed).",
       "lvl": 1
     },
     {
       "q": "Which bird can fly backwards?",
       "opts": [
-        "Eagle",
         "Hummingbird",
+        "Eagle",
         "Penguin",
         "Owl"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Hummingbirds can fly in any direction including backwards. Their wings rotate in a figure-8 pattern, beating up to 80 times/second.",
       "lvl": 2
     },
     {
       "q": "What is biodiversity?",
       "opts": [
-        "Different types of diet",
         "Variety of life in an ecosystem",
+        "Different types of diet",
         "The number of predators",
         "Plant growth rate"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Biodiversity includes species, genetic, and ecosystem diversity. The Amazon alone contains 10% of all known species.",
       "lvl": 2
     },
@@ -974,35 +974,35 @@
       "q": "How many hearts does an octopus have?",
       "opts": [
         "1",
-        "2",
         "3",
+        "2",
         "4"
       ],
-      "a": 2,
+      "a": 1,
       "expl": "Octopuses have 3 hearts: one systemic heart for the body, two branchial hearts for the gills. They also have blue blood from copper-based hemocyanin.",
       "lvl": 2
     },
     {
       "q": "What layer of the Amazon rainforest receives the least sunlight?",
       "opts": [
+        "The forest floor",
         "The canopy",
         "The emergent layer",
-        "The forest floor",
         "The understory"
       ],
-      "a": 2,
+      "a": 0,
       "expl": "The forest floor receives only 2-5% of sunlight. It's dark, humid, and covered in decomposing matter despite being the 'deepest' layer.",
       "lvl": 3
     },
     {
       "q": "What is the purpose of a flower's nectar?",
       "opts": [
-        "To feed the plant",
         "To attract pollinators",
+        "To feed the plant",
         "To store water",
         "To produce seeds"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Nectar attracts pollinators like bees and hummingbirds. In exchange, they transfer pollen between flowers, enabling fertilization.",
       "lvl": 3
     },
@@ -1010,11 +1010,11 @@
       "q": "What is the tusk of a narwhal?",
       "opts": [
         "A horn",
-        "An elongated tooth",
         "A bone projection",
+        "An elongated tooth",
         "A modified fin"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "The narwhal tusk is an elongated left canine tooth with up to 10 million nerve endings, likely functioning as a sensory organ.",
       "lvl": 3
     },
@@ -1022,11 +1022,11 @@
       "q": "What causes the Northern Lights?",
       "opts": [
         "Reflection of city lights",
-        "Solar particles interacting with the atmosphere",
         "Volcanic gases",
-        "Ice crystals reflecting moonlight"
+        "Ice crystals reflecting moonlight",
+        "Solar particles interacting with the atmosphere"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "Auroras occur when charged solar particles interact with Earth's magnetic field, exciting atmospheric gases. Green = oxygen at ~100km; red = oxygen higher; purple = nitrogen.",
       "lvl": 4
     },
@@ -1034,23 +1034,23 @@
       "q": "What is an apex predator?",
       "opts": [
         "The smallest predator",
-        "A predator at the top of the food chain",
         "A predator that only eats plants",
-        "A predator in the ocean"
+        "A predator in the ocean",
+        "A predator at the top of the food chain"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "Apex predators have no natural predators: lions, great whites, polar bears. They regulate prey populations and maintain ecosystem balance.",
       "lvl": 4
     },
     {
       "q": "What is the largest living organism on Earth?",
       "opts": [
-        "Blue whale",
         "Honey fungus",
+        "Blue whale",
         "Giant sequoia",
         "Elephant"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "A honey fungus in Oregon spans about 2,385 acres and is estimated at 2,400-8,650 years old. Blue whales are the largest animals.",
       "lvl": 4
     },
@@ -1070,23 +1070,23 @@
       "q": "How do chameleons change color?",
       "opts": [
         "Changing skin pigment",
-        "Shifting nanocrystals in skin cells",
         "Reflecting light differently",
-        "Producing new pigments"
+        "Producing new pigments",
+        "Shifting nanocrystals in skin cells"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "Chameleons have iridophores with nanocrystals. Adjusting crystal spacing reflects different wavelengths, changing apparent color.",
       "lvl": 5
     },
     {
       "q": "Which animal has the fastest punch in the animal kingdom?",
       "opts": [
-        "Mantis shrimp",
         "Kangaroo",
         "Pistol shrimp",
-        "Boxer crab"
+        "Boxer crab",
+        "Mantis shrimp"
       ],
-      "a": 0,
+      "a": 3,
       "expl": "The mantis shrimp can strike at 80 km/h (50 mph) underwater, generating a cavitation bubble that reaches temperatures nearly as hot as the surface of the sun.",
       "lvl": 5
     }
@@ -1108,11 +1108,11 @@
       "q": "What is the Japanese art of paper folding called?",
       "opts": [
         "Ikebana",
-        "Origami",
         "Bonsai",
+        "Origami",
         "Kintsugi"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Origami: 'ori' (folding) + 'kami' (paper). Traditional origami uses a single square sheet with no cuts or glue.",
       "lvl": 1
     },
@@ -1121,10 +1121,10 @@
       "opts": [
         "Italy",
         "Egypt",
-        "Greece",
-        "Turkey"
+        "Turkey",
+        "Greece"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "Ancient Olympics began in 776 BC in Olympia, Greece. The modern Olympics were revived in 1896 in Athens.",
       "lvl": 1
     },
@@ -1133,10 +1133,10 @@
       "opts": [
         "Harpsichord",
         "Organ",
-        "Piano",
-        "Accordion"
+        "Accordion",
+        "Piano"
       ],
-      "a": 2,
+      "a": 3,
       "expl": "A standard piano has 88 keys: 52 white and 36 black, spanning over 7 octaves. Bösendorfer makes a 97-key model.",
       "lvl": 2
     },
@@ -1156,11 +1156,11 @@
       "q": "What is calligraphy?",
       "opts": [
         "Sculpture making",
-        "The art of beautiful handwriting",
         "Pottery decoration",
+        "The art of beautiful handwriting",
         "Fabric weaving"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Calligraphy means 'beautiful writing' from Greek. Major traditions include Chinese, Arabic, and Western calligraphy.",
       "lvl": 2
     },
@@ -1168,11 +1168,11 @@
       "q": "What does red symbolize in Chinese culture?",
       "opts": [
         "Mourning",
-        "Good luck and prosperity",
         "Danger",
+        "Good luck and prosperity",
         "Royalty only"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "Red symbolizes good fortune and prosperity in Chinese culture. It's used in weddings, Lunar New Year, and red envelopes (hongbao).",
       "lvl": 3
     },
@@ -1192,23 +1192,23 @@
       "q": "What does 'Renaissance' literally mean?",
       "opts": [
         "New beginning",
-        "Rebirth",
         "Golden age",
-        "Enlightenment"
+        "Enlightenment",
+        "Rebirth"
       ],
-      "a": 1,
+      "a": 3,
       "expl": "Renaissance means 'rebirth' in French, referring to the revival of classical Greek and Roman culture beginning in 14th-century Italy.",
       "lvl": 3
     },
     {
       "q": "What is the Day of the Dead (Día de los Muertos)?",
       "opts": [
-        "A horror movie",
         "Mexican celebration honoring deceased loved ones",
+        "A horror movie",
         "A day of mourning",
         "A war remembrance"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "This Mexican holiday (Nov 1-2) celebrates deceased loved ones with ofrendas, marigolds, and sugar skulls, blending Aztec and Catholic traditions.",
       "lvl": 4
     },
@@ -1228,35 +1228,35 @@
       "q": "What is the significance of the Torah?",
       "opts": [
         "Islamic holy book",
-        "First five books of the Hebrew Bible",
         "A Buddhist text",
+        "First five books of the Hebrew Bible",
         "A Hindu epic"
       ],
-      "a": 1,
+      "a": 2,
       "expl": "The Torah contains Genesis, Exodus, Leviticus, Numbers, and Deuteronomy — the foundation of Jewish law and tradition.",
       "lvl": 4
     },
     {
       "q": "What is Maori haka?",
       "opts": [
-        "A traditional dance/challenge",
         "A type of food",
         "A musical instrument",
-        "A form of painting"
+        "A form of painting",
+        "A traditional dance/challenge"
       ],
-      "a": 0,
+      "a": 3,
       "expl": "The haka is a ceremonial Maori war dance with rhythmic movements and chanting, performed at significant events including rugby matches.",
       "lvl": 5
     },
     {
       "q": "What is Kintsugi?",
       "opts": [
-        "Japanese sword-making",
         "Japanese art of repairing pottery with gold",
+        "Japanese sword-making",
         "A tea ceremony",
         "Martial arts"
       ],
-      "a": 1,
+      "a": 0,
       "expl": "Kintsugi repairs broken pottery with lacquer mixed with gold, embracing imperfection — breakage becomes part of the object's beautiful history.",
       "lvl": 5
     },
