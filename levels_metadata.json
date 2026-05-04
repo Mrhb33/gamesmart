@@ -1,51 +1,471 @@
 {
   "science": [
-    { "title": "Apprentice", "subtitle": "Spark of Discovery", "theme": "Introduction to the natural laws.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Atomic Horizons", "theme": "Journey into the building blocks.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Genetic Code", "theme": "Unraveling the mysteries of life.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Cosmic Expanse", "theme": "Looking out into the infinite.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Quantum Summit", "theme": "The ultimate test of physical reality.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Spark of Discovery",
+      "theme": "Introduction to the natural laws.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "شرارة الاكتشاف",
+          "theme": "مقدمة في القوانين الطبيعية."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Atomic Horizons",
+      "theme": "Journey into the building blocks.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "آفاق ذرية",
+          "theme": "رحلة في اللبنات الأساسية."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Genetic Code",
+      "theme": "Unraveling the mysteries of life.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "الشفرة الوراثية",
+          "theme": "فك طلاسم أسرار الحياة."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Cosmic Expanse",
+      "theme": "Looking out into the infinite.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "الامتداد الكوني",
+          "theme": "النظر في اللانهاية."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Quantum Summit",
+      "theme": "The ultimate test of physical reality.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "قمة الكم",
+          "theme": "الاختبار النهائي للواقع الفيزيائي."
+        }
+      }
+    }
   ],
   "history": [
-    { "title": "Apprentice", "subtitle": "Dawn of Time", "theme": "First steps of human civilization.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Empires Rise", "theme": "The age of conquest and kings.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Age of Discovery", "theme": "Sailing into the unknown.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Industrial Forge", "theme": "The world transforms rapidly.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Modern Era", "theme": "The complexities of the 20th century.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Dawn of Time",
+      "theme": "First steps of human civilization.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "فجر الزمان",
+          "theme": "الخطوات الأولى للحضارة الإنسانية."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Empires Rise",
+      "theme": "The age of conquest and kings.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "صعود الإمبراطوريات",
+          "theme": "عصر الفتوحات والملوك."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Age of Discovery",
+      "theme": "Sailing into the unknown.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "عصر الاكتشافات",
+          "theme": "الإبحار نحو المجهول."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Industrial Forge",
+      "theme": "The world transforms rapidly.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "بوتقة الصناعة",
+          "theme": "العالم يتغير بسرعة."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Modern Era",
+      "theme": "The complexities of the 20th century.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "العصر الحديث",
+          "theme": "تعقيدات القرن العشرين."
+        }
+      }
+    }
   ],
   "geography": [
-    { "title": "Apprentice", "subtitle": "Local Mapper", "theme": "Knowing your immediate surroundings.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Continental Drift", "theme": "Crossing vast landmasses.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Ocean Depths", "theme": "The secrets of the seven seas.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "High Peaks", "theme": "Scaling the tallest mountains.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Global Atlas", "theme": "Mastery over the entire Earth.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Local Mapper",
+      "theme": "Knowing your immediate surroundings.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "رسم الخرائط المحلية",
+          "theme": "التعرف على محيطك المباشر."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Continental Drift",
+      "theme": "Crossing vast landmasses.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "الانجراف القاري",
+          "theme": "عبور الكتل الأرضية الشاسعة."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Ocean Depths",
+      "theme": "The secrets of the seven seas.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "أعماق المحيطات",
+          "theme": "أسرار البحار السبعة."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "High Peaks",
+      "theme": "Scaling the tallest mountains.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "القمم الشاهقة",
+          "theme": "تسلق أعلى الجبال."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Global Atlas",
+      "theme": "Mastery over the entire Earth.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "أطلس العالم",
+          "theme": "السيطرة على الكرة الأرضية بأكملها."
+        }
+      }
+    }
   ],
   "math": [
-    { "title": "Apprentice", "subtitle": "Number Sense", "theme": "The foundational arithmetic.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Geometry Basics", "theme": "Shapes, angles, and spaces.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Algebraic Logic", "theme": "Solving for the unknown variables.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Calculus Flow", "theme": "The mathematics of change.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Abstract Theory", "theme": "Entering the realm of pure logic.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Number Sense",
+      "theme": "The foundational arithmetic.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "الحس البداهة",
+          "theme": "الحساب الأساسي."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Geometry Basics",
+      "theme": "Shapes, angles, and spaces.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "أساسيات الهندسة",
+          "theme": "الأشكال والزوايا والمساحات."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Algebraic Logic",
+      "theme": "Solving for the unknown variables.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "المنطق الجبري",
+          "theme": "حل المتغيرات المجهولة."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Calculus Flow",
+      "theme": "The mathematics of change.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "تدفق التفاضل والتكامل",
+          "theme": "رياضيات التغيير."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Abstract Theory",
+      "theme": "Entering the realm of pure logic.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "النظرية المجردة",
+          "theme": "الدخول إلى عالم المنطق الخالص."
+        }
+      }
+    }
   ],
   "language": [
-    { "title": "Apprentice", "subtitle": "First Words", "theme": "Building vocabulary and grammar.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Syntax Structure", "theme": "Forming complex sentences.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Literary Arts", "theme": "Exploring poetry and prose.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Linguistic Roots", "theme": "The origins of human speech.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Polyglot's Mind", "theme": "Mastery of communication nuances.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "First Words",
+      "theme": "Building vocabulary and grammar.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "الكلمات الأولى",
+          "theme": "بناء المفردات والقواعد."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Syntax Structure",
+      "theme": "Forming complex sentences.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "بنية الجمل",
+          "theme": "تكوين الجمل المعقدة."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Literary Arts",
+      "theme": "Exploring poetry and prose.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "الفنون الأدبية",
+          "theme": "استكشاف الشعر والنثر."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Linguistic Roots",
+      "theme": "The origins of human speech.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "الجذور اللغوية",
+          "theme": "أصول الكلام البشري."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Polyglot's Mind",
+      "theme": "Mastery of communication nuances.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "عقل متعدد اللغات",
+          "theme": "إتقان فنون التواصل الدقيقة."
+        }
+      }
+    }
   ],
   "nature": [
-    { "title": "Apprentice", "subtitle": "Backyard Biology", "theme": "Flora and fauna nearby.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Forest Canopy", "theme": "Deep into the woods.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Desert Sands", "theme": "Life finding a way in harsh conditions.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Ocean Reefs", "theme": "Biodiversity beneath the waves.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Ecosystem Balance", "theme": "The interconnected web of life.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Backyard Biology",
+      "theme": "Flora and fauna nearby.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "أحياء الحديقة",
+          "theme": "النباتات والحيوانات في محيطك."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Forest Canopy",
+      "theme": "Deep into the woods.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "مظلة الغابة",
+          "theme": "في أعماق الغابات."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Desert Sands",
+      "theme": "Life finding a way in harsh conditions.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "رمال الصحراء",
+          "theme": "الحياة تجد طريقها في الظروف القاسية."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Ocean Reefs",
+      "theme": "Biodiversity beneath the waves.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "شعاب المحيط",
+          "theme": "التنوع البيولوجي تحت الأمواج."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Ecosystem Balance",
+      "theme": "The interconnected web of life.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "توازن النظام البيئي",
+          "theme": "شبكة الحياة المترابطة."
+        }
+      }
+    }
   ],
   "culture": [
-    { "title": "Apprentice", "subtitle": "Local Traditions", "theme": "Customs close to home.", "bossIndex": 9 },
-    { "title": "Explorer", "subtitle": "Global Festivities", "theme": "How the world celebrates.", "bossIndex": 9 },
-    { "title": "Scholar", "subtitle": "Culinary Arts", "theme": "The taste of different societies.", "bossIndex": 9 },
-    { "title": "Master", "subtitle": "Fine Arts", "theme": "Masterpieces of human creativity.", "bossIndex": 9 },
-    { "title": "Grandmaster", "subtitle": "Human Heritage", "theme": "The shared cultural tapestry.", "bossIndex": 9 }
+    {
+      "title": "Apprentice",
+      "subtitle": "Local Traditions",
+      "theme": "Customs close to home.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مبتدئ",
+          "subtitle": "التقاليد المحلية",
+          "theme": "العادات القريبة من المنزل."
+        }
+      }
+    },
+    {
+      "title": "Explorer",
+      "subtitle": "Global Festivities",
+      "theme": "How the world celebrates.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "مستكشف",
+          "subtitle": "الاحتفالات العالمية",
+          "theme": "كيف يحتفل العالم."
+        }
+      }
+    },
+    {
+      "title": "Scholar",
+      "subtitle": "Culinary Arts",
+      "theme": "The taste of different societies.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "باحث",
+          "subtitle": "فنون الطهي",
+          "theme": "مذاق المجتمعات المختلفة."
+        }
+      }
+    },
+    {
+      "title": "Master",
+      "subtitle": "Fine Arts",
+      "theme": "Masterpieces of human creativity.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "أستاذ",
+          "subtitle": "الفنون الجميلة",
+          "theme": "روائع الإبداع البشري."
+        }
+      }
+    },
+    {
+      "title": "Grandmaster",
+      "subtitle": "Human Heritage",
+      "theme": "The shared cultural tapestry.",
+      "bossIndex": 9,
+      "i18n": {
+        "ar": {
+          "title": "ماجستير أعظم",
+          "subtitle": "التراث الإنساني",
+          "theme": "نسيج الثقافات المشترك."
+        }
+      }
+    }
   ]
 }

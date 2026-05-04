@@ -1,11 +1,11 @@
 {
-  "name": "Cerebrum Quest",
+  "name": "Cerebrum Quest — Knowledge Adventure",
   "short_name": "Cerebrum",
-  "description": "A professional knowledge adventure game. Explore seven realms, answer questions, and level up!",
+  "description": "A knowledge adventure game. Explore seven realms, conquer trials, collect relics, and rise from Novice to Legend. Works offline.",
   "start_url": "./main.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0a0f1a",
+  "orientation": "portrait-primary",
+  "background_color": "#050a14",
   "theme_color": "#0a0f1a",
   "categories": ["education", "games", "entertainment"],
   "lang": "en",
@@ -24,5 +24,15 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Daily Trial",
+      "short_name": "Daily",
+      "url": "./main.html?action=daily",
+      "icons": [{"src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDk2IDk2Ij48cmVjdCB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHJ4PSIyMCIgZmlsbD0iIzBhMGYxYSIvPjx0ZXh0IHg9IjQ4IiB5PSI2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2Y1OWUwYiI+8J+OpTwvdGV4dD48L3N2Zz4=", "sizes": "96x96"}]
+    }
+  ],
+  "screenshots": [],
+  "_screenshot_note": "Add PNG screenshots (390x844 portrait) under a /screenshots/ folder and list them here for PWA installability on desktop stores."
 }

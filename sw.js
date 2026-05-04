@@ -1,79 +1,108 @@
-const CACHE_NAME = 'cerebrum-v7';
-const PRECACHE_ASSETS = ['./main.html', './manifest.json', './questions.json', './levels_metadata.json'];
+// ============================================================================
+// Cerebrum Quest — Service Worker
+// ============================================================================
+const CACHE_VERSION = 'v13';
+const CACHE_NAME = `cerebrum-${CACHE_VERSION}`;
 
+// Core assets that must be cached during install for offline support.
+const CORE_ASSETS = [
+  './main.html',
+  './styles.css',
+  './src/settings.js',
+  './src/i18n.js',
+  './src/state.js',
+  './src/data.js',
+  './src/audio.js',
+  './src/ui.js',
+  './src/game.js',
+  './src/screens.js',
+  './manifest.json',
+  './questions.json',
+  './levels_metadata.json',
+];
+
+// External CDN assets — cached on first successful fetch.
+const CDN_ASSETS = [
+  'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
+];
+
+// ---- Install ----
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      cache.addAll([
-        'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
-      ]).catch(() => {});
-      return cache.addAll(PRECACHE_ASSETS);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        cache.addAll(CDN_ASSETS).catch(err => {
+          console.warn('[SW] CDN pre-cache failed (non-fatal):', err.message);
+        });
+        return cache.addAll(CORE_ASSETS);
+      })
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
+// ---- Activate ----
 self.addEventListener('activate', event => {
-  // Delete ALL old caches so stale data can never trap users
   event.waitUntil(
     caches.keys().then(names =>
-      Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n)))
-    )
+      Promise.all(
+        names
+          .filter(n => n !== CACHE_NAME)
+          .map(n => caches.delete(n))
+      )
+    ).then(() => self.clients.claim())
   );
-  // Take control of all open tabs immediately
-  self.clients.claim();
 });
 
+// ---- Message ----
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
+// ---- Fetch ----
 self.addEventListener('fetch', event => {
-  let url = new URL(event.request.url);
+  const url = new URL(event.request.url);
 
-  // Navigation requests: network first, cache fallback
+  if (url.pathname.endsWith('/sw.js')) {
+    return;
+  }
+
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).then(response => {
-        let clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        return response;
-      }).catch(() => caches.match('./main.html'))
+      fetch(event.request)
+        .then(response => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match('./main.html'))
     );
     return;
   }
 
-  // sw.js itself: always fetch from network (never cache the service worker)
-  if (url.pathname.endsWith('/sw.js')) {
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
-  // Own assets: network first, cache fallback
-  // This ensures users get fresh content on every load while still working offline
   if (url.origin === self.location.origin) {
     event.respondWith(
-      fetch(event.request).then(response => {
-        if (response && response.status === 200) {
-          let clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      }).catch(() =>
-        caches.match(event.request)
-      )
+      fetch(event.request)
+        .then(response => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // External assets (fonts, CDN): cache first, then network
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
         if (!response || response.status !== 200) return response;
-        let clone = response.clone();
+        const clone = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         return response;
       });

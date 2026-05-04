@@ -1,0 +1,16 @@
+{
+  "name": "cerebrum-quest",
+  "version": "0.3.0",
+  "description": "Cerebrum Quest — An educational quiz game with 7 realms, 35 stages, and 350+ questions",
+  "private": true,
+  "scripts": {
+    "validate": "node validate_questions.js",
+    "validate:strict": "node validate_questions.js --strict",
+    "validate:audit": "node validate_questions.js --audit",
+    "enrich": "node enrich_questions.js --write",
+    "build": "node build_v3.js",
+    "fix:shuffle": "node enrich_questions.js --write && echo 'Answers re-shuffled and enriched.'"
+  },
+  "keywords": ["quiz", "education", "game", "pwa"],
+  "license": "MIT"
+}
