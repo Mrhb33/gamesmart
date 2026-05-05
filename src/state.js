@@ -240,7 +240,7 @@ function migrateSave(p, version) {
   // v6 → v7: Normalize daily dates from toDateString to ISO YYYY-MM-DD
   if (version < 7) {
     if (p.lastDaily && !p.lastDailyDate) {
-      let dd = new Date(p.lastDaily);
+      let dd = typeof p.lastDaily === 'number' ? new Date(p.lastDaily) : new Date(p.lastDaily);
       if (!isNaN(dd.getTime())) p.lastDailyDate = dd.toISOString().slice(0, 10);
       else p.lastDailyDate = '';
     }

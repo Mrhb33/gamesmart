@@ -9,7 +9,9 @@
     "validate:audit": "node validate_questions.js --audit",
     "enrich": "node enrich_questions.js --write",
     "build": "node build_v3.js",
-    "test": "node build_v3.js",
+    "test": "node test_core.js",
+    "test:all": "node test_core.js && node validate_questions.js --audit",
+    "test:build": "node build_v3.js",
     "test:ids": "node -e \"require('./build_v3.js')\"",
     "fix:shuffle": "node enrich_questions.js --write && echo 'Answers re-shuffled and enriched.'"
   },

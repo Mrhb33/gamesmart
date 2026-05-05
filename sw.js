@@ -93,10 +93,28 @@ self.addEventListener('fetch', event => {
             if (response && response.status === 200) {
               const clone = response.clone();
               caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+              // Add data version header for stale detection
+              const headers = new Headers(response.headers);
+              headers.set('X-Data-Version', DATA_VERSION);
+              return new Response(clone.body, { status: response.status, statusText: response.statusText, headers });
             }
             return response;
           })
-          .catch(() => caches.match(event.request))
+          .catch(() => {
+            // Offline — serve cached data and notify about potential staleness
+            return caches.match(event.request).then(cached => {
+              if (cached) {
+                const headers = new Headers(cached.headers);
+                headers.set('X-Data-Version', DATA_VERSION);
+                headers.set('X-Served-From-Cache', 'true');
+                return new Response(cached.body, { status: cached.status, statusText: cached.statusText, headers });
+              }
+              return new Response(JSON.stringify({ error: 'offline' }), {
+                status: 503,
+                headers: { 'Content-Type': 'application/json' }
+              });
+            });
+          })
       );
       return;
     }

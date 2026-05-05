@@ -528,6 +528,14 @@ const I18N = {
     'misc.couldNotLoad': 'Could not load questions.<br>Please refresh the page.',
     'misc.10hardQuestions': '10 hard questions',
     'misc.offline': 'Offline',
+    'misc.back': 'Back',
+    'misc.close': 'Close',
+    'misc.claim': 'Claim',
+    'misc.share': 'Share',
+    'coll.title': 'Collection',
+    'coll.relics': 'Relics',
+    'coll.trophies': 'Trophies',
+    'coll.allRealms': 'All Realms',
     // Tiers
     'tier.bronze': 'Bronze',
     'tier.silver': 'Silver',
@@ -692,7 +700,7 @@ const I18N = {
     'res.trialCleared': 'تم تجاوز التحدي!',
     'res.dailyCleared': 'التحدي اليومي مكتمل!',
     'res.soClose': 'قريب جدًا!',
-    'res.almostThere': 'شيكف قليلًا!',
+    'res.almostThere': 'كاد أن يتحقق!',
     'res.perfectBoss': 'لقد تجاوزت تحدي الزعيم بشكل مثالي!',
     'res.perfectSub': 'انتصار بلا عيب! عمل رائع.',
     'res.bossDefeatedSub': 'لقد تجاوزت التحدي الأقصى في هذا التصنيف!',
@@ -737,7 +745,7 @@ const I18N = {
     'result.soClose': 'قريب جدًا!',
     'result.oneAway': 'كنت على بُعد إجابة واحدة! حاول مجددًا.',
     'result.onTheEdge': 'أنت على الحافة. ركّز وحاول مجددًا!',
-    'result.almostThere': 'شيكف قليلًا!',
+    'result.almostThere': 'كاد أن يتحقق!',
     'result.almostThereSub': 'راجع الإجابات وحاول مجددًا — ستتحسن!',
     'result.defeated': 'مهزوم',
     'result.escaped': 'هارب',
@@ -1085,6 +1093,14 @@ const I18N = {
     'misc.couldNotLoad': 'تعذر تحميل الأسئلة.<br>يرجى تحديث الصفحة.',
     'misc.10hardQuestions': '10 أسئلة صعبة',
     'misc.offline': 'غير متصل',
+    'misc.back': 'رجوع',
+    'misc.close': 'إغلاق',
+    'misc.claim': 'استلام',
+    'misc.share': 'مشاركة',
+    'coll.title': 'المجموعة',
+    'coll.relics': 'الآثار',
+    'coll.trophies': 'الكؤوس',
+    'coll.allRealms': 'جميع العوالم',
     // Tiers
     'tier.bronze': 'برونزي',
     'tier.silver': 'فضي',
@@ -1164,6 +1180,166 @@ function updateStaticText() {
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.getAttribute('data-i18n')); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.getAttribute('data-i18n-ph')); });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
+  _refreshHardcodedElements();
+}
+
+function _refreshHardcodedElements() {
+  // Nav tabs
+  _setText('[data-tab="hub"] .tab-label', 'nav.realms');
+  _setText('[data-tab="achievements"] .tab-label', 'nav.relics');
+  _setText('[data-tab="shop"] .tab-label', 'shop.title');
+  _setText('[data-tab="profile"] .tab-label', 'nav.skills');
+
+  // Welcome screen
+  let sw = document.getElementById('sWelcome');
+  if (sw && sw.classList.contains('active')) {
+    let wt = sw.querySelector('.welcome-title'); if (wt) wt.textContent = t('welcome.title');
+    let ws = sw.querySelector('.welcome-subtitle'); if (ws) ws.textContent = t('welcome.subtitle');
+    let wg = sw.querySelector('.welcome-tagline'); if (wg) wg.textContent = t('welcome.tagline');
+    let wi = document.getElementById('playerNameInput'); if (wi) wi.placeholder = t('welcome.namePlaceholder');
+    let wb = document.getElementById('startBtn'); if (wb) wb.textContent = t('welcome.btnStart');
+    let labels = sw.querySelectorAll('.stat-label');
+    if (labels[0]) labels[0].textContent = t('welcome.statRealms');
+    if (labels[1]) labels[1].textContent = t('welcome.statTrials');
+    if (labels[2]) labels[2].textContent = t('welcome.statCollectibles');
+  }
+
+  // Hub stat labels (these are rebuilt by updateHub but set labels here too)
+  _setText('.hub-stat-lbl:nth-of-type(1)', 'hub.trials');  // handled by data-i18n
+  _setText('#hubXpLabel', 'hub.xp');
+  _setText('#hubAccLabel', 'hub.accuracy');
+
+  // Quiz labels
+  let qb = document.getElementById('quizBackBtn'); if (qb) qb.innerHTML = '<i class="fas fa-times"></i> ' + t('quiz.retreat');
+  let nq = document.getElementById('nextQBtn'); if (nq) nq.innerHTML = t('quiz.next') + ' <i class="fas fa-arrow-right"></i>';
+
+  // Lifeline buttons
+  let lf = document.getElementById('llFifty');
+  if (lf) lf.innerHTML = '<i class="fas fa-percent"></i> ' + t('quiz.fiftyFifty') + ' <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+  let lt = document.getElementById('llTime');
+  if (lt) lt.innerHTML = '<i class="fas fa-snowflake"></i> ' + t('quiz.freeze') + ' <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+  let lh = document.getElementById('llHint');
+  if (lh) lh.innerHTML = '<i class="fas fa-lightbulb"></i> ' + t('quiz.hint');
+
+  // Results static labels
+  _setText('#resXPLabel', 'misc.xp');
+  _setText('#resCoinsLabel', 'result.crowns');
+  _setText('#resCorrectLabel', 'quiz.correct');
+  _setText('#resWrongLabel', 'quiz.wrong');
+  _setText('#scoreRingLabel', 'profile.accuracy');
+
+  // Results buttons
+  let rb = document.getElementById('retryBtn'); if (rb) rb.innerHTML = '<i class="fas fa-rotate-right"></i> ' + t('result.retryStage');
+  let rv = document.getElementById('reviewBtn'); if (rv) rv.innerHTML = '<i class="fas fa-eye"></i> ' + t('result.reviewMistakes');
+  let rs = document.getElementById('shareBtn'); if (rs) rs.innerHTML = '<i class="fas fa-share-nodes"></i> ' + t('misc.share');
+  let rh = document.getElementById('backHubBtn'); if (rh) rh.innerHTML = '<i class="fas fa-compass"></i> ' + t('result.chooseRealm');
+
+  // Review screen
+  _setText('.review-header h2', 'review.title');
+  let rba = document.getElementById('reviewBackBtn'); if (rba) rba.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t('misc.back');
+  _setText('#reviewTabAll', 'review.all');
+  let rtw = document.getElementById('reviewTabWrong'); if (rtw) rtw.innerHTML = '<i class="fas fa-times-circle"></i> ' + t('review.wrong');
+  let rte = document.getElementById('reviewTabWeak'); if (rte) rte.innerHTML = '<i class="fas fa-crosshairs"></i> ' + t('weak.weakAreas');
+
+  // Collection screen
+  _setText('.achievements-header h2', 'coll.title');
+  _setText('#achieveCount', null); // dynamic count
+
+  // Collection filter tabs
+  let crt = document.querySelectorAll('[data-coll]');
+  crt.forEach(b => {
+    let key = b.getAttribute('data-coll');
+    if (key === 'relics') b.innerHTML = '<i class="fas fa-gem"></i> ' + t('coll.relics');
+    else if (key === 'trophies') b.innerHTML = '<i class="fas fa-trophy"></i> ' + t('coll.trophies');
+  });
+
+  // Rarity filters
+  document.querySelectorAll('.coll-filter').forEach(b => {
+    let f = b.getAttribute('data-filter');
+    if (f === 'all') b.textContent = t('review.all');
+    else if (f === 'Common') b.textContent = t('rarity.common');
+    else if (f === 'Rare') b.textContent = t('rarity.rare');
+    else if (f === 'Epic') b.textContent = t('rarity.epic');
+    else if (f === 'Legendary') b.textContent = t('rarity.legendary');
+  });
+
+  // Shop tabs
+  document.querySelectorAll('[data-shopcat]').forEach(b => {
+    let c = b.getAttribute('data-shopcat');
+    if (c === 'avatar') b.innerHTML = '<i class="fas fa-user"></i> ' + t('shop.avatars');
+    else if (c === 'frame') b.innerHTML = '<i class="fas fa-ring"></i> ' + t('shop.frames');
+    else if (c === 'title') b.innerHTML = '<i class="fas fa-scroll"></i> ' + t('shop.titles');
+    else if (c === 'theme') b.innerHTML = '<i class="fas fa-palette"></i> ' + t('shop.themes');
+  });
+
+  // Profile buttons
+  let pe = document.getElementById('profileEditBtn'); if (pe) pe.innerHTML = '<i class="fas fa-pen"></i> ' + t('profile.editName');
+  let px = document.getElementById('exportSaveBtn'); if (px) px.innerHTML = '<i class="fas fa-download"></i> ' + t('profile.exportSave');
+  let pi = document.getElementById('importSaveBtn'); if (pi) pi.innerHTML = '<i class="fas fa-upload"></i> ' + t('profile.importSave');
+  let pr = document.getElementById('profileResetBtn'); if (pr) pr.innerHTML = '<i class="fas fa-rotate-left"></i> ' + t('profile.resetProgress');
+
+  // Settings modal
+  _setText('#settingsTitle', 'settings.title');
+  let sl = document.querySelectorAll('.settings-label');
+  if (sl[0]) sl[0].innerHTML = '<i class="fas fa-volume-high"></i> ' + t('settings.sound');
+  if (sl[1]) sl[1].innerHTML = '<i class="fas fa-mobile-screen"></i> ' + t('settings.haptics');
+  if (sl[2]) sl[2].innerHTML = '<i class="fas fa-eye-slash"></i> ' + t('settings.reducedMotion');
+  if (sl[3]) sl[3].innerHTML = '<i class="fas fa-globe"></i> ' + t('settings.language');
+  let se = document.getElementById('settingsExportBtn'); if (se) se.innerHTML = '<i class="fas fa-download"></i> ' + t('settings.exportSave');
+  let si = document.getElementById('settingsImportBtn'); if (si) si.innerHTML = '<i class="fas fa-upload"></i> ' + t('settings.importSave');
+  let sr = document.getElementById('settingsResetBtn'); if (sr) sr.innerHTML = '<i class="fas fa-rotate-left"></i> ' + t('settings.resetProgress');
+  let sc = document.getElementById('settingsCloseBtn'); if (sc) sc.innerHTML = '<i class="fas fa-times"></i>';
+
+  // Confirm modal
+  _setText('#confirmTitle', 'confirm.areYouSure');
+  _setText('#confirmMsg', 'confirm.cannotUndo');
+  _setText('#confirmCancelBtn', 'modal.cancel');
+  _setText('#confirmOkBtn', 'confirm.confirm');
+
+  // Name modal
+  let nmh = document.querySelector('#nameModal h3'); if (nmh) nmh.textContent = t('modal.editName');
+  let nmi = document.getElementById('editNameInput'); if (nmi) nmi.placeholder = t('modal.newName');
+  _setText('#nameCancelBtn', 'modal.cancel');
+  _setText('#nameSaveBtn', 'modal.save');
+
+  // Weak Areas header
+  _setText('.weak-header h2', 'weak.title');
+  let wba = document.querySelector('.weak-header .btn-ghost'); if (wba) wba.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t('misc.back');
+
+  // Chest overlay
+  _setText('.chest-title', 'chest.dailyChest');
+  _setText('.chest-close-btn', 'misc.claim');
+
+  // Relic modal close
+  let rmc = document.querySelector('#relicModal .btn-ghost'); if (rmc) rmc.textContent = t('misc.close');
+
+  // Level select back button
+  let lsba = document.querySelector('#sLevelSelect .btn-ghost'); if (lsba) lsba.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t('misc.back');
+
+  // Daily card
+  let dc = document.querySelector('.daily-card h3');
+  if (dc) dc.innerHTML = '<i class="fas fa-calendar-day"></i> ' + t('hub.dailyTrial');
+  let dp = document.querySelector('.daily-card p');
+  if (dp) dp.textContent = t('hub.dailyDesc');
+
+  // Collection realm filter dropdown
+  let crf = document.getElementById('collRealmFilter');
+  if (crf) {
+    crf.options[0].text = t('coll.allRealms');
+    crf.options[1].text = catName('science');
+    crf.options[2].text = catName('history');
+    crf.options[3].text = catName('geography');
+    crf.options[4].text = catName('math');
+    crf.options[5].text = catName('language');
+    crf.options[6].text = catName('nature');
+    crf.options[7].text = catName('culture');
+  }
+}
+
+function _setText(selector, key) {
+  if (!key) return;
+  let el = document.querySelector(selector);
+  if (el) el.textContent = t(key);
 }
 
 function refreshCurrentScreen() {

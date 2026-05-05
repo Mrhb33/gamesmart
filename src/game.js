@@ -298,6 +298,7 @@ function loadQ() {
   opts.forEach((o, displayIdx) => {
     let btn = document.createElement('button'); btn.className = 'option-btn';
     btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', 'false');
     btn.setAttribute('aria-label', `Option ${letters[displayIdx]}: ${o.text}`);
     btn.innerHTML = `<span class="option-letter">${letters[displayIdx]}</span><span>${escHtml(o.text)}</span>`;
     btn.onclick = () => pickA(displayIdx, o.origIdx);
@@ -392,6 +393,7 @@ function pickA(dIdx, oIdx) {
   // Phase 1: Show selected state immediately
   let btns = D.optionsList.querySelectorAll('.option-btn');
   btns[dIdx].classList.add('selected');
+  btns[dIdx].setAttribute('aria-checked', 'true');
   btns.forEach(b => b.classList.add('disabled'));
 
   // Phase 2: Delayed reveal (350ms)
@@ -484,6 +486,9 @@ function showExpl(q, isC, cLab) {
   let resultText = bossPrefix + (cLab || (isC ? t('quiz.correct') : t('quiz.wrong')));
   label.innerHTML = `<i class="fas ${isC ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${resultText}`;
   label.setAttribute('aria-label', resultText);
+  // Announce to screen readers
+  let liveEl = document.getElementById('quizAriaLive');
+  if (liveEl) liveEl.textContent = resultText;
   // Use explanationLong for wrong answers to teach more, expl for correct
   let explText = (!isC && getQText(q, 'explanationLong')) ? getQText(q, 'explanationLong') : getQText(q, 'expl');
   let text = document.createElement('div'); text.className = 'text'; text.textContent = explText;

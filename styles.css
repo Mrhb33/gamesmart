@@ -2795,25 +2795,153 @@
     /* ==================== DESKTOP HOVER ==================== */
 
     /* ==================== RTL / ARABIC ==================== */
-    [dir="rtl"] body, [dir="rtl"] input, [dir="rtl"] button, [dir="rtl"] select, [dir="rtl"] textarea {
+
+    /* --- Universal font override --- */
+    [dir="rtl"] body,
+    [dir="rtl"] input,
+    [dir="rtl"] button,
+    [dir="rtl"] select,
+    [dir="rtl"] textarea,
+    [dir="rtl"] .option-btn,
+    [dir="rtl"] .cat-desc,
+    [dir="rtl"] .review-q,
+    [dir="rtl"] .review-expl,
+    [dir="rtl"] .review-answer,
+    [dir="rtl"] .toast,
+    [dir="rtl"] .modal-box p,
+    [dir="rtl"] .modal-box h3,
+    [dir="rtl"] .ls-title,
+    [dir="rtl"] .ls-desc,
+    [dir="rtl"] .mission-item,
+    [dir="rtl"] .achievement-card,
+    [dir="rtl"] .profile-stat-card,
+    [dir="rtl"] .daily-card,
+    [dir="rtl"] .category-card,
+    [dir="rtl"] .stage-node,
+    [dir="rtl"] .nav-tab,
+    [dir="rtl"] .relic-card,
+    [dir="rtl"] .weak-card,
+    [dir="rtl"] .shop-item,
+    [dir="rtl"] label,
+    [dir="rtl"] .hint-box,
+    [dir="rtl"] .boss-warning,
+    [dir="rtl"] .combo-label,
+    [dir="rtl"] .xp-fly {
       font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
     }
+
     [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
     [dir="rtl"] .results-title, [dir="rtl"] .score-ring-value, [dir="rtl"] .stat-value,
-    [dir="rtl"] .welcome-title, [dir="rtl"] .hub-title {
+    [dir="rtl"] .welcome-title, [dir="rtl"] .hub-title,
+    [dir="rtl"] .question-text, [dir="rtl"] .profile-name,
+    [dir="rtl"] .achievement-name, [dir="rtl"] .results-subtitle,
+    [dir="rtl"] .onboarding-step h2 {
       font-family: 'IBM Plex Sans Arabic', 'Syne', sans-serif;
     }
+
+    /* --- Arabic text rendering --- */
+    [dir="rtl"] body {
+      line-height: 1.6;
+    }
+    [dir="rtl"] .question-text {
+      line-height: 1.8;
+      font-size: clamp(18px, 3.2vw, 26px);
+    }
+    [dir="rtl"] .option-btn {
+      line-height: 1.6;
+      text-align: start;
+      direction: rtl;
+    }
+    [dir="rtl"] .option-btn span:last-child {
+      unicode-bidi: plaintext;
+    }
+    [dir="rtl"] .option-letter {
+      unicode-bidi: isolate;
+      font-family: 'DM Sans', sans-serif;
+    }
+    [dir="rtl"] .review-q,
+    [dir="rtl"] .review-expl,
+    [dir="rtl"] .cat-desc {
+      line-height: 1.8;
+      unicode-bidi: plaintext;
+    }
+    [dir="rtl"] .toast {
+      direction: rtl;
+      text-align: start;
+    }
+    [dir="rtl"] .modal-box {
+      direction: rtl;
+      text-align: start;
+    }
+    [dir="rtl"] .modal-box p {
+      line-height: 1.7;
+    }
+    [dir="rtl"] .hint-box {
+      direction: rtl;
+      text-align: start;
+      line-height: 1.7;
+    }
+
+    /* --- Achievement card text alignment --- */
+    [dir="rtl"] .achievement-card .ac-info {
+      text-align: start;
+    }
+
+    /* --- Icon mirroring --- */
     [dir="rtl"] .fa-arrow-right { transform: scaleX(-1); }
     [dir="rtl"] .fa-arrow-left { transform: scaleX(-1); }
     [dir="rtl"] .fa-chevron-right { transform: scaleX(-1); }
     [dir="rtl"] .fa-chevron-left { transform: scaleX(-1); }
-    [dir="rtl"] .option-letter { unicode-bidi: isolate; }
+    [dir="rtl"] .fa-arrow-right::before { content: "\f060"; }
+    [dir="rtl"] .fa-arrow-left::before { content: "\f061"; }
+
+    /* --- Stage path stays LTR (visual progression) --- */
     [dir="rtl"] .stage-path { direction: ltr; }
+
+    /* --- Border fixes for RTL --- */
     [dir="rtl"] .review-item.was-correct { border-inline-start: 3px solid var(--accent2); border-left: none; }
     [dir="rtl"] .review-item.was-wrong { border-inline-start: 3px solid var(--danger); border-left: none; }
     [dir="rtl"] .level-card { border-inline-start: 3px solid var(--glass-border); border-left: none; }
     [dir="rtl"] .level-card.available:hover { transform: translateX(-4px); }
     [dir="rtl"] .level-card.completed:hover { transform: translateX(-4px); }
+
+    /* --- Numeric/LTR isolate for mixed content --- */
+    [dir="rtl"] .stat-value,
+    [dir="rtl"] .score-ring-value,
+    [dir="rtl"] .profile-stat-card .pval,
+    [dir="rtl"] .timer-fill,
+    [dir="rtl"] .mission-progress,
+    [dir="rtl"] .xp-fly,
+    [dir="rtl"] .combo-fly {
+      unicode-bidi: isolate;
+    }
+
+    /* --- Arabic-specific rendering fixes --- */
+
+    /* Universal: disable text-transform & letter-spacing for Arabic */
+    [dir="rtl"] * {
+      text-transform: none !important;
+      letter-spacing: 0 !important;
+    }
+
+    [dir="rtl"] .explanation-box .text {
+      line-height: 1.8;
+    }
+    [dir="rtl"] .onboarding-step h2 {
+      line-height: 1.5;
+    }
+    [dir="rtl"] .onboarding-step p {
+      line-height: 1.7;
+    }
+    [dir="rtl"] .welcome-title {
+      line-height: 1.4;
+    }
+    [dir="rtl"] .hub-title {
+      line-height: 1.4;
+    }
+    [dir="rtl"] .results-title {
+      line-height: 1.4;
+    }
     @media(hover:hover) and (pointer:fine) {
       .btn-gold:hover {
         box-shadow: 0 6px 24px rgba(245, 158, 11, 0.4);
@@ -2978,5 +3106,17 @@
       content: attr(data-fa-text);
       font-size: 10px;
       opacity: 0.6;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 

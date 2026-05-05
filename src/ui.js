@@ -55,6 +55,8 @@ function showScreen(id) {
   let target = $(id);
   if (!target) return;
   target.classList.add('active');
+  target.setAttribute('tabindex', '-1');
+  target.focus({ preventScroll: true });
   if (D.mainNav) D.mainNav.style.display = (id === 'sWelcome' || id === 'sQuiz' || id === 'sOnboarding') ? 'none' : 'flex';
 
   _particleReduced = (id === 'sQuiz');
@@ -164,16 +166,24 @@ function importSave() {
     let reader = new FileReader();
     reader.onload = ev => {
       try {
-        let parsed = JSON.parse(ev.target.result);
-        // Validate via hydrateState
-        if (!parsed || typeof parsed !== 'object' || (parsed.playerName === undefined && parsed.totalXP === undefined && parsed.categoryData === undefined)) {
-          showToast(t('toast.invalidSaveFile'));
-          return;
+        let raw = ev.target.result;
+        let parsed = JSON.parse(raw);
+        // Basic structure check
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          showToast(t('toast.invalidSaveFile')); return;
         }
+        // Must have recognizable Cerebrum fields
+        if (parsed.playerName === undefined && parsed.totalXP === undefined && parsed.categoryData === undefined) {
+          showToast(t('toast.invalidSaveFile')); return;
+        }
+        // Validate via hydrateState to catch schema issues
+        try { hydrateState(raw); } catch (e) { showToast(t('toast.invalidSaveFile')); return; }
+        // Re-load original state (hydrateState mutated S)
+        loadState();
         // Backup current save before overwriting
         let backup = localStorage.getItem('cerebrum_save');
         if (backup) localStorage.setItem('cerebrum_save_backup', backup);
-        localStorage.setItem('cerebrum_save', ev.target.result);
+        localStorage.setItem('cerebrum_save', raw);
         showToast(t('toast.saveImported'));
         setTimeout(() => window.location.reload(), 1000);
       } catch (e) { showToast(t('toast.invalidSaveFile')); }

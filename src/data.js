@@ -97,6 +97,14 @@ async function loadQuestions() {
     QUESTIONS = dataQ;
     LEVELS_METADATA = dataM;
     _qReady = true;
+
+    // Detect stale cached data
+    let servedFromCache = rQ.headers.get('X-Served-From-Cache') === 'true';
+    if (servedFromCache && !navigator.onLine) {
+      console.info('[Cerebrum] Serving cached question data (offline)');
+      trackEvent('stale_data_served', { online: false });
+    }
+
     return true;
   } catch (e) {
     console.error("Failed to load questions:", e);

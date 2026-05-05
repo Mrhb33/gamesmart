@@ -87,17 +87,54 @@ for (const jsFile of jsFiles) {
   }
 }
 
-// 3c. Report mismatches
+// 3c. Report mismatches — critical IDs fail the build, others warn
+const CRITICAL_IDS = new Set([
+  'optionsList', 'timerFill', 'quizTimerText', 'quizXP', 'quizStreak', 'quizScore',
+  'streakPill', 'explanationArea', 'nextQBtn', 'questionNumber', 'questionText',
+  'qProgressBar', 'quizCatName', 'quizCatDot', 'quizTotal', 'quizBackBtn',
+  'llFifty', 'llTime', 'llHint', 'quizStageSubtitle', 'bossWarning',
+  'hubAvatar', 'hubName', 'hubLevel', 'hubXpBar', 'hubTotalXP', 'hudLevels',
+  'mainNav', 'categoryGrid', 'continueCard', 'rewardsCard',
+  'shopCoins', 'shopGrid', 'achievementsGrid', 'achieveCount', 'achieveBadge',
+  'profileBigAvatar', 'profileName', 'profileLevel', 'profileXpCurrent',
+  'profileXpNeeded', 'profileXpFill', 'profileStatsGrid',
+  'resultsTitle', 'resultsSubtitle', 'resultsIcon', 'scoreRingValue',
+  'resXP', 'resCoins', 'resCorrect', 'resWrong', 'scoreCircle', 'resultsStars',
+  'levelCompleteBanner', 'bannerText',
+  'lsIcon', 'lsTitle', 'lsDesc', 'levelList',
+  'reviewList', 'confirmModal', 'confirmTitle', 'confirmMsg',
+  'nameModal', 'editNameInput', 'playerNameInput', 'startBtn',
+  'missionPanel', 'weeklyGoalCard', 'dailyCard',
+  'settingsModal', 'chestOverlay', 'relicModal',
+  'shopTabs', 'collRealmFilter', 'loadingOverlay',
+]);
+
 const missingIds = jsRefs.filter(ref => !htmlIds.has(ref.id));
+const criticalMissing = missingIds.filter(ref => CRITICAL_IDS.has(ref.id));
+const warningMissing = missingIds.filter(ref => !CRITICAL_IDS.has(ref.id));
+
 console.log(`       DOM IDs in HTML:      ${htmlIds.size}`);
 console.log(`       JS ID references:     ${jsRefs.length}`);
-if (missingIds.length > 0) {
-  console.warn(`       WARNINGS: ${missingIds.length} JS-referenced ID(s) not found in main.html:`);
-  for (const m of missingIds) {
+
+if (criticalMissing.length > 0) {
+  console.error(`\nBUILD FAILED: ${criticalMissing.length} critical DOM ID(s) missing from main.html:`);
+  for (const m of criticalMissing) {
+    console.error(`         - "${m.id}" referenced in src/${m.file}`);
+  }
+  process.exit(1);
+}
+
+if (warningMissing.length > 0) {
+  console.warn(`       WARNINGS: ${warningMissing.length} JS-referenced ID(s) not found in main.html:`);
+  for (const m of warningMissing) {
     console.warn(`         - "${m.id}" referenced in src/${m.file}`);
   }
-} else {
+}
+
+if (missingIds.length === 0) {
   console.log('       All JS-referenced IDs found in HTML');
+} else if (criticalMissing.length === 0) {
+  console.log(`       All critical IDs present (${warningMissing.length} non-critical warnings)`);
 }
 
 // ---- Step 4: Report SW version ----

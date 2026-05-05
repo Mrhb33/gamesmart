@@ -644,8 +644,7 @@ function finishLvl() {
   S.coins += coinsEarned;
 
   if (isDaily) {
-    S.lastDaily = new Date().toDateString(); S.lastDailyDate = getISODate(); S.dailyStreak++; S.isDaily = false;
-    S.lastDailyDate = getISODate();
+    S.lastDaily = Date.now(); S.lastDailyDate = getISODate(); S.dailyStreak++; S.isDaily = false;
     setSessionStat('dailyCompleted', true);
     trackEvent('daily_completed', { score: cor, total: tot, pct: pct });
     if (passed) showDailyChest(S.dailyStreak);
@@ -1080,7 +1079,7 @@ function renderCollection() {
 
     let dispIcon = item.icon, dispName = item._type === 'relic' ? relicName(item.id) : achieveName(item.id), dispDesc = item._type === 'relic' ? relicDesc(item.id) : achieveDesc(item.id);
     let isPinned = S.pinnedShowcase && S.pinnedShowcase.includes(item.id);
-    let pinHtml = isPinned ? '<i class="fas fa-thumbtack" style="position:absolute;top:12px;left:12px;color:var(--accent);font-size:12px;"></i>' : '';
+    let pinHtml = isPinned ? '<i class="fas fa-thumbtack" style="position:absolute;top:12px;inset-inline-start:12px;color:var(--accent);font-size:12px;"></i>' : '';
 
     if (item._type === 'trophy' && !item._unlocked && item.hidden) {
       dispName = "???"; dispIcon = "fa-question"; dispDesc = t('achieve.secretDesc');

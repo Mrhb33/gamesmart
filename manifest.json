@@ -34,5 +34,5 @@
     }
   ],
   "screenshots": [],
-  "_screenshot_note": "Add PNG screenshots (390x844 portrait) under a /screenshots/ folder and list them here for PWA installability on desktop stores."
+  "_screenshot_note": "Add PNG screenshots (390x844 portrait, 16:9 ratio) under a /screenshots/ folder and list them here for PWA installability. Example: { src: './screenshots/hub.png', sizes: '390x844', type: 'image/png', form_factor: 'narrow' }"
 }
