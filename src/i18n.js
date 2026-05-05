@@ -46,6 +46,7 @@ const I18N = {
     'hub.continueJourney': 'Continue Journey',
     'hub.bossGate': 'Boss Gate',
     'hub.mastered': 'Mastered',
+    'hub.recommended': 'Start Here',
     'hub.continue': 'Continue',
     'hub.codex': 'Codex',
     'hub.grandmaster': 'Grandmaster',
@@ -438,6 +439,7 @@ const I18N = {
     'toast.backOnline': 'Back online',
     'toast.fiftyFifty': 'Two wrong answers removed!',
     'toast.freezeTime': '+10s Time Frozen!',
+    'toast.practiceImproved': '{tag} improved by {pct}%! Keep it up!',
     'toast.questionsLoading': 'Questions still loading...',
     'toast.questionsFailed': 'Failed to load questions. Check your connection and refresh.',
     // Missions
@@ -491,6 +493,8 @@ const I18N = {
     'rec.reviewMistakes': 'Review Mistakes',
     'rec.improveScore': 'Improve Your Score',
     'rec.start': 'Start',
+    'rec.reasonLowAcc': 'Low accuracy on',
+    'rec.reasonRepeated': 'Repeated mistakes in',
     // Misc
     'misc.stage': 'Stage',
     'misc.or': 'or',
@@ -599,6 +603,7 @@ const I18N = {
     'hub.continueJourney': 'تابع الرحلة',
     'hub.bossGate': 'بوابة الزعيم',
     'hub.mastered': 'مُتقن',
+    'hub.recommended': 'ابدأ هنا',
     'hub.continue': 'متابعة',
     'hub.codex': 'المخطوطة',
     'hub.grandmaster': 'الماجستير الأعظم',
@@ -991,6 +996,7 @@ const I18N = {
     'toast.backOnline': 'تم الاتصال بالإنترنت',
     'toast.fiftyFifty': 'تم إزالة إجابتين خاطئتين!',
     'toast.freezeTime': '+10 ثوانٍ مجمدة!',
+    'toast.practiceImproved': 'تحسّن {tag} بنسبة {pct}%! استمر!',
     'toast.questionsLoading': 'جارٍ تحميل الأسئلة...',
     'toast.questionsFailed': 'فشل تحميل الأسئلة. تحقق من الاتصال وأعد التحميل.',
     // Missions
@@ -1044,6 +1050,8 @@ const I18N = {
     'rec.reviewMistakes': 'مراجعة الأخطاء',
     'rec.improveScore': 'حسّن نتيجتك',
     'rec.start': 'ابدأ',
+    'rec.reasonLowAcc': 'دقة منخفضة في',
+    'rec.reasonRepeated': 'أخطاء متكررة في',
     // Misc
     'misc.stage': 'مرحلة',
     'misc.or': 'أو',

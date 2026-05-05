@@ -19,8 +19,8 @@ function updateHub() {
   // Daily card enhancement
   let dc = $('dailyCard');
   if (dc) {
-    let today = new Date().toDateString();
-    let dailyDone = S.lastDaily === today;
+    let today = getISODate();
+    let dailyDone = S.lastDailyDate === today;
     dc.className = 'daily-card' + (dailyDone ? ' completed-daily' : '');
     dc.onclick = dailyDone ? null : startDaily;
     let streakHtml = S.dailyStreak > 0 ? `<span class="daily-streak-badge"><i class="fas fa-fire"></i> ${t('hub.dayStreak', {n: S.dailyStreak})}</span>` : '';
@@ -54,6 +54,7 @@ function updateHub() {
   let cc = D.continueCard;
   if (cc) {
     let next = findNextStage();
+    cc.innerHTML = '';
     if (next) {
       let m = CATEGORY_META[next.cat];
       let stageMeta = getLevelMeta(next.cat, next.level - 1);
@@ -62,25 +63,29 @@ function updateHub() {
       let isBoss = next.level === 5;
       let CAT_RGBA = { science: '6,182,212', history: '245,158,11', geography: '16,185,129', math: '239,68,68', language: '168,85,247', nature: '34,197,94', culture: '236,72,153' };
       let iconBg = CAT_RGBA[next.cat] || '91,141,239';
-      cc.innerHTML = `<div class="continue-card" onclick="startLevel('${next.cat}', ${next.level})">
+      let el = document.createElement('div'); el.className = 'continue-card';
+      el.innerHTML = `
         <div class="continue-icon" style="background:rgba(${iconBg},0.15);color:${m.color}"><i class="fas ${m.icon}"></i></div>
         <div class="continue-info">
           <div class="ci-label">${t('hub.continueJourney')}</div>
           <div class="ci-realm">${catName(next.cat)} ${isBoss ? '· ' + t('hub.bossGate') : ''}</div>
           <div class="ci-stage">${stageName}${stageSub ? ': ' + stageSub : ''}</div>
         </div>
-        <button class="continue-cta"><i class="fas fa-play"></i> ${t('hub.continue')}</button>
-      </div>`;
+        <button class="continue-cta"><i class="fas fa-play"></i> ${t('hub.continue')}</button>`;
+      el.addEventListener('click', () => { sfxK(); startLevel(next.cat, next.level); });
+      cc.appendChild(el);
     } else {
-      cc.innerHTML = `<div class="continue-card grandmaster" onclick="switchTab('profile')">
+      let el = document.createElement('div'); el.className = 'continue-card grandmaster';
+      el.innerHTML = `
         <div class="continue-icon"><i class="fas fa-crown"></i></div>
         <div class="continue-info">
           <div class="ci-label">${t('hub.grandmaster')}</div>
           <div class="ci-realm">${t('hub.allRealmsConquered')}</div>
           <div class="ci-stage">${t('hub.viewCodex')}</div>
         </div>
-        <button class="continue-cta" style="background:linear-gradient(135deg,var(--accent),#d97706)"><i class="fas fa-scroll"></i> ${t('hub.codex')}</button>
-      </div>`;
+        <button class="continue-cta" style="background:linear-gradient(135deg,var(--accent),#d97706)"><i class="fas fa-scroll"></i> ${t('hub.codex')}</button>`;
+      el.addEventListener('click', () => { sfxK(); switchTab('profile'); });
+      cc.appendChild(el);
     }
   }
 
@@ -88,45 +93,42 @@ function updateHub() {
   let arc = $('adaptiveRecs');
   if (arc) {
     let recs = getAdaptiveRecommendations();
+    arc.innerHTML = '';
     if (recs.length > 0) {
-      arc.innerHTML = '<div class="adaptive-recs-grid">' + recs.map((r, i) => {
-        let rgba = r.color || 'var(--accent)';
-        // Convert CSS var colors to approximations for inline use
+      let grid = document.createElement('div'); grid.className = 'adaptive-recs-grid';
+      recs.forEach((r, i) => {
         let bgStyle = '';
         if (r.type === 'boss') bgStyle = 'background:linear-gradient(135deg,rgba(239,68,68,0.1),rgba(239,68,68,0.05));border-color:rgba(239,68,68,0.3);';
         else if (r.type === 'weak') bgStyle = 'background:linear-gradient(135deg,rgba(249,115,22,0.1),rgba(249,115,22,0.05));border-color:rgba(249,115,22,0.3);';
         else if (r.type === 'improve') bgStyle = 'background:linear-gradient(135deg,rgba(234,179,8,0.1),rgba(234,179,8,0.05));border-color:rgba(234,179,8,0.3);';
         else if (r.type === 'review') bgStyle = 'background:linear-gradient(135deg,rgba(91,141,239,0.1),rgba(91,141,239,0.05));border-color:rgba(91,141,239,0.3);';
         else bgStyle = 'background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(16,185,129,0.05));border-color:rgba(16,185,129,0.3);';
-        return `<div class="adaptive-rec-card" style="${bgStyle}" data-rec-idx="${i}">
+        let el = document.createElement('div'); el.className = 'adaptive-rec-card'; el.style.cssText = bgStyle;
+        el.innerHTML = `
           <div class="rec-icon" style="color:${r.color}"><i class="fas ${r.icon}"></i></div>
           <div class="rec-info"><div class="rec-label">${r.label}</div><div class="rec-desc">${escHtml(r.desc)}</div></div>
-          <button class="rec-cta" style="color:${r.color}"><i class="fas fa-play"></i></button>
-        </div>`;
-      }).join('') + '</div>';
-      // Wire click handlers after render
-      setTimeout(() => {
-        arc.querySelectorAll('.adaptive-rec-card').forEach(el => {
-          el.onclick = () => {
-            let idx = parseInt(el.dataset.recIdx);
-            let rec = recs[idx];
-            if (rec && rec.action) { sfxK(); rec.action(); }
-          };
-        });
-      }, 10);
-    } else {
-      arc.innerHTML = '';
+          <button class="rec-cta" style="color:${r.color}"><i class="fas fa-play"></i></button>`;
+        el.addEventListener('click', () => { if (r.action) { sfxK(); r.action(); } });
+        grid.appendChild(el);
+      });
+      arc.appendChild(grid);
     }
   }
 
   // Realm cards with stage paths
   let grid = D.categoryGrid; if (!grid) return; grid.innerHTML = '';
   let CAT_RGBA = { science: '6,182,212', history: '245,158,11', geography: '16,185,129', math: '239,68,68', language: '168,85,247', nature: '34,197,94', culture: '236,72,153' };
+  let isNewPlayer = S.levelsCleared === 0;
+  let recommendedCat = isNewPlayer ? 'science' : null;
+  let nextStage = findNextStage();
+  if (!recommendedCat && nextStage) recommendedCat = nextStage.cat;
+
   Object.keys(CATEGORY_META).forEach(cat => {
     let m = CATEGORY_META[cat], ld = S.categoryData[cat].levelData;
     let done = ld.filter(l => l.completed).length, stars = ld.reduce((a, b) => a + b.stars, 0);
     let realmMeta = LEVELS_METADATA[cat] && LEVELS_METADATA[cat][0] ? LEVELS_METADATA[cat][0] : null;
     let rgba = CAT_RGBA[cat] || '255,255,255';
+    let isRecommended = cat === recommendedCat && done < 5;
 
     // Build stage path
     let stagePathHtml = '<div class="stage-path">';
@@ -148,10 +150,11 @@ function updateHub() {
     stagePathHtml += '</div>';
 
     let masteryHtml = done === 5 ? '<div class="realm-mastery-badge"><i class="fas fa-crown"></i> ' + t('hub.mastered') + '</div>' : '';
+    let recommendedHtml = isRecommended ? '<div class="realm-recommended-badge"><i class="fas fa-arrow-right"></i> ' + t('hub.recommended') + '</div>' : '';
     let realmSubtitle = realmMeta ? realmMeta.subtitle : catDesc(cat);
 
-    let card = document.createElement('div'); card.className = 'category-card'; card.setAttribute('data-cat', cat);
-    card.innerHTML = `${masteryHtml}
+    let card = document.createElement('div'); card.className = 'category-card' + (isRecommended ? ' recommended-realm' : ''); card.setAttribute('data-cat', cat);
+    card.innerHTML = `${masteryHtml}${recommendedHtml}
   <div class="cat-icon"><i class="fas ${m.icon}"></i></div>
   <div class="cat-name">${catName(cat)}</div>
   <div class="cat-desc" style="font-style:italic;margin-bottom:10px;opacity:0.8;">${realmSubtitle}</div>
@@ -171,21 +174,21 @@ function updateHub() {
     for (let i = ACHIEVEMENTS.length - 1; i >= 0; i--) {
       if (S.unlockedAchievements.has(ACHIEVEMENTS[i].id)) { lastAch = ACHIEVEMENTS[i]; break; }
     }
+    rc.innerHTML = '';
     if (lastAch) {
       let tierRGBA = { Bronze: '205,127,50', Silver: '192,192,192', Gold: '245,158,11', Legendary: '168,85,247', Secret: '16,185,129' };
       let tierHex = { Bronze: '#cd7f32', Silver: '#c0c0c0', Gold: '#f59e0b', Legendary: '#a855f7', Secret: '#10b981' };
       let tr = tierRGBA[lastAch.tier] || '245,158,11';
       let th = tierHex[lastAch.tier] || '#f59e0b';
-      rc.innerHTML = `<div class="rewards-card">
+      let el = document.createElement('div'); el.className = 'rewards-card';
+      el.innerHTML = `
         <div class="rewards-icon" style="background:rgba(${tr},0.12);color:${th}"><i class="fas ${lastAch.icon}"></i></div>
         <div class="rewards-info">
           <div class="ri-label">${t('hub.latestRelic')}</div>
           <div class="ri-name">${escHtml(achieveName(lastAch.id))}</div>
         </div>
-        <span class="rewards-tier ${lastAch.tier}">${t('tier.' + lastAch.tier.toLowerCase())}</span>
-      </div>`;
-    } else {
-      rc.innerHTML = '';
+        <span class="rewards-tier ${lastAch.tier}">${t('tier.' + lastAch.tier.toLowerCase())}</span>`;
+      rc.appendChild(el);
     }
   }
 }
@@ -241,11 +244,19 @@ function openLevelSelect(cat) {
     let diffLabel = i < 2 ? t('ls.warmup') : i === 4 ? t('ls.bossBattle') : t('ls.challenge');
     let diffColor = i < 2 ? 'var(--accent2)' : i === 4 ? 'var(--danger)' : 'var(--accent)';
 
+    // Reward preview
+    let xpPerQ = XP_MAP[i + 1] || 15;
+    let qCount = pool.length || 10;
+    let maxXP = Math.round(xpPerQ * qCount * 2.0);
+    let minXP = Math.round(xpPerQ * qCount * 0.6);
+    let maxCrowns = (i + 1) * 3 * 10 + 25;
+    let rewardHtml = avail && !st.completed ? `<span style="font-size:11px;opacity:0.6"><i class="fas fa-bolt" style="color:var(--accent)"></i> ${minXP}-${maxXP} XP · <i class="fas fa-coins" style="color:#eab308"></i> 0-${maxCrowns}</span>` : '';
+
     let el = document.createElement('div'); el.className = `level-card ${cls}`;
     el.style.animationDelay = `${i * 0.05}s`;
     el.innerHTML = `
   <div class="lc-left"><div class="lc-num">${i + 1}</div>
-  <div class="lc-info"><h3>${lMeta.title}${lMeta.subtitle ? ': ' + lMeta.subtitle : ''}${bossBadge}</h3><p>${pool.length} ${t('ls.qs')} · <span style="color:${diffColor}; font-weight:600;">${diffLabel}</span>${themeText}</p></div></div>
+  <div class="lc-info"><h3>${lMeta.title}${lMeta.subtitle ? ': ' + lMeta.subtitle : ''}${bossBadge}</h3><p>${pool.length} ${t('ls.qs')} · <span style="color:${diffColor}; font-weight:600;">${diffLabel}</span>${themeText}</p>${rewardHtml}</div></div>
   <div class="lc-right"><div class="lc-stars">${starsHtml}</div><div class="lc-status"><i class="fas ${icon}"></i></div></div>`;
     if (avail) el.onclick = () => { sfxK(); startLevel(cat, i + 1); };
     list.appendChild(el);
@@ -284,9 +295,10 @@ function getAdaptiveRecommendations() {
       let weakCat = findCatForTag(weakest.tag);
       if (weakCat) {
         let catMeta = CATEGORY_META[weakCat];
+        let reason = weakScore < 0.4 ? t('rec.reasonLowAcc') : t('rec.reasonRepeated');
         recs.push({
           type: 'weak', label: t('rec.practiceWeakArea'),
-          desc: t('rec.weakDesc', { topic: weakest.tag, acc: Math.round(weakScore * 100) }),
+          desc: `${reason} ${cleanTag(weakest.tag)} (${Math.round(weakScore * 100)}%)`,
           icon: 'fa-crosshairs', color: '#f97316',
           action: () => startWeakAreaPractice(weakCat, weakest.tag)
         });
@@ -402,24 +414,37 @@ function renderMissions() {
   ensureMissions();
   let panel = $('missionPanel'); if (!panel) return;
   checkSessionMissions();
-  let html = '<div class="mission-panel"><div class="mission-panel-title"><i class="fas fa-scroll" style="color:var(--accent)"></i> ' + t('missions.title') + '</div>';
+  panel.innerHTML = '';
+  let wrapper = document.createElement('div'); wrapper.className = 'mission-panel';
+  let titleDiv = document.createElement('div'); titleDiv.className = 'mission-panel-title';
+  titleDiv.innerHTML = '<i class="fas fa-scroll" style="color:var(--accent)"></i> ' + t('missions.title');
+  wrapper.appendChild(titleDiv);
+
   S.missions.forEach(m => {
     let pct = Math.min(100, Math.round((m.progress / m.target) * 100));
     let complete = m.progress >= m.target;
-    let btnClass = m.claimed ? 'mission-claim-btn claimed' : 'mission-claim-btn';
-    let btnHtml = m.claimed ? '<i class="fas fa-check"></i> ' + t('missions.claimed') : (complete ? t('missions.claim') : `${pct}%`);
-    html += `<div class="mission-item">
+    let item = document.createElement('div'); item.className = 'mission-item';
+    item.innerHTML = `
       <div class="mission-icon ${m.difficulty}"><i class="fas ${m.icon}"></i></div>
       <div class="mission-info">
         <div class="mission-desc">${escHtml(t(m.i18nKey, {n: m.target}))}</div>
         <div class="mission-progress-text">${m.progress} / ${m.target}</div>
         <div class="mission-progress-bar"><div class="mission-progress-fill ${m.difficulty}" style="width:${pct}%"></div></div>
         <div class="mission-reward-preview"><i class="fas fa-bolt"></i> ${m.reward.xp} ${t('misc.xp')} &middot; <i class="fas fa-coins"></i> ${m.reward.coins}</div>
-      </div>
-      ${(m.claimed || !complete) ? `<button class="${btnClass}" disabled>${btnHtml}</button>` : `<button class="${btnClass}" onclick="claimMission('${m.id}')">${btnHtml}</button>`}
-    </div>`;
+      </div>`;
+    let btn = document.createElement('button');
+    btn.className = m.claimed ? 'mission-claim-btn claimed' : 'mission-claim-btn';
+    if (m.claimed || !complete) {
+      btn.disabled = true;
+      btn.innerHTML = m.claimed ? '<i class="fas fa-check"></i> ' + t('missions.claimed') : `${pct}%`;
+    } else {
+      btn.textContent = t('missions.claim');
+      btn.addEventListener('click', () => claimMission(m.id));
+    }
+    item.appendChild(btn);
+    wrapper.appendChild(item);
   });
-  html += '</div>'; panel.innerHTML = html;
+  panel.appendChild(wrapper);
 }
 
 function ensureWeeklyGoal() {
@@ -478,16 +503,23 @@ function renderComebackCard(daysAway) {
   let card = $('comebackCard'); if (!card) return;
   let action = findNextStage();
   let actionText = action ? t('comeback.continueWith', { realm: catName(action.cat) }) : t('comeback.exploreRealms');
-  let actionOnclick = action ? `startLevel('${action.cat}', ${action.level})` : "switchTab('hub')";
   let name = S.playerName !== 'Explorer' ? ', ' + escHtml(S.playerName) : '';
-  card.innerHTML = `<div class="comeback-card" onclick="${actionOnclick}">
+
+  card.innerHTML = '';
+  let el = document.createElement('div'); el.className = 'comeback-card';
+  el.innerHTML = `
     <div class="comeback-icon"><i class="fas fa-hand-peace"></i></div>
     <div class="comeback-info">
       <div class="comeback-title">${t('comeback.welcomeBack')}${name}!</div>
-      <div class="comeback-sub">${t('comeback.greatToSeeYou', { days: daysAway })}</div>
+      <div class="comeback-sub">${daysAway === 1 ? t('comeback.greatToSee.1', { days: daysAway }) : t('comeback.greatToSee.many', { days: daysAway })}</div>
       <div class="comeback-action">${actionText} <i class="fas fa-arrow-right" style="font-size:10px"></i></div>
-    </div>
-  </div>`;
+    </div>`;
+  el.addEventListener('click', () => {
+    sfxK();
+    if (action) startLevel(action.cat, action.level);
+    else switchTab('hub');
+  });
+  card.appendChild(el);
 }
 
 // ==================== Shard & Relic Logic ====================
@@ -511,13 +543,13 @@ function checkRealmRelicUnlocks(cat) {
   realmRelics.forEach(relic => {
     let rule = relic.unlockRule;
     if (S.unlockedRelics.has(relic.id)) return;
-    if (rule.type === 'clear_stage' && rule.realm === cat) {
+    if (rule.type === 'clear_stage') {
       let cleared = ld.filter(l => l.completed).length;
       if (cleared >= rule.minStage && (S.relicShards[relic.id] || 0) < relic.shardsNeeded) {
         grantShard(relic.id, 1);
         S._shardQueue.push(relic.id);
       }
-    } else if (rule.type === 'stars' && rule.realm === cat) {
+    } else if (rule.type === 'stars') {
       let totalStars = ld.reduce((s, l) => s + l.stars, 0);
       if (totalStars >= rule.minStars && (S.relicShards[relic.id] || 0) < relic.shardsNeeded) {
         grantShard(relic.id, 1);
@@ -608,11 +640,11 @@ function finishLvl() {
   if (S.bestStreak >= 5) streakBonus = 10;
   if (S.bestStreak >= 10) streakBonus = 25;
   let coinsEarned = baseCoins + speedBonus + streakBonus;
-  if (isDaily && passed) coinsEarned = (S.lastDaily === new Date().toDateString()) ? 0 : 100;
+  if (isDaily && passed) coinsEarned = (S.lastDailyDate === getISODate()) ? 0 : 100;
   S.coins += coinsEarned;
 
   if (isDaily) {
-    S.lastDaily = new Date().toDateString(); S.dailyStreak++; S.isDaily = false;
+    S.lastDaily = new Date().toDateString(); S.lastDailyDate = getISODate(); S.dailyStreak++; S.isDaily = false;
     S.lastDailyDate = getISODate();
     setSessionStat('dailyCompleted', true);
     trackEvent('daily_completed', { score: cor, total: tot, pct: pct });
@@ -632,7 +664,11 @@ function finishLvl() {
   checkSessionMissions();
 
   if (!isDaily) {
-    if (passed && !ld.completed) { ld.completed = true; S.levelsCleared++; if (S.curLevel === 5) S.lvl5Cleared++; }
+    if (passed && !ld.completed) {
+      ld.completed = true; S.levelsCleared++; if (S.curLevel === 5) S.lvl5Cleared++;
+      // First trial bonus: extra crowns for new players
+      if (S.levelsCleared === 1) { S.coins += 50; coinsEarned += 50; trackEvent('first_trial_bonus'); }
+    }
     if (st > ld.stars) { if (st === 3) S.tripleStars++; ld.stars = st; }
     if (S.categoryData[S.curCat] && S.categoryData[S.curCat].levelData.filter(l => l.completed).length === 5) {
       S.realmsMastered = Object.values(S.categoryData).filter(c => c.levelData.filter(l => l.completed).length === 5).length;
@@ -644,6 +680,13 @@ function finishLvl() {
         let realmRelics = RELIC_ITEMS.filter(r => r.realm === S.curCat && !S.unlockedRelics.has(r.id));
         let target = realmRelics.find(r => (S.relicShards[r.id] || 0) < r.shardsNeeded);
         if (target) { grantShard(target.id, 1); S._shardQueue.push(target.id); }
+      }
+      // Boss defeated bonus: extra shard + crowns
+      if (S._bossDefeated && isBossStage) {
+        let bossRelics = RELIC_ITEMS.filter(r => r.realm === S.curCat && !S.unlockedRelics.has(r.id));
+        let bossTarget = bossRelics.find(r => (S.relicShards[r.id] || 0) < r.shardsNeeded);
+        if (bossTarget) { grantShard(bossTarget.id, 1); S._shardQueue.push(bossTarget.id); }
+        coinsEarned += 25; // Boss bonus crowns
       }
     }
     if (passed) {
@@ -800,6 +843,20 @@ function finishLvl() {
   S._justDidComeback = passed && S.lastFailedQuiz === (S.curCat + S.curLevel) && S.reviewOpened;
   S._justPerfectedLevel5 = passed && pct === 100 && S.curLevel === 5;
 
+  // Check adaptive practice improvement
+  if (S._practiceSnapshot && S._practiceSnapshot.accuracy !== null) {
+    let tag = S._practiceSnapshot.tag;
+    let newData = S.skillProfile && S.skillProfile.tags && S.skillProfile.tags[tag];
+    if (newData && newData.answered >= 3) {
+      let newAcc = newData.correct / newData.answered;
+      if (newAcc > S._practiceSnapshot.accuracy) {
+        let improvement = Math.round((newAcc - S._practiceSnapshot.accuracy) * 100);
+        showToast(t('toast.practiceImproved', { tag: cleanTag(tag), pct: improvement }), 4000);
+      }
+    }
+  }
+  S._practiceSnapshot = null;
+
   showScreen('sResults'); checkAch(); showShardPopups();
 
   if (passed) {
@@ -915,7 +972,7 @@ function trySimilarQuestion(answer) {
   let tags = answer.tags || [];
   let pool = (QUESTIONS[cat] || []).filter(q => {
     if (q.lvl !== lvl) return false;
-    if (q.id === answer.qId) return false; // skip the same question
+    if (q.id === answer.qId) return false;
     let overlap = (q.tags || []).filter(t => tags.includes(t)).length;
     return overlap > 0;
   });
@@ -927,17 +984,18 @@ function trySimilarQuestion(answer) {
     showToast(t('toast.noSimilar'));
     return;
   }
-  // Pick one and start a quick 1-question quiz
-  let q = pool[Math.floor(Math.random() * pool.length)];
-  S.curCat = cat; S.curLevel = q.lvl || lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
+  // Start a 3-5 question practice quiz with matching questions
+  let count = Math.min(5, Math.max(3, pool.length));
+  let selected = shuffle(pool).slice(0, count);
+  S.curCat = cat; S.curLevel = lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
   S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 }; S._finishing = false;
-  S.qs = [q];
+  S.qs = smartShuffle(selected);
   let meta = CATEGORY_META[cat];
-  let lMeta = LEVELS_METADATA[cat] && LEVELS_METADATA[cat][(q.lvl || lvl) - 1];
   if (meta) D.quizCatName.textContent = `${catName(cat)} — ${t('quiz.practiceQuestion')}`;
   D.quizCatDot.style.background = meta ? meta.color : 'var(--accent)';
   if (D.quizStageSubtitle) D.quizStageSubtitle.textContent = t('weak.practiceTitle');
-  D.quizTotal.textContent = '1';
+  D.quizTotal.textContent = S.qs.length;
+  bumpSessionStat('stagesStarted', 1);
   updateStats(); showScreen('sQuiz'); loadQ();
 }
 

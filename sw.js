@@ -1,8 +1,10 @@
 // ============================================================================
 // Cerebrum Quest — Service Worker
 // ============================================================================
-const CACHE_VERSION = 'v13';
+// Data version: 2026-05-05 — bump when data files change for cache busting
+const CACHE_VERSION = 'v14';
 const CACHE_NAME = `cerebrum-${CACHE_VERSION}`;
+const DATA_VERSION = '2026-05-05';
 
 // Core assets that must be cached during install for offline support.
 const CORE_ASSETS = [
@@ -83,6 +85,21 @@ self.addEventListener('fetch', event => {
   }
 
   if (url.origin === self.location.origin) {
+    // For data files, always try network first to detect stale data
+    if (url.pathname.endsWith('.json')) {
+      event.respondWith(
+        fetch(event.request)
+          .then(response => {
+            if (response && response.status === 200) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+            }
+            return response;
+          })
+          .catch(() => caches.match(event.request))
+      );
+      return;
+    }
     event.respondWith(
       fetch(event.request)
         .then(response => {

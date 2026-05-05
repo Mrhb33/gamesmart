@@ -22,15 +22,29 @@ function renderShop() {
     else if (item.cat === 'theme') isEquipped = S.equippedTheme === item.id;
 
     let card = document.createElement('div'); card.className = 'category-card';
-    card.innerHTML = `<div class="cat-icon"><i class="fas ${item.icon}"></i></div>
-      <div class="cat-name">${escHtml(shopName(item.id))}</div>
-      <div style="margin-top:12px;">${
-        isOwned
-          ? (isEquipped
-            ? `<button class="btn btn-gold btn-sm disabled">${t('shop.equipped')}</button>`
-            : `<button class="btn btn-ghost btn-sm" onclick="equipShopItem('${item.id}','${item.cat}',${item.subId ? "'"+item.subId+"'" : 'null'})">${t('shop.equip')}</button>`)
-          : `<button class="btn btn-gold btn-sm" onclick="buyShopItem('${item.id}',${item.cost})"><i class="fas fa-coins"></i> ${item.cost}</button>`
-      }</div>`;
+    let iconDiv = document.createElement('div'); iconDiv.className = 'cat-icon';
+    iconDiv.innerHTML = `<i class="fas ${item.icon}"></i>`;
+    let nameDiv = document.createElement('div'); nameDiv.className = 'cat-name';
+    nameDiv.textContent = shopName(item.id);
+    let btnWrap = document.createElement('div'); btnWrap.style.marginTop = '12px';
+
+    let btn = document.createElement('button');
+    if (isOwned) {
+      if (isEquipped) {
+        btn.className = 'btn btn-gold btn-sm disabled'; btn.disabled = true;
+        btn.textContent = t('shop.equipped');
+      } else {
+        btn.className = 'btn btn-ghost btn-sm';
+        btn.textContent = t('shop.equip');
+        btn.addEventListener('click', () => equipShopItem(item.id, item.cat, item.subId));
+      }
+    } else {
+      btn.className = 'btn btn-gold btn-sm';
+      btn.innerHTML = `<i class="fas fa-coins"></i> ${item.cost}`;
+      btn.addEventListener('click', () => buyShopItem(item.id, item.cost));
+    }
+    btnWrap.appendChild(btn);
+    card.appendChild(iconDiv); card.appendChild(nameDiv); card.appendChild(btnWrap);
     D.shopGrid.appendChild(card);
   });
 }
@@ -49,7 +63,7 @@ function equipShopItem(id, cat, subId) {
   if (cat === 'avatar' && subId) { S.avatar = subId; updateAvatars(); }
   else if (cat === 'frame') S.equippedFrame = id;
   else if (cat === 'title') S.equippedTitle = id;
-  else if (cat === 'theme') S.equippedTheme = id;
+  else if (cat === 'theme') { S.equippedTheme = id; applyTheme(id); }
   saveState(); renderShop(); sfxK();
 }
 function updateAvatars() {
@@ -83,11 +97,13 @@ async function loadQuestions() {
     QUESTIONS = dataQ;
     LEVELS_METADATA = dataM;
     _qReady = true;
+    return true;
   } catch (e) {
     console.error("Failed to load questions:", e);
     showToast(t('toast.questionsFailed'));
     let el = D.categoryGrid;
     if (el) el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);grid-column:1/-1;"><i class="fas fa-exclamation-triangle" style="font-size:32px;display:block;margin-bottom:12px;color:var(--accent);"></i>' + t('misc.couldNotLoad') + '</div>';
+    return false;
   }
 }
 
@@ -253,3 +269,41 @@ const SHOP_ITEMS = [
   { id:'theme_ocean', cat:'theme', icon:'fa-water', name:'Ocean Depths', cost:200 },
   { id:'theme_cosmic', cat:'theme', icon:'fa-meteor', name:'Cosmic Void', cost:400 }
 ];
+
+const THEME_VARS = {
+  theme_default: {},
+  theme_ember: {
+    '--bg-deep': '#0f0705', '--bg': '#1a0c08', '--bg-surface': '#241410', '--bg-elevated': '#2e1c16',
+    '--accent': '#f97316', '--accent-hover': '#fb923c', '--accent-glow': 'rgba(249,115,22,0.25)',
+    '--accent2': '#ef4444', '--accent3': '#fbbf24',
+    '--card': 'rgba(36,20,16,0.85)', '--card-hover': 'rgba(46,28,22,0.9)', '--card-border': 'rgba(249,115,22,0.08)',
+    '--border': 'rgba(249,115,22,0.12)', '--glass': 'rgba(249,115,22,0.04)', '--glass-border': 'rgba(249,115,22,0.08)'
+  },
+  theme_ocean: {
+    '--bg-deep': '#040a14', '--bg': '#081420', '--bg-surface': '#0e1e30', '--bg-elevated': '#14283c',
+    '--accent': '#06b6d4', '--accent-hover': '#22d3ee', '--accent-glow': 'rgba(6,182,212,0.25)',
+    '--accent2': '#3b82f6', '--accent3': '#8b5cf6',
+    '--card': 'rgba(14,30,48,0.85)', '--card-hover': 'rgba(20,40,60,0.9)', '--card-border': 'rgba(6,182,212,0.08)',
+    '--border': 'rgba(6,182,212,0.12)', '--glass': 'rgba(6,182,212,0.04)', '--glass-border': 'rgba(6,182,212,0.08)'
+  },
+  theme_cosmic: {
+    '--bg-deep': '#08040f', '--bg': '#10081a', '--bg-surface': '#181028', '--bg-elevated': '#201836',
+    '--accent': '#a855f7', '--accent-hover': '#c084fc', '--accent-glow': 'rgba(168,85,247,0.25)',
+    '--accent2': '#ec4899', '--accent3': '#6366f1',
+    '--card': 'rgba(24,16,40,0.85)', '--card-hover': 'rgba(32,24,54,0.9)', '--card-border': 'rgba(168,85,247,0.08)',
+    '--border': 'rgba(168,85,247,0.12)', '--glass': 'rgba(168,85,247,0.04)', '--glass-border': 'rgba(168,85,247,0.08)'
+  }
+};
+
+function applyTheme(themeId) {
+  let root = document.documentElement;
+  // Reset all theme variables to defaults first
+  let defaults = THEME_VARS.theme_default;
+  Object.keys(THEME_VARS).forEach(tid => {
+    let vars = THEME_VARS[tid];
+    Object.keys(vars).forEach(k => root.style.removeProperty(k));
+  });
+  // Apply chosen theme
+  let vars = THEME_VARS[themeId] || {};
+  Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+}

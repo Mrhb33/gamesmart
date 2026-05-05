@@ -58,37 +58,103 @@ function cacheDom() {
 }
 
 // ==================== State ====================
-let S = {
-  playerName: "Explorer", totalXP: 0, curLevelNum: 1, bestStreak: 0,
-  totalCorrect: 0, totalAnswered: 0, totalQuizzes: 0, perfectQuizzes: 0, hardCorrect: 0, fastAnswer: 0,
-  curCat: null, curLevel: 1,
-  categoryData: {},
-  tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
-  newAchievements: new Set(), unlockedAchievements: new Set(),
-  pinnedAchievements: [], claimedAchRewards: new Set(),
-  qs: [], qIndex: 0, quizScore: 0, quizStreak: 0, quizXP: 0,
-  quizStartTime: 0, timerInterval: null, timeLeft: 0, questionAnswered: false, lastQuizAnswers: [],
-  coins: 0, unlockedAvatars: ['A'], avatar: 'A', lastDaily: 0, dailyStreak: 0, isDaily: false, lifelinesUsed: { fifty: 0, time: 0, hint: 0 },
-  onboardingDone: false, lastFailedQuiz: null, reviewOpened: false,
-  lastDailyDate: '', dailyChestShown: '',
-  answeredQuestionIds: {}, weakAreas: {},
-  missionDate: '', missions: [],
-  missionSessionStats: { questionsAnswered: 0, correctAnswers: 0, stagesStarted: 0, stagesCompleted: 0, dailyCompleted: false, noLifelineStages: 0, wrongReviewed: 0, starsEarned: 0, maxStreak: 0 },
-  weeklyGoalDate: '', weeklyStagesCompleted: 0, weeklyGoalClaimed: false,
-  lastPlayDate: '', comebackShown: '',
-  relicShards: {}, unlockedRelics: new Set(), newRelics: new Set(),
-  unlockedShopItems: ['avatar_A','frame_none','title_novice','theme_default'],
-  equippedFrame: 'frame_none', equippedTitle: 'title_novice', equippedTheme: 'theme_default',
-  pinnedShowcase: [], _shardQueue: [],
-  skillProfile: { categories: {}, tags: {}, avgResponseTime: 0, totalResponseTime: 0, responseCount: 0 },
-  stageMastery: {}, recentMistakes: []
-};
+function createDefaultState() {
+  return {
+    playerName: "Explorer", totalXP: 0, curLevelNum: 1, bestStreak: 0,
+    totalCorrect: 0, totalAnswered: 0, totalQuizzes: 0, perfectQuizzes: 0, hardCorrect: 0, fastAnswer: 0,
+    curCat: null, curLevel: 1,
+    categoryData: {},
+    tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
+    newAchievements: new Set(), unlockedAchievements: new Set(),
+    pinnedAchievements: [], claimedAchRewards: new Set(),
+    qs: [], qIndex: 0, quizScore: 0, quizStreak: 0, quizXP: 0,
+    quizStartTime: 0, timerInterval: null, timeLeft: 0, questionAnswered: false, lastQuizAnswers: [],
+    coins: 0, unlockedAvatars: ['A'], avatar: 'A', lastDaily: 0, lastDailyDate: '', dailyStreak: 0, isDaily: false, lifelinesUsed: { fifty: 0, time: 0, hint: 0 },
+    onboardingDone: false, lastFailedQuiz: null, reviewOpened: false,
+    dailyChestShown: '',
+    answeredQuestionIds: {}, weakAreas: {},
+    missionDate: '', missions: [],
+    missionSessionStats: { questionsAnswered: 0, correctAnswers: 0, stagesStarted: 0, stagesCompleted: 0, dailyCompleted: false, noLifelineStages: 0, wrongReviewed: 0, starsEarned: 0, maxStreak: 0 },
+    weeklyGoalDate: '', weeklyStagesCompleted: 0, weeklyGoalClaimed: false,
+    lastPlayDate: '', comebackShown: '',
+    relicShards: {}, unlockedRelics: new Set(), newRelics: new Set(),
+    unlockedShopItems: ['avatar_A','frame_none','title_novice','theme_default'],
+    equippedFrame: 'frame_none', equippedTitle: 'title_novice', equippedTheme: 'theme_default',
+    pinnedShowcase: [], _shardQueue: [],
+    skillProfile: { categories: {}, tags: {}, avgResponseTime: 0, totalResponseTime: 0, responseCount: 0 },
+    stageMastery: {}, recentMistakes: []
+  };
+}
+
+let S = createDefaultState();
 
 let _autoAdvance = null;
 function clearAllTimers() { if (S.timerInterval) { clearInterval(S.timerInterval); S.timerInterval = null; } if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } }
 
-const SAVE_VERSION = 6;
+const SAVE_VERSION = 7;
 const SAVE_KEY = 'cerebrum_save';
+
+// Keys that should be persisted. Everything else is transient runtime state.
+const PERSIST_KEYS = new Set([
+  'playerName', 'totalXP', 'curLevelNum', 'bestStreak',
+  'totalCorrect', 'totalAnswered', 'totalQuizzes', 'perfectQuizzes', 'hardCorrect', 'fastAnswer',
+  'curCat', 'curLevel',
+  'categoryData',
+  'tripleStars', 'lvl5Cleared', 'levelsCleared', 'realmsMastered',
+  'unlockedAchievements', 'claimedAchRewards', 'pinnedAchievements',
+  'coins', 'unlockedAvatars', 'avatar', 'lastDaily', 'lastDailyDate', 'dailyStreak',
+  'onboardingDone', 'lastFailedQuiz', 'reviewOpened',
+  'dailyChestShown',
+  'answeredQuestionIds', 'weakAreas',
+  'missionDate', 'missions',
+  'weeklyGoalDate', 'weeklyStagesCompleted', 'weeklyGoalClaimed',
+  'lastPlayDate', 'comebackShown',
+  'relicShards', 'unlockedRelics', 'newRelics',
+  'unlockedShopItems',
+  'equippedFrame', 'equippedTitle', 'equippedTheme',
+  'pinnedShowcase',
+  'skillProfile',
+  'stageMastery', 'recentMistakes',
+]);
+
+function serializeState() {
+  const out = { _v: SAVE_VERSION };
+  PERSIST_KEYS.forEach(k => {
+    if (S[k] !== undefined) out[k] = S[k];
+  });
+  return JSON.stringify(out, (k, v) => (v instanceof Set ? [...v] : v));
+}
+
+function hydrateState(raw) {
+  // Parse if string
+  let p = typeof raw === 'string' ? JSON.parse(raw) : raw;
+  if (!p || typeof p !== 'object') throw new Error('Invalid save data');
+
+  // Validate: must have recognizable Cerebrum fields
+  if (p.playerName === undefined && p.totalXP === undefined && p.categoryData === undefined) {
+    throw new Error('Not a valid Cerebrum save');
+  }
+
+  // Strip version before merge
+  let version = p._v || 0;
+  delete p._v;
+
+  // Strip transient keys
+  const transient = new Set([
+    'timerInterval', 'qs', 'qIndex', 'quizScore', 'quizStreak', 'quizXP',
+    'quizStartTime', 'timeLeft', 'questionAnswered', 'lastQuizAnswers',
+    'isDaily', '_shuffled', '_finishing', '_bossDefeated', 'missionSessionStats', '_shardQueue',
+    'newAchievements', '_practiceSnapshot',
+  ]);
+  transient.forEach(k => delete p[k]);
+
+  // Migrate
+  p = migrateSave(p, version);
+
+  // Merge into fresh state
+  S = { ...createDefaultState(), ...p };
+  applySaveDefaults();
+}
 
 function saveState() {
   if (S.answeredQuestionIds) {
@@ -97,19 +163,11 @@ function saveState() {
   }
   if (typeof decaySkillProfile === 'function') decaySkillProfile();
   try {
-    const toSave = { ...S, _v: SAVE_VERSION };
-    localStorage.setItem(SAVE_KEY, JSON.stringify(toSave, (k, v) => (v instanceof Set ? [...v] : v)));
+    localStorage.setItem(SAVE_KEY, serializeState());
   } catch (e) {
     console.warn('Save failed:', e.message);
   }
 }
-
-// Keys that should never be persisted — runtime-only state.
-const TRANSIENT_KEYS = new Set([
-  'timerInterval', 'qs', 'qIndex', 'quizScore', 'quizStreak', 'quizXP',
-  'quizStartTime', 'timeLeft', 'questionAnswered', 'lastQuizAnswers',
-  'isDaily', '_shuffled', '_finishing', '_bossDefeated', 'missionSessionStats', '_shardQueue',
-]);
 
 // Apply safe defaults for any missing fields, grouped by version they were introduced.
 function applySaveDefaults() {
@@ -178,10 +236,31 @@ function applySaveDefaults() {
   S.claimedAchRewards = new Set(S.claimedAchRewards || []);
 }
 
-function migrateSave(p) {
-  let version = p._v || 0;
-  // Future migrations go here:
-  // if (version < 7) { ... migrate to v7 ... }
+function migrateSave(p, version) {
+  // v6 → v7: Normalize daily dates from toDateString to ISO YYYY-MM-DD
+  if (version < 7) {
+    if (p.lastDaily && !p.lastDailyDate) {
+      let dd = new Date(p.lastDaily);
+      if (!isNaN(dd.getTime())) p.lastDailyDate = dd.toISOString().slice(0, 10);
+      else p.lastDailyDate = '';
+    }
+    if (!p.lastDailyDate) p.lastDailyDate = '';
+    // Ensure categoryData has 5 levels
+    if (p.categoryData) {
+      Object.keys(p.categoryData).forEach(c => {
+        if (!p.categoryData[c].levelData || p.categoryData[c].levelData.length < 5) {
+          p.categoryData[c].levelData = Array.from({ length: 5 }, () => ({ stars: 0, completed: false }));
+        }
+      });
+    }
+    // Ensure shop defaults
+    if (!Array.isArray(p.unlockedShopItems)) {
+      p.unlockedShopItems = ['avatar_A', 'frame_none', 'title_novice', 'theme_default'];
+    }
+    if (!p.equippedFrame) p.equippedFrame = 'frame_none';
+    if (!p.equippedTitle) p.equippedTitle = 'title_novice';
+    if (!p.equippedTheme) p.equippedTheme = 'theme_default';
+  }
   return p;
 }
 
@@ -189,15 +268,7 @@ function loadState() {
   try {
     let d = localStorage.getItem(SAVE_KEY);
     if (!d) return;
-    let p = JSON.parse(d);
-    // Strip transient runtime keys
-    TRANSIENT_KEYS.forEach(k => delete p[k]);
-    delete p._v;
-    // Migrate before merging
-    p = migrateSave(p);
-    S = { ...S, ...p };
-    // Apply safe defaults for any missing fields
-    applySaveDefaults();
+    hydrateState(d);
   } catch (e) {
     // Never auto-delete a broken save — keep defaults and warn.
     console.warn('Save parse error — keeping defaults:', e.message);

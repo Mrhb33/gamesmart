@@ -165,8 +165,8 @@ function importSave() {
     reader.onload = ev => {
       try {
         let parsed = JSON.parse(ev.target.result);
-        // Validate: must have recognizable Cerebrum fields
-        if (!parsed || typeof parsed !== 'object' || (parsed.playerName === undefined && parsed.totalXP === undefined)) {
+        // Validate via hydrateState
+        if (!parsed || typeof parsed !== 'object' || (parsed.playerName === undefined && parsed.totalXP === undefined && parsed.categoryData === undefined)) {
           showToast(t('toast.invalidSaveFile'));
           return;
         }
@@ -186,7 +186,7 @@ function importSave() {
 function doReset() {
   clearAllTimers();
   S.totalXP = 0; S.curLevelNum = 1; S.bestStreak = 0; S.totalCorrect = 0; S.totalAnswered = 0; S.totalQuizzes = 0; S.perfectQuizzes = 0; S.hardCorrect = 0; S.fastAnswer = 0; S.levelsCleared = 0; S.lvl5Cleared = 0; S.tripleStars = 0; S.realmsMastered = 0;
-  S.coins = 0; S.unlockedAvatars = ['A']; S.avatar = 'A'; S.lastDaily = 0; S.dailyStreak = 0; S.isDaily = false; S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 };
+  S.coins = 0; S.unlockedAvatars = ['A']; S.avatar = 'A'; S.lastDaily = 0; S.lastDailyDate = ''; S.dailyStreak = 0; S.isDaily = false; S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 };
   S.onboardingDone = false; S.unlockedAchievements.clear(); S.newAchievements.clear(); S.lastQuizAnswers = [];
   S.relicShards = {}; S.unlockedRelics.clear(); S.newRelics.clear();
   S.unlockedShopItems = ['avatar_A','frame_none','title_novice','theme_default'];

@@ -34,11 +34,84 @@ function updateOnboardingStep() {
 }
 function finishOnboarding() {
   S.onboardingDone = true;
+  // Give starting crowns to new players
+  if (S.coins === 0) { S.coins = 30; }
   saveState();
   trackEvent('onboarding_complete');
   showScreen('sHub');
+  // Scroll to recommended realm after a short delay
+  setTimeout(() => {
+    let rec = document.querySelector('.recommended-realm');
+    if (rec) rec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 400);
 }
 
+
+// ==================== Adaptive Skill Tracking ====================
+function trackSkillAnswer(cat, tags, isCorrect, timeMs, level) {
+  if (!S.skillProfile) S.skillProfile = { categories: {}, tags: {}, avgResponseTime: 0, totalResponseTime: 0, responseCount: 0 };
+  let sp = S.skillProfile;
+  // Category-level tracking
+  if (cat && cat !== 'daily') {
+    if (!sp.categories[cat]) sp.categories[cat] = { correct: 0, answered: 0, totalTime: 0 };
+    sp.categories[cat].answered++;
+    if (isCorrect) sp.categories[cat].correct++;
+    sp.categories[cat].totalTime += timeMs || 0;
+  }
+  // Tag-level tracking
+  if (tags && Array.isArray(tags)) {
+    tags.forEach(tag => {
+      if (!sp.tags[tag]) sp.tags[tag] = { correct: 0, answered: 0, totalTime: 0 };
+      sp.tags[tag].answered++;
+      if (isCorrect) sp.tags[tag].correct++;
+      sp.tags[tag].totalTime += timeMs || 0;
+    });
+  }
+  // Global response time
+  sp.totalResponseTime += timeMs || 0;
+  sp.responseCount++;
+  sp.avgResponseTime = sp.responseCount > 0 ? Math.round(sp.totalResponseTime / sp.responseCount) : 0;
+}
+
+function decaySkillProfile() {
+  if (!S.skillProfile) return;
+  let sp = S.skillProfile;
+  // Decay weights for tags not seen in a while (soft decay via reducing counts)
+  if (sp.tags) {
+    Object.keys(sp.tags).forEach(tag => {
+      let d = sp.tags[tag];
+      if (d.answered > 20) {
+        d.answered = Math.max(20, Math.round(d.answered * 0.95));
+        d.correct = Math.max(Math.round(d.correct * 0.95), 0);
+      }
+    });
+  }
+}
+
+function calcCategoryMastery(cat) {
+  if (!S.categoryData[cat]) return 0;
+  let ld = S.categoryData[cat].levelData;
+  let totalStars = ld.reduce((s, l) => s + l.stars, 0);
+  let completed = ld.filter(l => l.completed).length;
+  let sp = S.skillProfile;
+  let accuracyBonus = 0;
+  if (sp && sp.categories[cat] && sp.categories[cat].answered >= 5) {
+    accuracyBonus = Math.round((sp.categories[cat].correct / sp.categories[cat].answered) * 15);
+  }
+  return Math.min(100, Math.round((completed / 5) * 60 + (totalStars / 15) * 25 + accuracyBonus));
+}
+
+function isPlayerExcelling() {
+  if (S.totalAnswered < 10) return false;
+  let acc = S.totalCorrect / S.totalAnswered;
+  return acc >= 0.8 && S.bestStreak >= 3;
+}
+
+function isPlayerStruggling() {
+  if (S.totalAnswered < 5) return false;
+  let acc = S.totalCorrect / S.totalAnswered;
+  return acc < 0.5;
+}
 
 // ==================== Shuffle & Battle Helpers ====================
 function shuffle(a) { let c = [...a]; for (let i = c.length - 1; i > 0; i--) { let j = Math.floor(Math.random() * (i + 1));[c[i], c[j]] = [c[j], c[i]]; } return c; }
@@ -95,6 +168,10 @@ function startWeakAreaPractice(cat, tag) {
   let pool = (QUESTIONS[cat] || []).filter(q => (q.tags || []).includes(tag));
   if (pool.length < 3) pool = (QUESTIONS[cat] || []).filter(q => q.lvl <= 2);
   if (pool.length === 0) { showToast(t('toast.noPracticeQuestions')); return; }
+
+  // Snapshot tag accuracy before practice for improvement tracking
+  let tagData = S.skillProfile && S.skillProfile.tags && S.skillProfile.tags[tag];
+  S._practiceSnapshot = tag ? { tag, accuracy: tagData && tagData.answered >= 2 ? tagData.correct / tagData.answered : null } : null;
 
   S.curCat = cat; S.curLevel = 1; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
   S.isDaily = false; S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 }; S._finishing = false;
@@ -200,10 +277,6 @@ function loadQ() {
   S.questionAnswered = false;
   D.explanationArea.innerHTML = '';
   D.nextQBtn.classList.remove('visible');
-  if (!S.qs || !S.qs.length || S.qIndex >= S.qs.length) { finishLvl(); return; }
-  S.questionAnswered = false;
-  D.explanationArea.innerHTML = '';
-  D.nextQBtn.classList.remove('visible');
   let q = S.qs[S.qIndex]; if (!q) { finishLvl(); return; }
   let phaseName = getBattlePhase(S.qIndex, S.qs.length);
   D.questionNumber.textContent = t('quiz.battleOf', { phase: phaseName, cur: S.qIndex + 1, total: S.qs.length });
@@ -256,6 +329,10 @@ function startT() {
 
   S.timeLeft = dur;
   let f = D.timerFill; f.style.width = '100%'; f.className = 'timer-fill';
+  // Boss questions get red-tinted timer
+  let curQ = S.qs && S.qs[S.qIndex];
+  let isBossQ = curQ ? (curQ.boss === true) : isBossQuestion(S.qIndex, S.qs.length);
+  if (isBossQ) f.classList.add('boss-timer');
   S.timerInterval = setInterval(() => {
     S.timeLeft -= 100; let pct = Math.min(100, Math.max(0, (S.timeLeft / dur) * 100));
     f.style.width = pct + '%'; f.className = pct < 25 ? 'timer-fill danger' : pct < 50 ? 'timer-fill warning' : 'timer-fill';
@@ -293,6 +370,10 @@ function timeOut() {
         S.weakAreas[tag].wrong++;
       });
     }
+    // Track recent mistakes for weak areas screen
+    if (!S.recentMistakes) S.recentMistakes = [];
+    S.recentMistakes.push({ qId: q.id, tags: q.tags || [], category: S.curCat, level: S.curLevel, ts: Date.now() });
+    if (S.recentMistakes.length > 50) S.recentMistakes = S.recentMistakes.slice(-50);
     // Track into adaptive skill profile (timed out = used full timer)
     let fullDur = (TIMER_DUR[S.curLevel] || 20) * 1000;
     trackSkillAnswer(S.curCat, q.tags, false, fullDur, S.curLevel);
@@ -357,6 +438,13 @@ function pickA(dIdx, oIdx) {
       });
     }
 
+    // Track recent mistakes for weak areas screen
+    if (!isCor) {
+      if (!S.recentMistakes) S.recentMistakes = [];
+      S.recentMistakes.push({ qId: q.id, tags: q.tags || [], category: S.curCat, level: S.curLevel, ts: Date.now() });
+      if (S.recentMistakes.length > 50) S.recentMistakes = S.recentMistakes.slice(-50);
+    }
+
     // Track into adaptive skill profile
     trackSkillAnswer(S.curCat, q.tags, isCor, t * 1000, S.curLevel);
 
@@ -388,10 +476,14 @@ function updateStats() {
 
 function showExpl(q, isC, cLab) {
   let box = document.createElement('div'); box.className = 'explanation-box';
+  box.setAttribute('role', 'alert');
+  box.setAttribute('aria-live', 'assertive');
   let label = document.createElement('div'); label.className = 'label';
   let isBossQ = (q.boss === true) || (S.qs && isBossQuestion(S.qIndex, S.qs.length));
   let bossPrefix = isBossQ ? 'BOSS ' : '';
-  label.innerHTML = `<i class="fas ${isC ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${bossPrefix}${cLab || (isC ? t('quiz.correct') : t('quiz.wrong'))}`;
+  let resultText = bossPrefix + (cLab || (isC ? t('quiz.correct') : t('quiz.wrong')));
+  label.innerHTML = `<i class="fas ${isC ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${resultText}`;
+  label.setAttribute('aria-label', resultText);
   // Use explanationLong for wrong answers to teach more, expl for correct
   let explText = (!isC && getQText(q, 'explanationLong')) ? getQText(q, 'explanationLong') : getQText(q, 'expl');
   let text = document.createElement('div'); text.className = 'text'; text.textContent = explText;
@@ -421,8 +513,8 @@ function flyXP(amt) {
 function startDaily() {
   if (!requireQuestions()) return;
   sfxK();
-  let today = new Date().toDateString();
-  if (S.lastDaily === today) { showToast(t('toast.dailyDone')); return; }
+  let today = getISODate();
+  if (S.lastDailyDate === today) { showToast(t('toast.dailyDone')); return; }
   S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
   S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 };
   clearAllTimers(); S._finishing = false;
@@ -443,13 +535,19 @@ function startDaily() {
 function updateLL() {
   let llF = D.llFifty, llT = D.llTime, llH = D.llHint;
   if (!llF || !llT) return;
-  let canAfford = S.coins >= 20;
+  let llCost = S.totalQuizzes < 3 ? 0 : 20;
+  let canAfford = S.coins >= llCost;
   llF.disabled = !canAfford || S.lifelinesUsed.fifty;
   llT.disabled = !canAfford || S.lifelinesUsed.time;
   llF.classList.toggle('used', !!S.lifelinesUsed.fifty);
   llT.classList.toggle('used', !!S.lifelinesUsed.time);
-  llF.onclick = () => { if (S.coins >= 20 && !S.lifelinesUsed.fifty && !S.questionAnswered) { S.coins -= 20; S.lifelinesUsed.fifty = 1; saveState(); sfxK(); updateLL(); doFifty(); showToast(t('toast.fiftyFifty')); } };
-  llT.onclick = () => { if (S.coins >= 20 && !S.lifelinesUsed.time && !S.questionAnswered) { S.coins -= 20; S.lifelinesUsed.time = 1; saveState(); sfxK(); updateLL(); S.timeLeft += 10000; showToast(t('toast.freezeTime')); if (D.timerFill) { D.timerFill.style.background = 'var(--accent2)'; setTimeout(() => { if (D.timerFill) D.timerFill.style.background = ''; }, 500); } } };
+  // Show cost label on buttons
+  if (llCost === 0) {
+    llF.innerHTML = '<i class="fas fa-percent"></i> 50/50 <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+    llT.innerHTML = '<i class="fas fa-snowflake"></i> Freeze <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+  }
+  llF.onclick = () => { if (!S.lifelinesUsed.fifty && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.fifty = 1; saveState(); sfxK(); updateLL(); doFifty(); showToast(t('toast.fiftyFifty')); } else { showToast(t('toast.notEnoughCrowns')); } } };
+  llT.onclick = () => { if (!S.lifelinesUsed.time && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.time = 1; saveState(); sfxK(); updateLL(); S.timeLeft += 10000; showToast(t('toast.freezeTime')); if (D.timerFill) { D.timerFill.style.background = 'var(--accent2)'; setTimeout(() => { if (D.timerFill) D.timerFill.style.background = ''; }, 500); } } else { showToast(t('toast.notEnoughCrowns')); } } };
   // Hint lifeline — free, one per quiz
   if (llH) {
     let q = S.qs && S.qs[S.qIndex];
