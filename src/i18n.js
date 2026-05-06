@@ -487,6 +487,7 @@ const I18N = {
     'tips.takeTime': 'Take your time with Review Mistakes. Understanding beats speed!',
     // Adaptive recs
     'rec.recommendedNext': 'Recommended Next',
+    'rec.nextDesc': '{realm} · Trial {trial}',
     'rec.practiceWeak': 'Practice Weak Area',
     'rec.readyForBoss': 'Ready for Boss',
     'rec.readyForBossDesc': 'Boss Battle awaits!',
@@ -1052,6 +1053,7 @@ const I18N = {
     'tips.takeTime': 'خذ وقتك في مراجعة الأخطاء. الفهم يتفوق على السرعة!',
     // Adaptive recs
     'rec.recommendedNext': 'التالي الموصى به',
+    'rec.nextDesc': '{realm} · تجربة {trial}',
     'rec.practiceWeak': 'تدريب نقاط الضعف',
     'rec.readyForBoss': 'مستعد للزعيم',
     'rec.readyForBossDesc': 'معركة الزعيم بانتظارك!',

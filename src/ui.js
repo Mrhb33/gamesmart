@@ -44,17 +44,22 @@ document.addEventListener('visibilitychange', () => { _pageHidden = document.hid
 resizeCanvas(); initParticles(); animateBg();
 
 // ==================== Navigation ====================
-function showScreen(id) {
+let _currTab = 'hub';
+function showScreen(id, dirClass = '') {
   // Close any open modals when navigating
   $('settingsModal')?.classList.remove('open');
   $('confirmModal')?.classList.remove('open');
   $('nameModal')?.classList.remove('open');
 
   const allScreens = ['sHub', 'sLevelSelect', 'sQuiz', 'sResults', 'sReview', 'sWeakAreas', 'sAchievements', 'sProfile', 'sWelcome', 'sShop', 'sOnboarding'];
-  allScreens.forEach(s => { let el = $(s); if (el) el.classList.remove('active'); });
+  allScreens.forEach(s => { 
+    let el = $(s); 
+    if (el) el.classList.remove('active', 'slide-left', 'slide-right'); 
+  });
   let target = $(id);
   if (!target) return;
   target.classList.add('active');
+  if (dirClass) target.classList.add(dirClass);
   target.setAttribute('tabindex', '-1');
   target.focus({ preventScroll: true });
   if (D.mainNav) D.mainNav.style.display = (id === 'sWelcome' || id === 'sQuiz' || id === 'sOnboarding') ? 'none' : 'flex';
@@ -77,7 +82,21 @@ function showScreen(id) {
   });
   if (id === 'sAchievements') { S.newAchievements.clear(); S.newRelics.clear(); updateBadge(); }
 }
-function switchTab(t) { sfxK(); showScreen('s' + t.charAt(0).toUpperCase() + t.slice(1)); }
+function switchTab(t) { 
+  sfxK(); vibe(15); 
+  let tabs = ['hub', 'achievements', 'shop', 'profile'];
+  let oldIdx = tabs.indexOf(_currTab);
+  let newIdx = tabs.indexOf(t);
+  let dirClass = '';
+  if (oldIdx !== -1 && newIdx !== -1 && oldIdx !== newIdx) {
+    dirClass = newIdx > oldIdx ? 'slide-right' : 'slide-left';
+    if (document.documentElement.dir === 'rtl') {
+      dirClass = newIdx > oldIdx ? 'slide-left' : 'slide-right';
+    }
+  }
+  _currTab = t;
+  showScreen('s' + t.charAt(0).toUpperCase() + t.slice(1), dirClass); 
+}
 function updateBadge() {
   let b = D.achieveBadge;
   let count = S.newAchievements.size + S.newRelics.size;

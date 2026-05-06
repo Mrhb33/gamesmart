@@ -5,6 +5,8 @@ const AVATARS = [
 let _shopCat = 'avatar';
 function switchShopCat(cat) {
   _shopCat = cat;
+  if(window.sfxK) sfxK();
+  if(window.vibe) vibe(15);
   document.querySelectorAll('#shopTabs .coll-tab').forEach(b => b.classList.toggle('active', b.dataset.shopcat === cat));
   renderShop();
 }

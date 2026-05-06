@@ -126,7 +126,7 @@ function updateHub() {
   Object.keys(CATEGORY_META).forEach(cat => {
     let m = CATEGORY_META[cat], ld = S.categoryData[cat].levelData;
     let done = ld.filter(l => l.completed).length, stars = ld.reduce((a, b) => a + b.stars, 0);
-    let realmMeta = LEVELS_METADATA[cat] && LEVELS_METADATA[cat][0] ? LEVELS_METADATA[cat][0] : null;
+    let realmMeta = getLevelMeta(cat, 0);
     let rgba = CAT_RGBA[cat] || '255,255,255';
     let isRecommended = cat === recommendedCat && done < 5;
 
@@ -151,7 +151,7 @@ function updateHub() {
 
     let masteryHtml = done === 5 ? '<div class="realm-mastery-badge"><i class="fas fa-crown"></i> ' + t('hub.mastered') + '</div>' : '';
     let recommendedHtml = isRecommended ? '<div class="realm-recommended-badge"><i class="fas fa-arrow-right"></i> ' + t('hub.recommended') + '</div>' : '';
-    let realmSubtitle = realmMeta ? realmMeta.subtitle : catDesc(cat);
+    let realmSubtitle = (realmMeta && realmMeta.subtitle) ? realmMeta.subtitle : catDesc(cat);
 
     let card = document.createElement('div'); card.className = 'category-card' + (isRecommended ? ' recommended-realm' : ''); card.setAttribute('data-cat', cat);
     card.innerHTML = `${masteryHtml}${recommendedHtml}
@@ -463,7 +463,7 @@ function renderWeeklyGoal() {
       <div class="weekly-goal-reward"><i class="fas fa-coins"></i> ${WEEKLY_REWARD.coins} &middot; <i class="fas fa-bolt"></i> ${WEEKLY_REWARD.xp} ${t('misc.xp')}</div>
     </div>
     <div class="weekly-bar-outer"><div class="weekly-bar-fill" style="width:${pct}%"></div></div>
-    <div class="weekly-goal-status"><span>${t('weekly.status', { done: S.weeklyStagesCompleted, total: WEEKLY_GOAL_TARGET })}</span><span>${pct}%</span></div>
+    <div class="weekly-goal-status"><span>${t('weekly.status', { done: S.weeklyStagesCompleted, target: WEEKLY_GOAL_TARGET })}</span><span>${pct}%</span></div>
     ${canClaim ? '<button class="weekly-claim-btn visible" onclick="claimWeeklyGoal()"><i class="fas fa-gift"></i> ' + t('weekly.claimReward') + '</button>' : ''}
     ${S.weeklyGoalClaimed ? '<div style="font-size:12px;color:var(--accent2);margin-top:8px;font-weight:600"><i class="fas fa-check-circle"></i> ' + t('weekly.claimed') + '</div>' : ''}
   </div>`;
@@ -1040,6 +1040,8 @@ let _collTab = 'relics', _collFilter = 'all';
 
 function switchCollTab(tab) {
   _collTab = tab;
+  if(window.sfxK) sfxK();
+  if(window.vibe) vibe(15);
   document.querySelectorAll('.coll-tab').forEach(b => b.classList.toggle('active', b.dataset.coll === tab));
   let realmFilter = $('collRealmFilter');
   if (realmFilter) realmFilter.style.display = tab === 'relics' ? 'inline-block' : 'none';
@@ -1047,6 +1049,8 @@ function switchCollTab(tab) {
 }
 function filterCollection(filter) {
   if (filter) _collFilter = filter;
+  if(window.sfxK) sfxK();
+  if(window.vibe) vibe(10);
   document.querySelectorAll('.coll-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === _collFilter));
   renderCollection();
 }
