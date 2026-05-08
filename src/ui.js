@@ -9,8 +9,19 @@ function initParticles() {
   let count = isReducedMotion() ? 0 : Math.min(35, Math.floor(window.innerWidth * window.innerHeight / 28000));
   for (let i = 0; i < count; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - .5) * .2, vy: (Math.random() - .5) * .2, r: Math.random() * 2.5 + .8, alpha: Math.random() * .15 + .05, pulse: Math.random() * Math.PI * 2, pulseSpeed: Math.random() * .02 + .005, color: ['#f59e0b', '#10b981', '#06b6d4', '#a855f7', '#5b8def'][Math.floor(Math.random() * 5)] });
 }
-function animateBg() {
-  if (_pageHidden || isReducedMotion()) { requestAnimationFrame(animateBg); return; }
+function setOSStatusBarColor(hexColor) {
+  let metaThemeColor = document.querySelector("meta[name=theme-color]");
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute("content", hexColor);
+  }
+}
+
+let _lastBgTime = 0;
+function animateBg(time) {
+  requestAnimationFrame(animateBg);
+  if (_pageHidden || isReducedMotion()) return;
+  if (time - _lastBgTime < 33) return; // ~30 FPS throttle
+  _lastBgTime = time;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   let drawLines = !_particleReduced;
   if (drawLines) {
@@ -23,20 +34,22 @@ function animateBg() {
     if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
     let pr = Math.max(.5, p.r + Math.sin(p.pulse) * .5);
     let pa = p.alpha * (0.7 + Math.sin(p.pulse) * 0.3);
-    // Glow
-    let grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pr * 4);
-    grd.addColorStop(0, p.color); grd.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.beginPath(); ctx.arc(p.x, p.y, pr * 4, 0, Math.PI * 2); ctx.fillStyle = grd; ctx.globalAlpha = pa * 0.3; ctx.fill();
-    // Core dot
+    // Core dot — skip glow gradient during quiz for performance
     ctx.beginPath(); ctx.arc(p.x, p.y, pr, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.globalAlpha = pa; ctx.fill();
-    if (drawLines) {
+    if (!drawLines) {
+      // Simplified glow for quiz mode — smaller, no gradient
+      ctx.beginPath(); ctx.arc(p.x, p.y, pr * 2.5, 0, Math.PI * 2); ctx.globalAlpha = pa * 0.15; ctx.fill();
+    } else {
+      let grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pr * 4);
+      grd.addColorStop(0, p.color); grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(p.x, p.y, pr * 4, 0, Math.PI * 2); ctx.fillStyle = grd; ctx.globalAlpha = pa * 0.3; ctx.fill();
       for (let j = i + 1; j < particles.length; j++) {
-        let p2 = particles[j], dx = p.x - p2.x, dy = p.y - p2.y, dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = p.color; ctx.globalAlpha = (1 - dist / 120) * .04; ctx.lineWidth = .5; ctx.stroke(); }
+        let p2 = particles[j], dx = p.x - p2.x, dy = p.y - p2.y, dist = dx * dx + dy * dy;
+        if (dist < 14400) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = p.color; ctx.globalAlpha = (1 - Math.sqrt(dist) / 120) * .04; ctx.lineWidth = .5; ctx.stroke(); }
       }
     }
   }
-  ctx.globalAlpha = 1; requestAnimationFrame(animateBg);
+  ctx.globalAlpha = 1;
 }
 window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
 window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
@@ -45,32 +58,33 @@ resizeCanvas(); initParticles(); animateBg();
 
 // ==================== Navigation ====================
 let _currTab = 'hub';
-function showScreen(id, dirClass = '') {
-  // Close any open modals when navigating
-  $('settingsModal')?.classList.remove('open');
-  $('confirmModal')?.classList.remove('open');
-  $('nameModal')?.classList.remove('open');
+let viewHistory = ['sWelcome'];
+let currentScreenId = 'sWelcome';
 
-  const allScreens = ['sHub', 'sLevelSelect', 'sQuiz', 'sResults', 'sReview', 'sWeakAreas', 'sAchievements', 'sProfile', 'sWelcome', 'sShop', 'sOnboarding'];
-  allScreens.forEach(s => { 
-    let el = $(s); 
-    if (el) el.classList.remove('active', 'slide-left', 'slide-right'); 
-  });
-  let target = $(id);
-  if (!target) return;
-  target.classList.add('active');
-  if (dirClass) target.classList.add(dirClass);
-  target.setAttribute('tabindex', '-1');
-  target.focus({ preventScroll: true });
-  if (D.mainNav) D.mainNav.style.display = (id === 'sWelcome' || id === 'sQuiz' || id === 'sOnboarding') ? 'none' : 'flex';
-
+function prepareScreenData(id) {
   _particleReduced = (id === 'sQuiz');
-
   if (id === 'sHub') { updateHub(); saveState(); }
   if (id === 'sShop') { renderShop(); saveState(); trackEvent('shop_opened'); }
-  if (id === 'sAchievements') renderCollection();
+  if (id === 'sAchievements') { renderCollection(); S.newAchievements.clear(); S.newRelics.clear(); updateBadge(); }
   if (id === 'sProfile') renderProfile();
   if (id === 'sWeakAreas') renderWeakAreas();
+}
+
+function updateBottomNavVisibility(id) {
+  if (!D.mainNav) return;
+  const isNavVisible = !(id === 'sWelcome' || id === 'sQuiz' || id === 'sOnboarding');
+  if (isNavVisible) {
+    D.mainNav.style.display = 'flex';
+    // Small delay to allow display block to render before sliding in
+    requestAnimationFrame(() => {
+      D.mainNav.classList.add('visible');
+    });
+  } else {
+    D.mainNav.classList.remove('visible');
+    setTimeout(() => {
+      if (!D.mainNav.classList.contains('visible')) D.mainNav.style.display = 'none';
+    }, 300);
+  }
 
   ['hub', 'shop', 'achievements', 'profile'].forEach(t => {
     let isActive = false;
@@ -80,22 +94,85 @@ function showScreen(id, dirClass = '') {
     else if (t === 'profile') isActive = ['sProfile', 'sShop', 'sWeakAreas'].includes(id);
     document.querySelector(`[data-tab="${t}"]`)?.classList.toggle('active', isActive);
   });
-  if (id === 'sAchievements') { S.newAchievements.clear(); S.newRelics.clear(); updateBadge(); }
 }
+
+function showScreen(targetId, isBack = false) {
+  // Backwards compatibility for old calls passing 'slide-left' string
+  if (typeof isBack === 'string') isBack = false;
+  if (currentScreenId === targetId) return;
+
+  const currentScreen = document.getElementById(currentScreenId);
+  const targetScreen = document.getElementById(targetId);
+  
+  if (!targetScreen) return;
+
+  // Close any open modals when navigating
+  $('settingsModal')?.classList.remove('open');
+  $('confirmModal')?.classList.remove('open');
+  $('nameModal')?.classList.remove('open');
+
+  prepareScreenData(targetId);
+
+  // Force reflow to ensure DOM is ready
+  void targetScreen.offsetWidth; 
+
+  if (isBack) {
+    targetScreen.classList.remove('pushed-back', 'active');
+    targetScreen.style.transform = 'translateX(-25%)';
+    
+    requestAnimationFrame(() => {
+      targetScreen.classList.add('active');
+      targetScreen.style.transform = '';
+      
+      if (currentScreen) {
+        currentScreen.classList.remove('active');
+      }
+    });
+    
+    viewHistory.pop();
+  } else {
+    viewHistory.push(targetId);
+    
+    requestAnimationFrame(() => {
+      targetScreen.classList.add('active');
+      
+      if (currentScreen) {
+        currentScreen.classList.remove('active');
+        currentScreen.classList.add('pushed-back');
+      }
+    });
+  }
+  
+  currentScreenId = targetId;
+  updateBottomNavVisibility(targetId);
+  targetScreen.setAttribute('tabindex', '-1');
+  targetScreen.focus({ preventScroll: true });
+}
+
+function handleHardwareBack() {
+  if (viewHistory.length > 1) {
+    const target = viewHistory[viewHistory.length - 2];
+    showScreen(target, true);
+  }
+}
+
 function switchTab(t) { 
   sfxK(); vibe(15); 
   let tabs = ['hub', 'achievements', 'shop', 'profile'];
   let oldIdx = tabs.indexOf(_currTab);
   let newIdx = tabs.indexOf(t);
-  let dirClass = '';
+  let isBack = false;
+  
+  // For tab switching, we simulate forward/back based on tab index
   if (oldIdx !== -1 && newIdx !== -1 && oldIdx !== newIdx) {
-    dirClass = newIdx > oldIdx ? 'slide-right' : 'slide-left';
+    isBack = newIdx < oldIdx;
     if (document.documentElement.dir === 'rtl') {
-      dirClass = newIdx > oldIdx ? 'slide-left' : 'slide-right';
+      isBack = !isBack;
     }
   }
+  
   _currTab = t;
-  showScreen('s' + t.charAt(0).toUpperCase() + t.slice(1), dirClass); 
+  showScreen('s' + t.charAt(0).toUpperCase() + t.slice(1), isBack); 
 }
 function updateBadge() {
   let b = D.achieveBadge;
@@ -154,7 +231,7 @@ function updateOfflineBadge() {
     if (existing) return;
     let badge = document.createElement('div');
     badge.id = 'offlineBadge';
-    badge.style.cssText = 'position:fixed;top:calc(var(--nav-height) + 8px);right:12px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:6px 14px;border-radius:var(--radius-full);font-size:12px;font-weight:600;z-index:100;display:flex;align-items:center;gap:6px;font-family:DM Sans,sans-serif;backdrop-filter:blur(8px);';
+    badge.style.cssText = 'position:fixed;top:calc(var(--nav-height) + 8px);right:12px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:6px 14px;border-radius:var(--radius-full);font-size:12px;font-weight:600;z-index:100;display:flex;align-items:center;gap:6px;font-family:DM Sans,sans-serif;';
     badge.innerHTML = '<i class="fas fa-signal"></i> ' + t('misc.offline');
     document.body.appendChild(badge);
   } else if (existing) {
@@ -248,3 +325,25 @@ if ('serviceWorker' in navigator) {
   });
   navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
 }
+
+function animateValue(obj, start, end, duration) {
+  if (!obj) return;
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    // easeOutExpo
+    const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+    obj.textContent = Math.floor(easeProgress * (end - start) + start);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
+document.addEventListener('contextmenu', e => {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+  }
+});

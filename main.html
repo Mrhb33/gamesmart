@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
   <meta name="theme-color" content="#0a0f1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -28,6 +28,7 @@
 
 
 <body>
+  <div id="screenFlash" class="screen-flash"></div>
   <canvas id="bgCanvas" aria-hidden="true"></canvas>
 
   <!-- Loading overlay for returning players -->
@@ -87,32 +88,32 @@
       <div class="onboarding-steps" id="onboardingSteps">
         <div class="onboarding-step active" data-step="0">
           <div class="onboarding-icon"><i class="fas fa-compass"></i></div>
-          <h2>Pick a Realm</h2>
-          <p>7 realms of knowledge to explore</p>
+          <h2 data-i18n="onboard.step0Title">Pick a Realm</h2>
+          <p data-i18n="onboard.step0Desc">7 realms of knowledge to explore</p>
         </div>
         <div class="onboarding-step" data-step="1">
           <div class="onboarding-icon"><i class="fas fa-stairs"></i></div>
-          <h2>Conquer Trials</h2>
-          <p>5 trials per realm, from easy to boss</p>
+          <h2 data-i18n="onboard.step1Title">Conquer Trials</h2>
+          <p data-i18n="onboard.step1Desc">5 trials per realm, from easy to boss</p>
         </div>
         <div class="onboarding-step" data-step="2">
           <div class="onboarding-icon"><i class="fas fa-coins"></i></div>
-          <h2>Earn Rewards</h2>
-          <p>XP, crowns & sigils for every answer</p>
+          <h2 data-i18n="onboard.step2Title">Earn Rewards</h2>
+          <p data-i18n="onboard.step2Desc">XP, crowns & sigils for every answer</p>
         </div>
         <div class="onboarding-step" data-step="3">
           <div class="onboarding-icon"><i class="fas fa-gem"></i></div>
-          <h2>Collect Relics</h2>
-          <p>21 relics and 19 trophies to discover</p>
+          <h2 data-i18n="onboard.step3Title">Collect Relics</h2>
+          <p data-i18n="onboard.step3Desc">21 relics and 19 trophies to discover</p>
         </div>
       </div>
       <div class="onboarding-dots" id="onboardingDots">
         <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
       </div>
       <div class="onboarding-actions">
-        <button class="btn btn-gold" id="onboardingNext" style="width:100%;">Next <i
+        <button class="btn btn-gold" id="onboardingNext" style="width:100%;" data-i18n="onboard.next">Next <i
             class="fas fa-arrow-right"></i></button>
-        <button class="btn btn-ghost btn-sm" id="onboardingSkip" style="margin-top:8px;">Skip</button>
+        <button class="btn btn-ghost btn-sm" id="onboardingSkip" style="margin-top:8px;" data-i18n="onboard.skip">Skip</button>
       </div>
     </div>
   </section>
@@ -150,16 +151,18 @@
         </div>
       </div>
     </header>
-    <h2 class="hub-title" id="hubTitle">Choose Your Realm</h2>
-    <p class="hub-subtitle" id="hubSubtitle">Conquer trials in each realm to rise through the ranks</p>
+    <h2 class="hub-title" id="hubTitle" data-i18n="hub.chooseRealm">Choose Your Realm</h2>
+    <p class="hub-subtitle" id="hubSubtitle" data-i18n="hub.subtitle">Conquer trials in each realm to rise through the ranks</p>
     <div id="continueCard"></div>
     <div id="rewardsCard"></div>
-    <div class="daily-card" id="dailyCard" onclick="startDaily()">
-      <h3><i class="fas fa-calendar-day"></i> Daily Challenge</h3>
-      <p>10 hard questions for big XP & Coins!</p>
+    <div class="dashboard-carousel">
+      <div class="carousel-card daily-card" id="dailyCard" onclick="startDaily()">
+        <h3><i class="fas fa-calendar-day"></i> <span data-i18n="hub.dailyTrial">Daily Challenge</span></h3>
+        <p data-i18n="hub.dailyDesc">10 hard questions for big XP & Coins!</p>
+      </div>
+      <div class="carousel-card" id="missionPanel"></div>
+      <div class="carousel-card" id="weeklyGoalCard"></div>
     </div>
-    <div id="missionPanel"></div>
-    <div id="weeklyGoalCard"></div>
     <div id="comebackCard"></div>
     <div id="adaptiveRecs"></div>
     <div class="category-grid" id="categoryGrid"></div>
@@ -168,7 +171,7 @@
   <!-- LEVEL SELECT -->
   <section id="sLevelSelect" class="screen" role="region">
     <div class="level-select-container">
-      <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')" style="margin-bottom:20px;"><i
+      <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')" style="margin-bottom:20px;" data-i18n="misc.back"><i
           class="fas fa-arrow-left"></i> Back</button>
       <div class="ls-header">
         <div class="ls-icon" id="lsIcon"></div>
@@ -183,106 +186,103 @@
 
   <!-- QUIZ -->
   <section id="sQuiz" class="screen" role="region" aria-live="polite">
-    <div class="quiz-container">
-      <div class="quiz-top-bar">
-        <div class="quiz-category-label">
-          <div class="quiz-category-dot" id="quizCatDot"></div>
-          <span id="quizCatName">Science — Level 3</span>
-        </div>
-        <button class="btn btn-ghost btn-sm" id="quizBackBtn" style="color:var(--muted);"><i class="fas fa-times"></i>
-          Quit</button>
+    <div class="quiz-header">
+      <button class="btn-icon" id="quizBackBtn" aria-label="Retreat from trial" data-i18n-aria="aria.retreatTrial"><i class="fas fa-times"></i></button>
+      <div class="quiz-progress-pill">
+        <div class="timer-fill" id="timerFill"></div>
+        <span id="quizTimerText">20s</span>
       </div>
-      <div class="quiz-stage-subtitle" id="quizStageSubtitle" style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:4px;"></div>
-      <div class="boss-warning" id="bossWarning" style="display:none;"></div>
-      <div class="quiz-stats-row">
-        <div class="quiz-stat-pill"><i class="fas fa-bolt"></i><span><span class="val" id="quizXP">0</span> XP</span>
-        </div>
-        <div class="quiz-stat-pill streak-pill" id="streakPill"><i class="fas fa-fire"></i><span><span class="val"
-              id="quizStreak">0</span></span></div>
-        <div class="quiz-stat-pill"><i class="fas fa-star"></i><span><span class="val" id="quizScore">0</span>/<span
-              id="quizTotal">0</span></span></div>
-        <div class="quiz-stat-pill"><i class="fas fa-clock"></i><span id="quizTimerText">20s</span></div>
+      <div class="quiz-score-pill"><i class="fas fa-star"></i> <span id="quizScore">0</span></div>
+      
+      <!-- Hidden legacy elements to prevent JS errors -->
+      <div style="visibility:hidden; position:absolute; width:0; height:0;">
+        <span id="quizTotal">0</span>
+        <div id="quizCatDot"></div>
+        <div id="qProgressBar"></div>
+        <div id="streakPill"><span id="quizStreak">0</span></div>
+        <span id="quizXP">0</span>
       </div>
-      <div class="lifeline-row">
-        <button class="btn btn-ghost btn-sm" id="llFifty"
-          style="flex:1;border-color:var(--accent3);color:var(--accent3)"><i class="fas fa-percent"></i> 50/50</button>
-        <button class="btn btn-ghost btn-sm" id="llTime"
-          style="flex:1;border-color:var(--accent2);color:var(--accent2)"><i class="fas fa-snowflake"></i>
-          Freeze</button>
-        <button class="btn btn-ghost btn-sm" id="llHint"
-          style="flex:1;border-color:var(--accent);color:var(--accent)"><i class="fas fa-lightbulb"></i> Hint</button>
-      </div>
-      <div class="progress-outer">
-        <div class="progress-inner" id="qProgressBar" style="width:0%"></div>
-      </div>
-      <div class="timer-container">
-        <div class="timer-fill" id="timerFill" style="width:100%"></div>
-      </div>
-      <div class="question-number" id="questionNumber">Question 1 of 5</div>
-      <div class="question-text" id="questionText">Loading...</div>
-      <div class="options-list" id="optionsList" role="radiogroup" aria-label="Answer options"></div>
-      <div id="explanationArea" aria-live="polite"></div>
-      <div id="quizAriaLive" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
-      <button class="next-q-btn" id="nextQBtn">Next <i class="fas fa-arrow-right"></i></button>
     </div>
+
+    <div class="quiz-body">
+      <div class="quiz-meta-tags">
+        <span class="tag-realm" id="quizCatName">Science</span>
+        <span class="tag-diff" id="quizStageSubtitle">Stage 1</span>
+      </div>
+      <div class="boss-warning" id="bossWarning" style="display:none;"></div>
+      <div class="question-number" id="questionNumber">Question 1 of 5</div>
+      <h2 class="question-text" id="questionText">Loading...</h2>
+      <div id="explanationArea" aria-live="polite"></div>
+    </div>
+
+    <div class="quiz-footer">
+      <div class="lifeline-row">
+        <button class="ll-btn" id="llFifty"><i class="fas fa-percent"></i></button>
+        <button class="ll-btn" id="llTime"><i class="fas fa-snowflake"></i></button>
+        <button class="ll-btn" id="llHint"><i class="fas fa-lightbulb"></i></button>
+      </div>
+      
+      <div class="options-grid" id="optionsList" role="radiogroup" aria-label="Answer options"></div>
+      <button class="next-q-btn" id="nextQBtn" data-i18n="quiz.next">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div id="quizAriaLive" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
   </section>
 
   <!-- RESULTS -->
   <section id="sResults" class="screen" role="region">
     <div class="results-container">
-      <div class="results-icon" id="resultsIcon"><i class="fas fa-trophy"></i></div>
-      <h2 class="results-title" id="resultsTitle">Well Done!</h2>
-      <p class="results-subtitle" id="resultsSubtitle">You completed the level</p>
-      <div class="level-complete-banner" id="levelCompleteBanner">
-        <i class="fas fa-check-circle"></i> <span id="bannerText">Level Complete!</span>
+      <div class="results-hero">
+        <div class="results-icon" id="resultsIcon"><i class="fas fa-trophy"></i></div>
+        <h2 class="title-hero" id="resultsTitle">Victory!</h2>
+        <p class="text-sub" id="resultsSubtitle">Stage Cleared</p>
       </div>
-      <div class="results-stars" id="resultsStars">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-      </div>
+      
       <div class="results-score-ring" id="resultsRing">
-        <svg width="150" height="150">
-          <circle cx="75" cy="75" r="68" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7" />
-          <circle cx="75" cy="75" r="68" fill="none" stroke="var(--accent2)" stroke-width="7" stroke-dasharray="427.26"
-            stroke-dashoffset="427.26" stroke-linecap="round" id="scoreCircle" />
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="90" class="ring-bg"></circle>
+          <circle cx="100" cy="100" r="90" class="ring-fill" id="scoreCircle"></circle>
         </svg>
-        <div class="score-ring-value" id="scoreRingValue">0%</div>
-        <div class="score-ring-label">Accuracy</div>
-      </div>
-      <div class="results-details">
-        <div class="result-detail-box">
-          <div class="val" style="color:var(--accent)" id="resXP">0</div>
-          <div class="lbl">XP</div>
-        </div>
-        <div class="result-detail-box">
-          <div class="val" style="color:#eab308" id="resCoins">0</div>
-          <div class="lbl" data-i18n="hub.crowns">Crowns</div>
-        </div>
-        <div class="result-detail-box">
-          <div class="val" style="color:var(--accent2)" id="resCorrect">0</div>
-          <div class="lbl">Correct</div>
-        </div>
-        <div class="result-detail-box">
-          <div class="val" style="color:#ef4444" id="resWrong">0</div>
-          <div class="lbl">Wrong</div>
-        </div>
-        <div class="result-detail-box">
-          <div class="val" style="color:#f97316" id="resBestStreak">0</div>
-          <div class="lbl" data-i18n="result.bestStreak">Best Streak</div>
-        </div>
-        <div class="result-detail-box" id="resBossBox" style="display:none;">
-          <div class="val" id="resBossStatus"></div>
-          <div class="lbl" data-i18n="result.boss">Boss</div>
+        <div class="score-text">
+          <span class="score-val" id="scoreRingValue">0</span>%
         </div>
       </div>
+
+      <div class="stat-list">
+        <div class="stat-row">
+          <div class="stat-icon" style="color:var(--accent)"><i class="fas fa-bolt"></i></div>
+          <div class="stat-label" data-i18n="res.xpGained">XP Gained</div>
+          <div class="stat-value" id="resXP">0</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon" style="color:#eab308"><i class="fas fa-coins"></i></div>
+          <div class="stat-label" data-i18n="res.crownsEarned">Crowns Earned</div>
+          <div class="stat-value" id="resCoins">0</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon" style="color:var(--accent2)"><i class="fas fa-check"></i></div>
+          <div class="stat-label" data-i18n="res.correctAnswers">Correct Answers</div>
+          <div class="stat-value" id="resCorrect">0</div>
+        </div>
+      </div>
+
+      <!-- Hidden legacy elements to prevent JS errors -->
+      <div style="visibility:hidden; position:absolute; width:0; height:0;">
+        <span id="resWrong">0</span>
+        <span id="resBestStreak">0</span>
+        <div id="resBossBox"><span id="resBossStatus"></span></div>
+        <div id="levelCompleteBanner"><span id="bannerText"></span></div>
+        <div id="resultsStars"></div>
+      </div>
+
       <div id="rewardSummary" class="reward-summary" style="display:none;"></div>
       <div id="failureTips" style="display:none;"></div>
+
       <div class="results-actions" id="resultsActions">
         <button class="btn btn-gold" id="primaryActionBtn"></button>
-        <button class="btn btn-ghost" id="retryBtn" style="display:none;"><i class="fas fa-rotate-right"></i>
-          Retry</button>
-        <button class="btn btn-ghost" id="reviewBtn"><i class="fas fa-eye"></i> Review</button>
-        <button class="btn btn-ghost" id="shareBtn"><i class="fas fa-share-nodes"></i> Share</button>
-        <button class="btn btn-ghost" id="backHubBtn"><i class="fas fa-compass"></i> Topics</button>
+        <button class="btn btn-ghost" id="retryBtn" style="display:none;"><i class="fas fa-rotate-right"></i> <span data-i18n="result.retryStage">Retry</span></button>
+        <button class="btn btn-ghost" id="reviewBtn"><i class="fas fa-eye"></i> <span data-i18n="result.reviewMistakes">Review</span></button>
+        <button class="btn btn-ghost" id="shareBtn"><i class="fas fa-share-nodes"></i> <span data-i18n="misc.share">Share</span></button>
+        <button class="btn btn-ghost" id="backHubBtn"><i class="fas fa-compass"></i> <span data-i18n="result.chooseRealm">Topics</span></button>
       </div>
     </div>
   </section>
@@ -292,12 +292,12 @@
     <div class="review-container">
       <div class="review-header">
         <h2 data-i18n="review.title">Review</h2>
-        <button class="btn btn-ghost btn-sm" id="reviewBackBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="btn btn-ghost btn-sm" id="reviewBackBtn"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
       </div>
       <div class="review-filter-tabs" style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="coll-tab active" id="reviewTabAll" data-filter="all" onclick="filterReview('all')">All</button>
-        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong" onclick="filterReview('wrong')"><i class="fas fa-times-circle"></i> Wrong</button>
-        <button class="coll-tab" id="reviewTabWeak" data-filter="weak" onclick="filterReview('weak')"><i class="fas fa-crosshairs"></i> Weakest</button>
+        <button class="coll-tab active" id="reviewTabAll" data-filter="all" onclick="filterReview('all')" data-i18n="review.all">All</button>
+        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong" onclick="filterReview('wrong')"><i class="fas fa-times-circle"></i> <span data-i18n="review.wrong">Wrong</span></button>
+        <button class="coll-tab" id="reviewTabWeak" data-filter="weak" onclick="filterReview('weak')"><i class="fas fa-crosshairs"></i> <span data-i18n="weak.weakAreas">Weakest</span></button>
       </div>
       <div class="review-list" id="reviewList"></div>
     </div>
@@ -308,7 +308,7 @@
     <div style="width:100%;max-width:1100px;">
       <div class="achievements-header">
         <h2 data-i18n="coll.title">Collection</h2>
-        <span id="achieveCount" style="color:var(--muted);font-size:15px;font-weight:600;">0 / 15 Collected</span>
+        <span id="achieveCount" style="color:var(--muted);font-size:15px;font-weight:600;">0 / 15 <span data-i18n="achieve.collected">Collected</span></span>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
         <button class="coll-tab active" data-coll="relics" onclick="switchCollTab('relics')"><i class="fas fa-gem"></i> <span data-i18n="coll.relics">Relics</span></button>
@@ -358,7 +358,7 @@
         <div class="profile-big-avatar" id="profileBigAvatar">A</div>
       </div>
       <div class="profile-name" id="profileName">Explorer</div>
-      <div class="profile-title-badge" id="profileTitleBadge" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:-4px;margin-bottom:8px;">Novice</div>
+      <div class="profile-title-badge" id="profileTitleBadge" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:-4px;margin-bottom:8px;" data-i18n="rank.0">Novice</div>
       <div class="profile-level-display" id="profileLevel">Level 1 — Novice</div>
       <div class="profile-xp-big">
         <div class="profile-xp-label"><span id="profileXpCurrent">0 XP</span><span id="profileXpNeeded">150 XP</span>
@@ -380,9 +380,12 @@
     </div>
   </section>
 
+  </div> <!-- END VIEW STACK -->
+
   <!-- Confirm Modal -->
-  <div id="confirmModal" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-    <div class="modal-box">
+  <div id="confirmModal" class="bottom-sheet-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="bottom-sheet-content">
+      <div class="drag-handle"></div>
       <h3 id="confirmTitle" style="font-size:20px;font-weight:700;margin-bottom:10px;" data-i18n="confirm.areYouSure">Are you sure?</h3>
       <p id="confirmMsg" style="color:var(--muted);margin-bottom:24px;font-size:14px;line-height:1.6;" data-i18n="confirm.cannotUndo">This action
         cannot be undone.</p>
@@ -394,7 +397,7 @@
   </div>
 
   <!-- Name Modal -->
-  <div id="nameModal" class="modal-bg" role="dialog" aria-modal="true" aria-label="Edit Name">
+  <div id="nameModal" class="modal-bg" role="dialog" aria-modal="true" aria-label="Edit Name" data-i18n-aria="aria.editName">
     <div class="modal-box">
       <h3 style="font-size:20px;font-weight:700;margin-bottom:16px;" data-i18n="modal.editName">Edit Name</h3>
       <input type="text" id="editNameInput" maxlength="20"
@@ -446,7 +449,7 @@
     <div class="weak-areas-container">
       <div class="weak-header">
         <h2 data-i18n="weak.title">Weak Areas</h2>
-        <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
       </div>
       <div id="weakAreasContent"></div>
     </div>
@@ -456,18 +459,19 @@
   <div id="chestOverlay" class="chest-overlay">
     <div class="chest-box">
       <div class="chest-icon" id="chestIcon"><i class="fas fa-gift"></i></div>
-      <div class="chest-title">Daily Reward!</div>
+      <div class="chest-title" data-i18n="chest.dailyChest">Daily Reward!</div>
       <div class="chest-reward" id="chestReward">+100 Crowns</div>
       <div class="chest-streak-info" id="chestStreakInfo"></div>
-      <button class="chest-close-btn" onclick="closeChest()">Claim</button>
+      <button class="chest-close-btn" onclick="closeChest()" data-i18n="misc.claim">Claim</button>
     </div>
   </div>
 
   <!-- Relic Modal -->
-  <div id="relicModal" class="modal-bg" role="dialog" aria-modal="true" aria-label="Relic Details">
-    <div class="modal-box" style="max-width:380px;text-align:center;">
+  <div id="relicModal" class="bottom-sheet-overlay" role="dialog" aria-modal="true" aria-label="Relic Details" data-i18n-aria="aria.relicDetails">
+    <div class="bottom-sheet-content" style="text-align:center;">
+      <div class="drag-handle"></div>
       <div id="relicModalContent"></div>
-      <button class="btn btn-ghost" onclick="closeRelicModal()" style="margin-top:16px;">Close</button>
+      <button class="btn btn-ghost" onclick="closeRelicModal()" style="margin-top:16px;" data-i18n="misc.close">Close</button>
     </div>
   </div>
 
@@ -515,7 +519,23 @@
       if (_settings.reducedMotion) document.body.classList.add('reduced-motion');
       updateStaticText();
       document.title = _lang === 'ar' ? 'سيريبروم كويست — مغامرة المعرفة' : 'Cerebrum Quest — Knowledge Adventure';
-      if ('visualViewport' in window) { window.visualViewport.addEventListener('resize', () => { const vkOpen = window.visualViewport.height < window.innerHeight * 0.8; document.body.classList.toggle('keyboard-open', vkOpen); }); }
+      if ('virtualKeyboard' in navigator) {
+        navigator.virtualKeyboard.overlaysContent = true;
+        navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
+          const { y, height } = event.target.boundingRect;
+          if (height > 0) {
+            document.body.style.transform = `translateY(-${height / 2}px)`;
+            document.body.style.transition = 'transform 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
+          } else {
+            document.body.style.transform = 'translateY(0)';
+          }
+        });
+      } else if ('visualViewport' in window) { 
+        window.visualViewport.addEventListener('resize', () => { 
+          const vkOpen = window.visualViewport.height < window.innerHeight * 0.8; 
+          document.body.classList.toggle('keyboard-open', vkOpen); 
+        }); 
+      }
       updateAvatars();
 
       // Show loading indicator while questions load

@@ -34,28 +34,40 @@ function sfxBossStart() { playTone(80, .4, 'sawtooth', .06); setTimeout(() => pl
 // Boss defeated — epic victory
 function sfxBossDefeated() { playTone(523, .1, 'square', .08); setTimeout(() => playTone(659, .1, 'square', .08), 100); setTimeout(() => playTone(784, .1, 'square', .08), 200); setTimeout(() => playTone(1047, .2, 'sine', .1), 300); setTimeout(() => playTone(1319, .3, 'sine', .1), 420); }
 
-const vibe = (ms) => {
+const vibe = (pattern) => {
   if (!_settings.haptics) return;
-  try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { }
+  try {
+    if (!navigator.vibrate) return;
+    if (typeof pattern === 'number' || Array.isArray(pattern)) {
+      navigator.vibrate(pattern);
+      return;
+    }
+    // Semantic patterns
+    switch (pattern) {
+      case 'tap': navigator.vibrate(15); break;
+      case 'success': navigator.vibrate([30, 40, 50]); break;
+      case 'error': navigator.vibrate(200); break;
+      case 'celebrate': navigator.vibrate([50, 50, 50, 50, 100]); break;
+    }
+  } catch (e) { }
 };
 // Celebratory haptic pattern for rewards
-function vibeCelebrate() { vibe([50, 50, 50, 50, 100]); }
+function vibeCelebrate() { vibe('celebrate'); }
 
 function confetti() {
   if (isReducedMotion()) return;
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 25; i++) {
     let p = document.createElement('div'); p.style.cssText = 'position:fixed;border-radius:50%;left:50%;top:50%;z-index:9999;pointer-events:none;';
     let size = Math.random() * 6 + 4;
     p.style.width = size + 'px'; p.style.height = size + 'px';
     p.style.backgroundColor = ['#f59e0b', '#10b981', '#06b6d4', '#a855f7', '#5b8def', '#ec4899'][Math.floor(Math.random() * 6)];
-    p.style.boxShadow = '0 0 6px ' + p.style.backgroundColor;
     let a = Math.random() * Math.PI * 2, v = Math.random() * 12 + 5;
-    p.style.transition = 'all .9s cubic-bezier(.2,1,.3,1)';
+    p.style.transition = 'transform .8s cubic-bezier(.2,1,.3,1), opacity .8s ease-out';
     document.body.appendChild(p);
     requestAnimationFrame(() => {
       p.style.transform = `translate(${Math.cos(a) * v * 20}px, ${Math.sin(a) * v * 20 + 180}px) rotate(${Math.random() * 360}deg)`;
       p.style.opacity = '0';
     });
-    setTimeout(() => p.remove(), 950);
+    setTimeout(() => p.remove(), 850);
   }
 }

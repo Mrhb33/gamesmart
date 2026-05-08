@@ -89,7 +89,7 @@ function createDefaultState() {
 let S = createDefaultState();
 
 let _autoAdvance = null;
-function clearAllTimers() { if (S.timerInterval) { clearInterval(S.timerInterval); S.timerInterval = null; } if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } }
+function clearAllTimers() { if (S.timerInterval) { cancelAnimationFrame(S.timerInterval); S.timerInterval = null; } if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } }
 
 const SAVE_VERSION = 7;
 const SAVE_KEY = 'cerebrum_save';

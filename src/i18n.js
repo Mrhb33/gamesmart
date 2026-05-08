@@ -567,7 +567,24 @@ const I18N = {
     'mission.wrong_review.desc': 'Review {n} wrong answers',
     'mission.stages_5.desc': 'Complete {n} stages today',
     // Battle counter
-    'quiz.battleOf': '{phase} · Battle {cur} of {total}'
+    'quiz.battleOf': '{phase} · Battle {cur} of {total}',
+    // Missing keys used in code but not in dictionary
+    'res.xpGained': 'XP Gained',
+    'res.crownsEarned': 'Crowns Earned',
+    'res.correctAnswers': 'Correct Answers',
+    'weak.focus': 'Focus: {tag}',
+    'rec.bossBattleAwaits': 'Boss Battle awaits in {realm}!',
+    'rec.areasToRevisit': '{n} areas to revisit',
+    'rec.improveDesc': '{realm} · Trial {trial} ({stars} sigils)',
+    // Aria labels for static HTML
+    'aria.relicDetails': 'Relic Details',
+    'aria.editName': 'Edit Name',
+    // Share text
+    'share.title': 'Cerebrum Quest',
+    'share.score': 'Score',
+    'share.streak': 'Streak',
+    // Units
+    'misc.seconds': '{n}s'
   },
   ar: {
     // Welcome
@@ -1133,7 +1150,24 @@ const I18N = {
     'mission.wrong_review.desc': 'راجع {n} إجابات خاطئة',
     'mission.stages_5.desc': 'أكمل {n} مراحل اليوم',
     // Battle counter
-    'quiz.battleOf': '{phase} · معركة {cur} من {total}'
+    'quiz.battleOf': '{phase} · معركة {cur} من {total}',
+    // Missing keys used in code but not in dictionary
+    'res.xpGained': 'الخبرة المكتسبة',
+    'res.crownsEarned': 'التيجان المكتسبة',
+    'res.correctAnswers': 'الإجابات الصحيحة',
+    'weak.focus': 'التركيز: {tag}',
+    'rec.bossBattleAwaits': 'معركة الزعيم بانتظارك في {realm}!',
+    'rec.areasToRevisit': '{n} مجالات للمراجعة',
+    'rec.improveDesc': '{realm} · التحدي {trial} ({stars} أختام)',
+    // Aria labels for static HTML
+    'aria.relicDetails': 'تفاصيل الأثر',
+    'aria.editName': 'تعديل الاسم',
+    // Share text
+    'share.title': 'سيريبروم كويست',
+    'share.score': 'النتيجة',
+    'share.streak': 'السلسلة',
+    // Units
+    'misc.seconds': '{n}ث'
   }
 };
 

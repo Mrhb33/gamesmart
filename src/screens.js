@@ -250,7 +250,7 @@ function openLevelSelect(cat) {
     let maxXP = Math.round(xpPerQ * qCount * 2.0);
     let minXP = Math.round(xpPerQ * qCount * 0.6);
     let maxCrowns = (i + 1) * 3 * 10 + 25;
-    let rewardHtml = avail && !st.completed ? `<span style="font-size:11px;opacity:0.6"><i class="fas fa-bolt" style="color:var(--accent)"></i> ${minXP}-${maxXP} XP · <i class="fas fa-coins" style="color:#eab308"></i> 0-${maxCrowns}</span>` : '';
+    let rewardHtml = avail && !st.completed ? `<span style="font-size:11px;opacity:0.6"><i class="fas fa-bolt" style="color:var(--accent)"></i> ${minXP}-${maxXP} ${t('misc.xp')} · <i class="fas fa-coins" style="color:#eab308"></i> 0-${maxCrowns}</span>` : '';
 
     let el = document.createElement('div'); el.className = `level-card ${cls}`;
     el.style.animationDelay = `${i * 0.05}s`;
@@ -725,7 +725,9 @@ function finishLvl() {
     D.resultsIcon.innerHTML = '<i class="fas fa-book-open"></i>';
   }
   D.scoreRingValue.textContent = pct + '%';
-  D.resXP.textContent = S.quizXP; D.resCoins.textContent = coinsEarned; D.resCorrect.textContent = cor; D.resWrong.textContent = tot - cor;
+  D.resCorrect.textContent = cor; D.resWrong.textContent = tot - cor;
+  animateValue(D.resXP, 0, S.quizXP, 1200);
+  animateValue(D.resCoins, 0, coinsEarned, 1200);
 
   // Best streak & boss status
   let bsEl = $('resBestStreak'); if (bsEl) bsEl.textContent = S.bestStreak || S.quizStreak;
@@ -1128,7 +1130,7 @@ function openRelicModal(relic) {
   let realmMeta = CATEGORY_META[relic.realm];
   let realmColor = realmMeta ? realmMeta.color : 'var(--accent)';
   $('relicModalContent').innerHTML = `
-    <div style="font-size:48px;margin-bottom:12px;color:${rs.color};filter:drop-shadow(0 0 12px ${rs.color})"><i class="fas ${relic.icon}"></i></div>
+    <div style="font-size:48px;margin-bottom:12px;color:${rs.color}"><i class="fas ${relic.icon}"></i></div>
     <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">${escHtml(relicName(relic.id))}</h3>
     <div style="font-size:12px;font-weight:800;letter-spacing:1px;color:${rs.color};margin-bottom:8px;">${t('rarity.' + relic.rarity.toLowerCase())}</div>
     <div style="font-size:14px;color:var(--fg-secondary);line-height:1.5;margin-bottom:12px;">${escHtml(relicDesc(relic.id))}</div>

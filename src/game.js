@@ -329,17 +329,42 @@ function startT() {
   if (isPlayerStruggling() && S.qIndex <= 1) dur = Math.round(dur * 1.1);
 
   S.timeLeft = dur;
-  let f = D.timerFill; f.style.width = '100%'; f.className = 'timer-fill';
+  let f = D.timerFill; f.style.transform = 'scaleX(1)'; f.className = 'timer-fill';
   // Boss questions get red-tinted timer
   let curQ = S.qs && S.qs[S.qIndex];
   let isBossQ = curQ ? (curQ.boss === true) : isBossQuestion(S.qIndex, S.qs.length);
   if (isBossQ) f.classList.add('boss-timer');
-  S.timerInterval = setInterval(() => {
-    S.timeLeft -= 100; let pct = Math.min(100, Math.max(0, (S.timeLeft / dur) * 100));
-    f.style.width = pct + '%'; f.className = pct < 25 ? 'timer-fill danger' : pct < 50 ? 'timer-fill warning' : 'timer-fill';
-    D.quizTimerText.textContent = Math.max(0, Math.ceil(S.timeLeft / 1000)) + 's';
-    if (S.timeLeft <= 0) { clearInterval(S.timerInterval); S.timerInterval = null; timeOut(); }
-  }, 100);
+
+  let lastFrameTime = performance.now();
+  D.quizTimerText.dataset.secs = Math.ceil(S.timeLeft / 1000);
+
+  function updateTimerBar(timestamp) {
+    if (!S.timerInterval) return; // If cancelled
+    
+    let dt = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
+    S.timeLeft = Math.max(0, S.timeLeft - dt);
+    
+    let scale = Math.min(1, Math.max(0, S.timeLeft / dur));
+    
+    f.style.transform = `scaleX(${scale})`;
+    f.className = scale < 0.25 ? 'timer-fill danger' : scale < 0.5 ? 'timer-fill warning' : 'timer-fill';
+    if (isBossQ) f.classList.add('boss-timer');
+    
+    let secs = Math.ceil(S.timeLeft / 1000);
+    if(D.quizTimerText.dataset.secs != secs) {
+      D.quizTimerText.textContent = t('misc.seconds', {n: secs});
+      D.quizTimerText.dataset.secs = secs;
+    }
+    
+    if (S.timeLeft > 0) {
+      S.timerInterval = requestAnimationFrame(updateTimerBar);
+    } else {
+      S.timerInterval = null;
+      timeOut();
+    }
+  }
+  S.timerInterval = requestAnimationFrame(updateTimerBar);
 }
 
 function timeOut() {
@@ -400,8 +425,16 @@ function pickA(dIdx, oIdx) {
   setTimeout(() => {
     S.totalAnswered++;
     bumpSessionStat('questionsAnswered', 1);
+    const flashEl = document.getElementById('screenFlash');
+    if (flashEl) {
+      flashEl.className = isCor ? 'screen-flash flash-correct' : 'screen-flash flash-wrong';
+      requestAnimationFrame(() => {
+        setTimeout(() => flashEl.className = 'screen-flash', 150);
+      });
+    }
+
     if (isCor) {
-      vibe([50, 50, 50]);
+      vibe('success');
       sfxC(); S.quizScore++; S.quizStreak++; S.totalCorrect++; S.bestStreak = Math.max(S.bestStreak, S.quizStreak);
       bumpSessionStat('correctAnswers', 1);
       setSessionStat('maxStreak', Math.max(S.missionSessionStats.maxStreak || 0, S.quizStreak));
@@ -413,7 +446,7 @@ function pickA(dIdx, oIdx) {
       S.quizXP += xp; S.totalXP += xp; flyXP(xp);
       showComboFeedback(S.quizStreak);
     } else {
-      vibe(200); sfxW(); S.quizStreak = 0;
+      vibe('error'); sfxW(); S.quizStreak = 0;
       trackEvent('question_answered', { correct: false, category: S.curCat, level: S.curLevel, time: Math.round(t * 10) / 10 });
       D.optionsList.classList.add('shake-anim');
       setTimeout(() => D.optionsList.classList.remove('shake-anim'), 300);
@@ -482,7 +515,7 @@ function showExpl(q, isC, cLab) {
   box.setAttribute('aria-live', 'assertive');
   let label = document.createElement('div'); label.className = 'label';
   let isBossQ = (q.boss === true) || (S.qs && isBossQuestion(S.qIndex, S.qs.length));
-  let bossPrefix = isBossQ ? 'BOSS ' : '';
+  let bossPrefix = isBossQ ? t('phase.boss').toUpperCase() + ' ' : '';
   let resultText = bossPrefix + (cLab || (isC ? t('quiz.correct') : t('quiz.wrong')));
   label.innerHTML = `<i class="fas ${isC ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${resultText}`;
   label.setAttribute('aria-label', resultText);
@@ -549,7 +582,7 @@ function updateLL() {
   // Show cost label on buttons
   if (llCost === 0) {
     llF.innerHTML = '<i class="fas fa-percent"></i> 50/50 <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
-    llT.innerHTML = '<i class="fas fa-snowflake"></i> Freeze <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+    llT.innerHTML = '<i class="fas fa-snowflake"></i> ' + t('quiz.freeze') + ' <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
   }
   llF.onclick = () => { if (!S.lifelinesUsed.fifty && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.fifty = 1; saveState(); sfxK(); updateLL(); doFifty(); showToast(t('toast.fiftyFifty')); } else { showToast(t('toast.notEnoughCrowns')); } } };
   llT.onclick = () => { if (!S.lifelinesUsed.time && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.time = 1; saveState(); sfxK(); updateLL(); S.timeLeft += 10000; showToast(t('toast.freezeTime')); if (D.timerFill) { D.timerFill.style.background = 'var(--accent2)'; setTimeout(() => { if (D.timerFill) D.timerFill.style.background = ''; }, 500); } } else { showToast(t('toast.notEnoughCrowns')); } } };
@@ -585,9 +618,9 @@ function doFifty() {
 function tryShare() {
   sfxK();
   let catLabel = S.curCat === 'daily' ? t('quiz.dailyTrial') : (catName(S.curCat) + ' ' + t('misc.trial') + ' ' + S.curLevel);
-  let txt = `Cerebrum Quest - ${catLabel}\nScore: ${S.quizScore}/${S.qs.length}\nStreak: ${S.bestStreak}`;
+  let txt = `${t('share.title')} - ${catLabel}\n${t('share.score')}: ${S.quizScore}/${S.qs.length}\n${t('share.streak')}: ${S.bestStreak}`;
   try {
-    if (navigator.share) navigator.share({ title: 'Cerebrum Quest', text: txt }).catch(() => { });
+    if (navigator.share) navigator.share({ title: t('share.title'), text: txt }).catch(() => { });
     else if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => showToast(t('toast.copied'))).catch(() => showToast(t('toast.copyFailed')));
     else showToast(t('toast.shareNotSupported'));
   } catch (e) { showToast(t('toast.shareNotSupported')); }
