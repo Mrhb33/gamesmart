@@ -23,7 +23,7 @@ function renderShop() {
     else if (item.cat === 'title') isEquipped = S.equippedTitle === item.id;
     else if (item.cat === 'theme') isEquipped = S.equippedTheme === item.id;
 
-    let card = document.createElement('div'); card.className = 'category-card';
+    let card = document.createElement('div'); card.className = 'category-card shop-card';
     let iconDiv = document.createElement('div'); iconDiv.className = 'cat-icon';
     iconDiv.innerHTML = `<i class="fas ${item.icon}"></i>`;
     let nameDiv = document.createElement('div'); nameDiv.className = 'cat-name';

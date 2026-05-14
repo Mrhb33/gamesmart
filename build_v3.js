@@ -23,7 +23,7 @@ const rootDir = __dirname;
 // ---- Step 1: Validate questions ----
 console.log('[1/5] Validating questions...');
 try {
-  execSync(`node "${path.join(rootDir, 'validate_questions.js')}"`, { stdio: 'inherit' });
+  execSync(`node "${path.join(rootDir, 'validate_questions.js')}"`, { stdio: 'inherit', timeout: 30000 });
   console.log('       Questions OK');
 } catch (e) {
   console.error('\nBUILD ABORTED: Question validation failed. Fix questions before building.');
@@ -73,27 +73,42 @@ while ((idMatch = htmlIdRegex.exec(htmlContent)) !== null) {
   htmlIds.add(idMatch[1]);
 }
 
-// 3b. Parse all src/*.js for $('...') and getElementById('...') references
+// 3b. Parse all src/*.js for ID references via multiple patterns
 const jsDir = path.join(rootDir, 'src');
 const jsFiles = fs.readdirSync(jsDir).filter(f => f.endsWith('.js'));
-const jsRefRegex = /(?:\$\(|getElementById\()\s*['"]([^'"]+)['"]/g;
 const jsRefs = []; // { file, id }
+
+// Patterns: $('...'), getElementById('...'), querySelector('#...'), querySelectorAll('#...')
+const jsRefPatterns = [
+  /(?:\$\(|getElementById\()\s*['"]([^'"]+)['"]/g,
+  /querySelectorAll?\(\s*['"]#([^'"]+)['"]/g,
+];
+
 for (const jsFile of jsFiles) {
   const content = fs.readFileSync(path.join(jsDir, jsFile), 'utf8');
-  let refMatch;
-  jsRefRegex.lastIndex = 0;
-  while ((refMatch = jsRefRegex.exec(content)) !== null) {
-    jsRefs.push({ file: jsFile, id: refMatch[1] });
+  for (const regex of jsRefPatterns) {
+    regex.lastIndex = 0;
+    let refMatch;
+    while ((refMatch = regex.exec(content)) !== null) {
+      jsRefs.push({ file: jsFile, id: refMatch[1] });
+    }
   }
 }
 
-// 3c. Report mismatches — critical IDs fail the build, others warn
+// 3c. Whitelist for IDs created dynamically in JS (not in static HTML)
+const DYNAMIC_IDS = new Set([
+  'updateBanner', 'offlineBanner', 'offlineBadge', 'toast', 'dailyCountdown',
+  'hintArea',
+]);
+
+// 3d. Report mismatches — critical IDs fail the build, others warn
 const CRITICAL_IDS = new Set([
   'optionsList', 'timerFill', 'quizTimerText', 'quizXP', 'quizStreak', 'quizScore',
   'streakPill', 'explanationArea', 'nextQBtn', 'questionNumber', 'questionText',
   'qProgressBar', 'quizCatName', 'quizCatDot', 'quizTotal', 'quizBackBtn',
   'llFifty', 'llTime', 'llHint', 'quizStageSubtitle', 'bossWarning',
   'hubAvatar', 'hubName', 'hubLevel', 'hubXpBar', 'hubTotalXP', 'hudLevels',
+  'hubCoins', 'hubAccuracy',
   'mainNav', 'categoryGrid', 'continueCard', 'rewardsCard',
   'shopCoins', 'shopGrid', 'achievementsGrid', 'achieveCount', 'achieveBadge',
   'profileBigAvatar', 'profileName', 'profileLevel', 'profileXpCurrent',
@@ -107,9 +122,10 @@ const CRITICAL_IDS = new Set([
   'missionPanel', 'weeklyGoalCard', 'dailyCard',
   'settingsModal', 'chestOverlay', 'relicModal',
   'shopTabs', 'collRealmFilter', 'loadingOverlay',
+  'onboardingNext', 'onboardingSkip',
 ]);
 
-const missingIds = jsRefs.filter(ref => !htmlIds.has(ref.id));
+const missingIds = jsRefs.filter(ref => !htmlIds.has(ref.id) && !DYNAMIC_IDS.has(ref.id));
 const criticalMissing = missingIds.filter(ref => CRITICAL_IDS.has(ref.id));
 const warningMissing = missingIds.filter(ref => !CRITICAL_IDS.has(ref.id));
 
@@ -137,14 +153,51 @@ if (missingIds.length === 0) {
   console.log(`       All critical IDs present (${warningMissing.length} non-critical warnings)`);
 }
 
-// ---- Step 4: Report SW version ----
-console.log('[4/5] Checking service worker...');
-const swContent = fs.readFileSync(path.join(rootDir, 'sw.js'), 'utf8');
+// ---- Step 4: Report SW version and auto-bump if assets changed ----
+console.log('[4/5] Checking service worker versioning...');
+const swPath = path.join(rootDir, 'sw.js');
+let swContent = fs.readFileSync(swPath, 'utf8');
 const versionMatch = swContent.match(/CACHE_VERSION\s*=\s*'(v\d+)'/);
-if (versionMatch) {
-  console.log(`       SW cache version: ${versionMatch[1]}`);
-} else {
+const dataVersionMatch = swContent.match(/DATA_VERSION\s*=\s*'([^']+)'/);
+
+if (!versionMatch) {
   console.warn('       WARNING: Could not find CACHE_VERSION in sw.js');
+} else {
+  // Check if core assets changed since last build by computing a hash
+  const crypto = require('crypto');
+  const hashTargets = ['questions.json', 'levels_metadata.json'];
+  let combined = '';
+  for (const f of hashTargets) {
+    const fp = path.join(rootDir, f);
+    if (fs.existsSync(fp)) combined += fs.readFileSync(fp, 'utf8');
+  }
+  const contentHash = crypto.createHash('md5').update(combined).digest('hex').slice(0, 8);
+
+  // Check if DATA_VERSION matches today — if content changed, bump it
+  const today = new Date().toISOString().split('T')[0];
+  let updated = false;
+
+  // Get stored hash from previous build
+  const hashFile = path.join(rootDir, '.build-hash');
+  let prevHash = '';
+  if (fs.existsSync(hashFile)) prevHash = fs.readFileSync(hashFile, 'utf8').trim();
+
+  if (contentHash !== prevHash) {
+    // Content changed — bump DATA_VERSION and CACHE_VERSION
+    const oldVer = parseInt(versionMatch[1].replace('v', ''), 10);
+    const newVer = 'v' + (oldVer + 1);
+    swContent = swContent.replace(/CACHE_VERSION\s*=\s*'v\d+'/, `CACHE_VERSION = '${newVer}'`);
+    swContent = swContent.replace(/DATA_VERSION\s*=\s*'[^']+'/, `DATA_VERSION = '${today}'`);
+    swContent = swContent.replace(/\/\/ Data version: [^\n]+/, `// Data version: ${today} — bump when data files change for cache busting`);
+    fs.writeFileSync(swPath, swContent);
+    fs.writeFileSync(hashFile, contentHash);
+    console.log(`       Data changed → bumped CACHE_VERSION to ${newVer}, DATA_VERSION to ${today}`);
+    updated = true;
+  }
+
+  if (!updated) {
+    console.log(`       SW cache version: ${versionMatch[1]} (data unchanged)`);
+  }
 }
 
 // ---- Step 5: Summary ----

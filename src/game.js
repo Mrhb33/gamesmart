@@ -75,8 +75,10 @@ function trackSkillAnswer(cat, tags, isCorrect, timeMs, level) {
 
 function decaySkillProfile() {
   if (!S.skillProfile) return;
+  let today = getISODate();
+  if (S.skillProfile._lastDecayDate === today) return;
+  S.skillProfile._lastDecayDate = today;
   let sp = S.skillProfile;
-  // Decay weights for tags not seen in a while (soft decay via reducing counts)
   if (sp.tags) {
     Object.keys(sp.tags).forEach(tag => {
       let d = sp.tags[tag];
@@ -129,7 +131,7 @@ function smartShuffle(pool) {
       let weakAreas = S.weakAreas || {};
       q.tags.forEach(t => { if (weakAreas[t] && weakAreas[t].wrong > 0) weakBonus += weakAreas[t].wrong / (weakAreas[t].total || 1); });
     }
-    let score = (unseen ? 1000 : recency) + weakBonus * 10;
+    let score = (unseen ? 1000 : recency) + weakBonus * 10 + Math.random();
     return { q, score };
   });
   scored.sort((a, b) => b.score - a.score);
@@ -158,6 +160,8 @@ function isBossQuestion(idx, total) { return idx === total - 1; }
 // ==================== Game Helpers ====================
 function cleanTag(tag) { return tag.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); }
 function findCatForTag(tag) {
+  // Prefer stored category context from weak area tracking
+  if (S.weakAreas && S.weakAreas[tag] && S.weakAreas[tag].category) return S.weakAreas[tag].category;
   for (let cat of Object.keys(QUESTIONS)) {
     if ((QUESTIONS[cat] || []).some(q => (q.tags || []).includes(tag))) return cat;
   }
@@ -173,7 +177,7 @@ function startWeakAreaPractice(cat, tag) {
   let tagData = S.skillProfile && S.skillProfile.tags && S.skillProfile.tags[tag];
   S._practiceSnapshot = tag ? { tag, accuracy: tagData && tagData.answered >= 2 ? tagData.correct / tagData.answered : null } : null;
 
-  S.curCat = cat; S.curLevel = 1; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
+  S.curCat = cat; S.curLevel = 1; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizMaxStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
   S.isDaily = false; S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 }; S._finishing = false;
   S.qs = smartShuffle(pool.slice(0, 10));
   let meta = CATEGORY_META[cat];
@@ -222,7 +226,7 @@ function showComboFeedback(streak) {
 }
 
 // ==================== Retention Helpers ====================
-function getISODate(d) { return (d ? new Date(d) : new Date()).toISOString().slice(0,10); }
+function getISODate(d) { let dt = d ? new Date(d) : new Date(); return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0'); }
 function getISOWeek(d) {
   let dt = new Date(d || Date.now()); dt.setHours(0,0,0,0);
   dt.setDate(dt.getDate() + 3 - (dt.getDay() + 6) % 7);
@@ -238,7 +242,7 @@ function getDailyMilestone(streak) { for (let i = DAILY_STREAK_MILESTONES.length
 // ==================== Start Level / Quiz ====================
 function startLevel(cat, lvl) {
   clearAllTimers();
-  S.curCat = cat; S.curLevel = lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
+  S.curCat = cat; S.curLevel = lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizMaxStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
   S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 }; S._finishing = false;
 
   let pool = cat === 'daily' ? [] : (QUESTIONS[cat] || []).filter(q => q.lvl === lvl);
@@ -251,7 +255,9 @@ function startLevel(cat, lvl) {
       let bonusPool = (QUESTIONS[cat] || []).filter(q => q.lvl === lvl + 1 && !S.qs.some(s => s.id === q.id));
       if (bonusPool.length > 0) {
         let bonus = bonusPool[Math.floor(Math.random() * bonusPool.length)];
-        S.qs.push(bonus); // bonus question at the end (before boss)
+        let bossIdx = S.qs.findIndex(q => q.boss === true);
+        if (bossIdx === -1) bossIdx = Math.max(0, S.qs.length - 1);
+        S.qs.splice(bossIdx, 0, bonus); // insert before boss
       }
     }
   }
@@ -372,7 +378,7 @@ function timeOut() {
   S.questionAnswered = true;
   let btns = D.optionsList.querySelectorAll('.option-btn');
   btns.forEach(b => b.classList.add('disabled'));
-  setTimeout(() => {
+  _answerRevealTimer = setTimeout(() => {
     trackEvent('question_timeout', { category: S.curCat, level: S.curLevel });
     sfxT();
     let q = S.qs[S.qIndex]; S.quizStreak = 0; S.totalAnswered++;
@@ -380,7 +386,7 @@ function timeOut() {
     let correctDisplayIdx = S._shuffled.findIndex(o => o.origIdx === q.a);
     S.lastQuizAnswers.push({ q: getQText(q, 'q'), shuffled: S._shuffled.map(o => o.text), correctDisplayIdx, selectedDisplayIdx: -1, isCor: false, expl: getQText(q, 'expl'),
       qId: q.id || null, tags: q.tags || [], hint: getQText(q, 'hint') || '', explanationLong: getQText(q, 'explanationLong') || getQText(q, 'expl'),
-      correctOpt: getQText(q, 'opts')[q.a], selectedOpt: null, category: S.curCat, level: S.curLevel });
+      correctOpt: getQText(q, 'opts')[q.a], selectedOpt: null, category: S.curCat, level: S.curLevel, responseTime: null });
 
     // Track answered questions for smart selection
     if (q.id) {
@@ -391,7 +397,7 @@ function timeOut() {
     if (q.tags && q.tags.length > 0) {
       if (!S.weakAreas) S.weakAreas = {};
       q.tags.forEach(tag => {
-        if (!S.weakAreas[tag]) S.weakAreas[tag] = { total: 0, wrong: 0 };
+        if (!S.weakAreas[tag]) S.weakAreas[tag] = { total: 0, wrong: 0, category: S.curCat };
         S.weakAreas[tag].total++;
         S.weakAreas[tag].wrong++;
       });
@@ -422,20 +428,21 @@ function pickA(dIdx, oIdx) {
   btns.forEach(b => b.classList.add('disabled'));
 
   // Phase 2: Delayed reveal (350ms)
-  setTimeout(() => {
+  _answerRevealTimer = setTimeout(() => {
     S.totalAnswered++;
     bumpSessionStat('questionsAnswered', 1);
     const flashEl = document.getElementById('screenFlash');
     if (flashEl) {
+      flashEl.className = 'screen-flash';
+      void flashEl.offsetWidth;
       flashEl.className = isCor ? 'screen-flash flash-correct' : 'screen-flash flash-wrong';
-      requestAnimationFrame(() => {
-        setTimeout(() => flashEl.className = 'screen-flash', 150);
-      });
     }
 
     if (isCor) {
       vibe('success');
       sfxC(); S.quizScore++; S.quizStreak++; S.totalCorrect++; S.bestStreak = Math.max(S.bestStreak, S.quizStreak);
+      if (!S.quizMaxStreak) S.quizMaxStreak = 0;
+      S.quizMaxStreak = Math.max(S.quizMaxStreak, S.quizStreak);
       bumpSessionStat('correctAnswers', 1);
       setSessionStat('maxStreak', Math.max(S.missionSessionStats.maxStreak || 0, S.quizStreak));
       trackEvent('question_answered', { correct: true, category: S.curCat, level: S.curLevel, streak: S.quizStreak, time: Math.round(t * 10) / 10 });
@@ -455,7 +462,7 @@ function pickA(dIdx, oIdx) {
     let correctDisplayIdx = S._shuffled.findIndex(o => o.origIdx === q.a);
     S.lastQuizAnswers.push({ q: getQText(q, 'q'), shuffled: S._shuffled.map(o => o.text), correctDisplayIdx, selectedDisplayIdx: dIdx, isCor, expl: getQText(q, 'expl'),
       qId: q.id || null, tags: q.tags || [], hint: getQText(q, 'hint') || '', explanationLong: getQText(q, 'explanationLong') || getQText(q, 'expl'),
-      correctOpt: getQText(q, 'opts')[q.a], selectedOpt: getQText(q, 'opts')[oIdx], category: S.curCat, level: S.curLevel });
+      correctOpt: getQText(q, 'opts')[q.a], selectedOpt: getQText(q, 'opts')[oIdx], category: S.curCat, level: S.curLevel, responseTime: t });
 
     // Track answered questions for smart selection
     if (q.id) {
@@ -467,7 +474,7 @@ function pickA(dIdx, oIdx) {
     if (q.tags && q.tags.length > 0) {
       if (!S.weakAreas) S.weakAreas = {};
       q.tags.forEach(tag => {
-        if (!S.weakAreas[tag]) S.weakAreas[tag] = { total: 0, wrong: 0 };
+        if (!S.weakAreas[tag]) S.weakAreas[tag] = { total: 0, wrong: 0, category: S.curCat };
         S.weakAreas[tag].total++;
         if (!isCor) S.weakAreas[tag].wrong++;
       });
@@ -553,7 +560,7 @@ function startDaily() {
   sfxK();
   let today = getISODate();
   if (S.lastDailyDate === today) { showToast(t('toast.dailyDone')); return; }
-  S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
+  S.isDaily = true; S.curCat = 'daily'; S.curLevel = 5; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizMaxStreak = 0; S.quizXP = 0; S.lastQuizAnswers = [];
   S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 };
   clearAllTimers(); S._finishing = false;
 
@@ -583,7 +590,13 @@ function updateLL() {
   if (llCost === 0) {
     llF.innerHTML = '<i class="fas fa-percent"></i> 50/50 <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
     llT.innerHTML = '<i class="fas fa-snowflake"></i> ' + t('quiz.freeze') + ' <span style="font-size:10px;opacity:0.7">' + t('quiz.free') + '</span>';
+  } else {
+    llF.innerHTML = '<i class="fas fa-percent"></i> 50/50 <span style="font-size:10px;opacity:0.7">' + llCost + '</span>';
+    llT.innerHTML = '<i class="fas fa-snowflake"></i> ' + t('quiz.freeze') + ' <span style="font-size:10px;opacity:0.7">' + llCost + '</span>';
   }
+  // Update aria-labels with state
+  llF.setAttribute('aria-label', S.lifelinesUsed.fifty ? '50/50 used' : '50/50 lifeline, costs ' + llCost + ' crowns');
+  llT.setAttribute('aria-label', S.lifelinesUsed.time ? 'Freeze time used' : 'Freeze time lifeline, costs ' + llCost + ' crowns');
   llF.onclick = () => { if (!S.lifelinesUsed.fifty && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.fifty = 1; saveState(); sfxK(); updateLL(); doFifty(); showToast(t('toast.fiftyFifty')); } else { showToast(t('toast.notEnoughCrowns')); } } };
   llT.onclick = () => { if (!S.lifelinesUsed.time && !S.questionAnswered) { if (S.coins >= llCost) { S.coins -= llCost; S.lifelinesUsed.time = 1; saveState(); sfxK(); updateLL(); S.timeLeft += 10000; showToast(t('toast.freezeTime')); if (D.timerFill) { D.timerFill.style.background = 'var(--accent2)'; setTimeout(() => { if (D.timerFill) D.timerFill.style.background = ''; }, 500); } } else { showToast(t('toast.notEnoughCrowns')); } } };
   // Hint lifeline — free, one per quiz
@@ -593,6 +606,7 @@ function updateLL() {
     llH.disabled = S.lifelinesUsed.hint || !hasHint || S.questionAnswered;
     llH.classList.toggle('used', !!S.lifelinesUsed.hint);
     llH.onclick = () => { if (!S.lifelinesUsed.hint && hasHint && !S.questionAnswered) { S.lifelinesUsed.hint = 1; sfxK(); updateLL(); showHint(q); } };
+    llH.setAttribute('aria-label', S.lifelinesUsed.hint ? 'Hint used' : (hasHint ? 'Hint lifeline, free' : 'No hint available'));
   }
 }
 
@@ -626,4 +640,26 @@ function tryShare() {
   } catch (e) { showToast(t('toast.shareNotSupported')); }
 }
 
+// ==================== Pure Logic (testable) ====================
+function calcStars(pct, bossDefeated, isBossStage) {
+  let bossOk = bossDefeated || !isBossStage;
+  if (pct === 100 && bossOk) return 3;
+  if (pct >= 80 && bossOk) return 2;
+  if (pct >= 60) return 1;
+  return 0;
+}
+
+function calcRewards(stars, bestStreak, isDaily, passed, dailyAlreadyDone) {
+  let baseCoins = stars * 10;
+  let streakBonus = 0;
+  if (bestStreak >= 5) streakBonus = 10;
+  if (bestStreak >= 10) streakBonus = 25;
+  let coins = baseCoins + streakBonus;
+  if (isDaily && passed) coins = dailyAlreadyDone ? 0 : 100;
+  return coins;
+}
+
 // ==================== Keyboard Handler ====================
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { getISODate, getISOWeek, daysBetween, shuffle, smartShuffle, calcStageMasteryScore, calcCategoryMastery, getComboTier, isBossQuestion, getBattlePhase, calcStars, calcRewards };
+}

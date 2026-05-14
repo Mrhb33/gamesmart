@@ -13,7 +13,7 @@ document.addEventListener('click', () => { _audioUnlocked = true; getAudioCtx();
 document.addEventListener('touchstart', () => { _audioUnlocked = true; getAudioCtx(); }, { once: true });
 function playTone(freq, dur, type = 'sine', vol = .12) {
   if (!_settings.sound || !_audioUnlocked) return;
-  try { let a = getAudioCtx(); if (!a) return; let o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.value = freq; g.gain.value = vol; g.gain.exponentialRampToValueAtTime(.001, a.currentTime + dur); o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime + dur); } catch (e) { }
+  try { let a = getAudioCtx(); if (!a) return; let o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.value = freq; g.gain.setValueAtTime(vol, a.currentTime); g.gain.exponentialRampToValueAtTime(.001, a.currentTime + dur); o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime + dur + .05); o.onended = () => { o.disconnect(); g.disconnect(); }; } catch (e) { }
 }
 // Correct answer — ascending triad
 function sfxC() { playTone(523, .1); setTimeout(() => playTone(659, .1), 80); setTimeout(() => playTone(784, .15), 160); }

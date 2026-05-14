@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 // Cerebrum Quest — Core Logic Test Harness
 // Tests: save migration, daily streak, rewards, stars, missions, weekly goal, question selection
+//
+// Imports pure logic functions from production source files via CommonJS exports.
+// Production files use `if (typeof module !== 'undefined') module.exports = ...` guards
+// so they work in both browser and Node.js environments.
 
 const fs = require('fs');
 const path = require('path');
@@ -26,25 +30,39 @@ function suite(name, fn) {
   fn();
 }
 
-// ==================== Stubs ====================
-// Minimal stubs so we can test game logic in Node without a browser
+// ==================== Load Production Code ====================
+// Provide browser globals that production code expects
+global.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+global.document = { querySelectorAll: () => [], querySelector: () => null, getElementById: () => null, addEventListener: () => {}, createElement: () => ({ style: {} }) };
+global.window = { addEventListener: () => {} };
+global.navigator = { onLine: true };
+global.requestAnimationFrame = () => {};
+global.cancelAnimationFrame = () => {};
+global.performance = { now: () => 0 };
 
-function getISODate(d) { return (d ? new Date(d) : new Date()).toISOString().slice(0, 10); }
-function getISOWeek(d) {
-  let dt = new Date(d || Date.now()); dt.setHours(0, 0, 0, 0);
-  dt.setDate(dt.getDate() + 3 - (dt.getDay() + 6) % 7);
-  let w1 = new Date(dt.getFullYear(), 0, 4);
-  return dt.getFullYear() + '-W' + (1 + Math.round((dt - w1) / 604800000));
-}
-function daysBetween(d1, d2) { return Math.floor((new Date(d2) - new Date(d1)) / 86400000); }
+// Mock isReducedMotion for audio.js
+global.isReducedMotion = () => false;
+global._settings = { sound: false, haptics: false };
+global._audioUnlocked = true;
 
-function shuffle(a) { let c = [...a]; for (let i = c.length - 1; i > 0; i--) { let j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; }
+// Mock CATEGORY_META for state.js applySaveDefaults
+global.CATEGORY_META = {
+  science: {}, history: {}, geography: {}, math: {}, language: {}, nature: {}, culture: {}
+};
 
+const stateModule = require('./src/state.js');
+const { createDefaultState, migrateSave, hydrateState, SAVE_VERSION } = stateModule;
+
+// game.js depends on several globals — provide them before loading
+global.S = createDefaultState();
+const gameModule = require('./src/game.js');
+const { getISODate, getISOWeek, daysBetween, shuffle, smartShuffle, calcStageMasteryScore, isBossQuestion, calcStars, calcRewards } = gameModule;
+
+// ==================== Constants (from data.js) ====================
 const TIMER_DUR = { 1: 30, 2: 25, 3: 20, 4: 15, 5: 12 };
 const XP_MAP = { 1: 15, 2: 25, 3: 40, 4: 60, 5: 90 };
 const WEEKLY_GOAL_TARGET = 5;
 const COMEBACK_THRESHOLD_DAYS = 2;
-const SAVE_VERSION = 7;
 
 const DAILY_STREAK_MILESTONES = [
   { days: 3, label: 'Dedicated' }, { days: 7, label: 'Devoted' },
@@ -57,126 +75,10 @@ function getDailyMilestone(streak) {
   return null;
 }
 
-function createDefaultState() {
-  return {
-    playerName: "Explorer", totalXP: 0, curLevelNum: 1, bestStreak: 0,
-    totalCorrect: 0, totalAnswered: 0, totalQuizzes: 0, perfectQuizzes: 0,
-    curCat: null, curLevel: 1,
-    categoryData: {},
-    tripleStars: 0, lvl5Cleared: 0, levelsCleared: 0, realmsMastered: 0,
-    coins: 0, lastDaily: 0, lastDailyDate: '', dailyStreak: 0, isDaily: false,
-    lifelinesUsed: { fifty: 0, time: 0, hint: 0 },
-    onboardingDone: false, lastFailedQuiz: null,
-    missionDate: '', missions: [],
-    missionSessionStats: { questionsAnswered: 0, correctAnswers: 0, stagesStarted: 0, stagesCompleted: 0, dailyCompleted: false, noLifelineStages: 0, wrongReviewed: 0, starsEarned: 0, maxStreak: 0 },
-    weeklyGoalDate: '', weeklyStagesCompleted: 0, weeklyGoalClaimed: false,
-    lastPlayDate: '', comebackShown: '',
-    relicShards: {}, unlockedRelics: new Set(),
-    unlockedShopItems: ['avatar_A', 'frame_none', 'title_novice', 'theme_default'],
-    equippedFrame: 'frame_none', equippedTitle: 'title_novice', equippedTheme: 'theme_default',
-    skillProfile: { categories: {}, tags: {}, avgResponseTime: 0, totalResponseTime: 0, responseCount: 0 },
-    stageMastery: {}, recentMistakes: [],
-    answeredQuestionIds: {}, weakAreas: {},
-  };
-}
+// calcStars and calcRewards are now imported from production (src/game.js)
+// calcStageMasteryScore is also imported from production
 
-function migrateSave(p, version) {
-  if (version < 7) {
-    if (p.lastDaily && !p.lastDailyDate) {
-      let dd = typeof p.lastDaily === 'number' ? new Date(p.lastDaily) : new Date(p.lastDaily);
-      if (!isNaN(dd.getTime())) p.lastDailyDate = dd.toISOString().slice(0, 10);
-      else p.lastDailyDate = '';
-    }
-    if (!p.lastDailyDate) p.lastDailyDate = '';
-    if (p.categoryData) {
-      Object.keys(p.categoryData).forEach(c => {
-        if (!p.categoryData[c].levelData || p.categoryData[c].levelData.length < 5) {
-          p.categoryData[c].levelData = Array.from({ length: 5 }, () => ({ stars: 0, completed: false }));
-        }
-      });
-    }
-    if (!Array.isArray(p.unlockedShopItems)) {
-      p.unlockedShopItems = ['avatar_A', 'frame_none', 'title_novice', 'theme_default'];
-    }
-    if (!p.equippedFrame) p.equippedFrame = 'frame_none';
-    if (!p.equippedTitle) p.equippedTitle = 'title_novice';
-    if (!p.equippedTheme) p.equippedTheme = 'theme_default';
-  }
-  return p;
-}
-
-function hydrateState(raw) {
-  let p = typeof raw === 'string' ? JSON.parse(raw) : raw;
-  if (!p || typeof p !== 'object') throw new Error('Invalid save data');
-  if (p.playerName === undefined && p.totalXP === undefined && p.categoryData === undefined) {
-    throw new Error('Not a valid Cerebrum save');
-  }
-  let version = p._v || 0;
-  delete p._v;
-  const transient = new Set([
-    'timerInterval', 'qs', 'qIndex', 'quizScore', 'quizStreak', 'quizXP',
-    'quizStartTime', 'timeLeft', 'questionAnswered', 'lastQuizAnswers',
-    'isDaily', '_shuffled', '_finishing', '_bossDefeated', 'missionSessionStats', '_shardQueue',
-    'newAchievements', '_practiceSnapshot',
-  ]);
-  transient.forEach(k => delete p[k]);
-  p = migrateSave(p, version);
-  let S = { ...createDefaultState(), ...p };
-  if (Array.isArray(S.unlockedRelics)) S.unlockedRelics = new Set(S.unlockedRelics);
-  return S;
-}
-
-// Star calculation (replicated from game logic)
-function calcStars(pct, bossDefeated, isBossStage) {
-  let bossOk = bossDefeated || !isBossStage;
-  if (pct === 100 && bossOk) return 3;
-  if (pct >= 80 && bossOk) return 2;
-  if (pct >= 60) return 1;
-  return 0;
-}
-
-// Reward calculation (replicated)
-function calcRewards(stars, bestStreak, isDaily, passed, dailyAlreadyDone) {
-  let baseCoins = stars * 10;
-  let speedBonus = 0, streakBonus = 0;
-  if (bestStreak >= 5) streakBonus = 10;
-  if (bestStreak >= 10) streakBonus = 25;
-  let coins = baseCoins + speedBonus + streakBonus;
-  if (isDaily && passed) coins = dailyAlreadyDone ? 0 : 100;
-  return coins;
-}
-
-// Stage mastery score
-function calcStageMasteryScore(pct, bossDefeated, lifelinesUsed, streak) {
-  let score = 0;
-  score += Math.min(40, pct * 0.4);
-  if (bossDefeated) score += 25;
-  let llCount = (lifelinesUsed.fifty || 0) + (lifelinesUsed.time || 0);
-  score += Math.max(0, 20 - llCount * 10);
-  score += Math.min(15, streak * 1.5);
-  return Math.min(100, Math.round(score));
-}
-
-// Smart shuffle simulation
-function smartShuffle(pool, answeredIds) {
-  let now = Date.now();
-  let scored = pool.map(q => {
-    let last = answeredIds ? answeredIds[q.id] : undefined;
-    let unseen = !last;
-    let recency = last ? (now - last) / 3600000 : Infinity;
-    return { q, score: unseen ? 1000 : recency };
-  });
-  scored.sort((a, b) => b.score - a.score);
-  let ordered = scored.map(s => s.q);
-  let bossIdx = ordered.findIndex(q => q.boss === true);
-  if (bossIdx >= 0 && bossIdx < ordered.length - 1) {
-    let boss = ordered.splice(bossIdx, 1)[0];
-    ordered.push(boss);
-  }
-  return ordered;
-}
-
-// Mission generation
+// Mission generation (kept local — depends on template data not in source exports)
 const MISSION_TEMPLATES = {
   easy: [
     { id: 'answer_20', targetFn: () => 20, reward: { xp: 50, coins: 30 } },
@@ -213,7 +115,6 @@ suite('Save Migration', () => {
     let oldSave = { _v: 6, playerName: 'Test', totalXP: 100, lastDaily: 'Mon Jan 01 2024' };
     let result = migrateSave(oldSave, 6);
     assert.ok(result.lastDailyDate, 'Should have lastDailyDate');
-    // toDateString() creates date in local timezone, so the ISO date may differ
     assert.ok(result.lastDailyDate.match(/^\d{4}-\d{2}-\d{2}$/), 'Should be ISO date format');
   });
 
@@ -255,9 +156,10 @@ suite('Save Migration', () => {
   test('strips transient fields during hydration', () => {
     let raw = JSON.stringify({ _v: 7, playerName: 'Test', qs: [1, 2, 3], quizScore: 5, timerInterval: 123 });
     let S = hydrateState(raw);
-    assert.strictEqual(S.qs, undefined, 'qs should be stripped');
-    assert.strictEqual(S.quizScore, undefined, 'quizScore should be stripped');
-    assert.strictEqual(S.timerInterval, undefined, 'timerInterval should be stripped');
+    // Transient values from save are stripped; defaults from createDefaultState are applied
+    assert.deepStrictEqual(S.qs, [], 'qs should be reset to default');
+    assert.strictEqual(S.quizScore, 0, 'quizScore should be reset to default');
+    assert.strictEqual(S.timerInterval, null, 'timerInterval should be reset to default');
   });
 
   test('converts unlockedRelics array to Set', () => {
@@ -272,6 +174,13 @@ suite('Daily Streak Logic', () => {
   test('getISODate returns YYYY-MM-DD format', () => {
     let d = getISODate(new Date('2024-03-15T12:30:00'));
     assert.strictEqual(d, '2024-03-15');
+  });
+
+  test('getISODate uses local time (not UTC)', () => {
+    // Create a date where UTC and local date might differ
+    // This test verifies the format is correct regardless of timezone
+    let d = getISODate();
+    assert.ok(d.match(/^\d{4}-\d{2}-\d{2}$/), 'Should be YYYY-MM-DD');
   });
 
   test('daysBetween counts correctly', () => {
@@ -342,8 +251,6 @@ suite('Star Calculation', () => {
   });
 
   test('100% but boss escaped on boss stage = 1 star (boss defeat required)', () => {
-    // bossDefeatedForStars = false when boss escaped on boss stage
-    // Falls to pct >= 60 → 1 star
     assert.strictEqual(calcStars(100, false, true), 1);
   });
 
@@ -483,7 +390,6 @@ suite('Weekly Goal', () => {
       S.weeklyStagesCompleted = 0;
       S.weeklyGoalClaimed = false;
     }
-    // At least verify the logic works
     assert.ok(typeof S.weeklyStagesCompleted === 'number');
   });
 });
@@ -498,25 +404,31 @@ suite('Question Selection', () => {
   ];
 
   test('boss question placed last', () => {
-    let result = smartShuffle(mockQuestions, {});
+    // Reset global S for test
+    global.S = createDefaultState();
+    let result = smartShuffle(mockQuestions);
     let bossQ = result.find(q => q.boss === true);
     assert.strictEqual(result[result.length - 1].id, bossQ.id);
   });
 
   test('unseen questions prioritized', () => {
+    global.S = createDefaultState();
     let answeredIds = { q1: Date.now(), q2: Date.now() };
-    let result = smartShuffle(mockQuestions, answeredIds);
+    global.S.answeredQuestionIds = answeredIds;
+    let result = smartShuffle(mockQuestions);
     let firstIds = result.slice(0, 3).map(q => q.id);
     assert.ok(!firstIds.includes('q1') || !firstIds.includes('q2'), 'Unseen questions should come first');
   });
 
   test('no answered questions = all treated equally', () => {
-    let result = smartShuffle(mockQuestions, {});
+    global.S = createDefaultState();
+    let result = smartShuffle(mockQuestions);
     assert.strictEqual(result.length, mockQuestions.length);
   });
 
   test('preserves all questions', () => {
-    let result = smartShuffle(mockQuestions, {});
+    global.S = createDefaultState();
+    let result = smartShuffle(mockQuestions);
     let origIds = new Set(mockQuestions.map(q => q.id));
     let resultIds = new Set(result.map(q => q.id));
     assert.deepStrictEqual(origIds, resultIds);

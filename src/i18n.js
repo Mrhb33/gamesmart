@@ -1176,7 +1176,7 @@ function t(key, params) {
   let str = dict[key];
   if (str === undefined) str = I18N.en[key];
   if (str === undefined) return key;
-  if (params) Object.keys(params).forEach(k => { str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), params[k]); });
+  if (params) Object.keys(params).forEach(k => { str = str.replace(new RegExp('\\{' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\}', 'g'), () => params[k]); });
   return str;
 }
 

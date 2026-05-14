@@ -20,8 +20,10 @@ let _lastBgTime = 0;
 function animateBg(time) {
   requestAnimationFrame(animateBg);
   if (_pageHidden || isReducedMotion()) return;
-  if (time - _lastBgTime < 33) return; // ~30 FPS throttle
+  let dt = Math.min(time - _lastBgTime, 50);
+  if (dt < 16) return;
   _lastBgTime = time;
+  let timeScale = dt / 33;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   let drawLines = !_particleReduced;
   if (drawLines) {
@@ -30,7 +32,7 @@ function animateBg(time) {
     ctx.fillStyle = grd; ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
   for (let i = 0; i < particles.length; i++) {
-    let p = particles[i]; p.x += p.vx; p.y += p.vy; p.pulse += p.pulseSpeed;
+    let p = particles[i]; p.x += p.vx * timeScale; p.y += p.vy * timeScale; p.pulse += p.pulseSpeed * timeScale;
     if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
     let pr = Math.max(.5, p.r + Math.sin(p.pulse) * .5);
     let pa = p.alpha * (0.7 + Math.sin(p.pulse) * 0.3);
@@ -54,12 +56,12 @@ function animateBg(time) {
 window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
 window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 document.addEventListener('visibilitychange', () => { _pageHidden = document.hidden; });
-resizeCanvas(); initParticles(); animateBg();
+resizeCanvas(); initParticles(); requestAnimationFrame(animateBg);
 
 // ==================== Navigation ====================
-let _currTab = 'hub';
-let viewHistory = ['sWelcome'];
-let currentScreenId = 'sWelcome';
+var _currTab = 'hub';
+var viewHistory = ['sWelcome'];
+var currentScreenId = 'sWelcome';
 
 function prepareScreenData(id) {
   _particleReduced = (id === 'sQuiz');
@@ -91,8 +93,13 @@ function updateBottomNavVisibility(id) {
     if (t === 'hub') isActive = ['sHub', 'sLevelSelect', 'sResults', 'sReview', 'sWeakAreas'].includes(id);
     else if (t === 'shop') isActive = id === 'sShop';
     else if (t === 'achievements') isActive = id === 'sAchievements';
-    else if (t === 'profile') isActive = ['sProfile', 'sShop', 'sWeakAreas'].includes(id);
-    document.querySelector(`[data-tab="${t}"]`)?.classList.toggle('active', isActive);
+    else if (t === 'profile') isActive = ['sProfile', 'sWeakAreas'].includes(id);
+    let tab = document.querySelector(`[data-tab="${t}"]`);
+    if (tab) {
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      tab.setAttribute('tabindex', isActive ? '0' : '-1');
+    }
   });
 }
 
@@ -113,29 +120,30 @@ function showScreen(targetId, isBack = false) {
 
   prepareScreenData(targetId);
 
+  // Clean stale transition classes from target
+  targetScreen.classList.remove('pushed-back', 'slide-left', 'slide-right');
+  targetScreen.style.transform = '';
+
   // Force reflow to ensure DOM is ready
-  void targetScreen.offsetWidth; 
+  void targetScreen.offsetWidth;
 
   if (isBack) {
-    targetScreen.classList.remove('pushed-back', 'active');
-    targetScreen.style.transform = 'translateX(-25%)';
-    
+    viewHistory.pop();
+
     requestAnimationFrame(() => {
       targetScreen.classList.add('active');
-      targetScreen.style.transform = '';
-      
+
       if (currentScreen) {
         currentScreen.classList.remove('active');
+        currentScreen.classList.add('pushed-back');
       }
     });
-    
-    viewHistory.pop();
   } else {
     viewHistory.push(targetId);
-    
+
     requestAnimationFrame(() => {
       targetScreen.classList.add('active');
-      
+
       if (currentScreen) {
         currentScreen.classList.remove('active');
         currentScreen.classList.add('pushed-back');
@@ -293,16 +301,22 @@ function doReset() {
   clearAllTimers();
   S.totalXP = 0; S.curLevelNum = 1; S.bestStreak = 0; S.totalCorrect = 0; S.totalAnswered = 0; S.totalQuizzes = 0; S.perfectQuizzes = 0; S.hardCorrect = 0; S.fastAnswer = 0; S.levelsCleared = 0; S.lvl5Cleared = 0; S.tripleStars = 0; S.realmsMastered = 0;
   S.coins = 0; S.unlockedAvatars = ['A']; S.avatar = 'A'; S.lastDaily = 0; S.lastDailyDate = ''; S.dailyStreak = 0; S.isDaily = false; S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 };
-  S.onboardingDone = false; S.unlockedAchievements.clear(); S.newAchievements.clear(); S.lastQuizAnswers = [];
+  S.onboardingDone = false; S.unlockedAchievements.clear(); S.newAchievements.clear(); S.claimedAchRewards.clear();
+  S.pinnedAchievements = [];
+  S.lastQuizAnswers = [];
   S.relicShards = {}; S.unlockedRelics.clear(); S.newRelics.clear();
   S.unlockedShopItems = ['avatar_A','frame_none','title_novice','theme_default'];
   S.equippedFrame = 'frame_none'; S.equippedTitle = 'title_novice'; S.equippedTheme = 'theme_default';
   S.pinnedShowcase = [];
   S.lastDailyDate = ''; S.dailyChestShown = ''; S.missionDate = ''; S.missions = [];
+  S.missionSessionStats = { questionsAnswered:0, correctAnswers:0, stagesStarted:0, stagesCompleted:0, dailyCompleted:false, noLifelineStages:0, wrongReviewed:0, starsEarned:0, maxStreak:0 };
   S.weeklyGoalDate = ''; S.weeklyStagesCompleted = 0; S.weeklyGoalClaimed = false;
   S.lastPlayDate = ''; S.comebackShown = '';
   S.skillProfile = { categories: {}, tags: {}, avgResponseTime: 0, totalResponseTime: 0, responseCount: 0 };
   S.stageMastery = {}; S.recentMistakes = [];
+  S.answeredQuestionIds = {}; S.weakAreas = {};
+  // Reset theme if a custom theme was applied
+  if (S.equippedTheme !== 'theme_default') applyTheme('theme_default');
   Object.keys(S.categoryData).forEach(c => { S.categoryData[c].levelData.forEach(l => { l.stars = 0; l.completed = false; }); });
   saveState(); renderProfile(); updateAvatars(); showToast(t('toast.progressReset'));
 }

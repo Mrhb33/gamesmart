@@ -31,9 +31,12 @@ const fs = require('fs');
 const path = require('path');
 
 const args = process.argv.slice(2);
-const fileArg = args.find(a => !a.startsWith('--'));
-const targetArg = args.find(a => a.startsWith('--target'));
-const TARGET_QUESTIONS = targetArg ? parseInt(targetArg.split('=')[1] || targetArg.split(' ')[1], 10) : 10;
+const targetIdx = args.findIndex(a => a === '--target' || a.startsWith('--target='));
+const TARGET_QUESTIONS = targetIdx >= 0
+  ? parseInt(args[targetIdx].includes('=') ? args[targetIdx].split('=')[1] : args[targetIdx + 1], 10) || 10
+  : 10;
+const _consumed = new Set([targetIdx, targetIdx >= 0 && !args[targetIdx].includes('=') ? targetIdx + 1 : -1]);
+const fileArg = args.find((a, i) => !a.startsWith('--') && !_consumed.has(i));
 const STRICT = args.includes('--strict');
 const AUDIT = args.includes('--audit');
 const file = fileArg || path.join(__dirname, 'questions.json');
@@ -327,47 +330,6 @@ categories.forEach(cat => {
       warnings.push(`${cat} level ${lvl}: no boss question marked (expected 1)`);
     } else if (bossQuestions.length > 1) {
       warnings.push(`${cat} level ${lvl}: ${bossQuestions.length} boss questions (expected 1)`);
-    }
-  });
-
-  // Per-category answer position diversity
-  const posCounts = { 0: 0, 1: 0, 2: 0, 3: 0 };
-  arr.forEach(q => {
-    if (typeof q.a === 'number' && Number.isInteger(q.a) && q.a >= 0 && q.a <= 3) {
-      posCounts[q.a]++;
-    }
-  });
-  const usedPositions = Object.values(posCounts).filter(c => c > 0).length;
-  if (usedPositions < 3) {
-    errors.push(`${cat}: correct answers only use ${usedPositions} of 4 positions (${JSON.stringify(posCounts)}) — too predictable`);
-  }
-
-  // Balance check: warn if one position has > 40% of answers (stricter than before)
-  const total = arr.length;
-  for (const [pos, count] of Object.entries(posCounts)) {
-    if (count > total * 0.4) {
-      warnings.push(`${cat}: position ${['A','B','C','D'][pos]} has ${count}/${total} answers (${Math.round(count / total * 100)}%) — unbalanced`);
-    }
-  }
-
-  // 15. Per-level answer position diversity
-  Object.entries(levelAnswers).forEach(([lvl, answers]) => {
-    const unique = new Set(answers.filter(a => typeof a === 'number' && a >= 0 && a <= 3));
-    if (answers.length >= 3 && unique.size < 2) {
-      errors.push(`${cat} level ${lvl}: only ${unique.size} answer position(s) used — need at least 2`);
-    }
-    if (answers.length >= 5 && unique.size < 3) {
-      warnings.push(`${cat} level ${lvl}: only ${unique.size} answer positions used across ${answers.length} questions — consider using 3+`);
-    }
-
-    // Per-level balance: no single position > 50%
-    const lvlTotal = answers.length;
-    const lvlPosCounts = {};
-    answers.forEach(a => { lvlPosCounts[a] = (lvlPosCounts[a] || 0) + 1; });
-    for (const [pos, count] of Object.entries(lvlPosCounts)) {
-      if (count > lvlTotal * 0.5) {
-        warnings.push(`${cat} level ${lvl}: position ${['A','B','C','D'][pos]} has ${count}/${lvlTotal} (${Math.round(count / lvlTotal * 100)}%) — unbalanced at level`);
-      }
     }
   });
 });

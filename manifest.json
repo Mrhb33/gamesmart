@@ -33,6 +33,5 @@
       "icons": [{"src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDk2IDk2Ij48cmVjdCB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHJ4PSIyMCIgZmlsbD0iIzBhMGYxYSIvPjx0ZXh0IHg9IjQ4IiB5PSI2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2Y1OWUwYiI+8J+OpTwvdGV4dD48L3N2Zz4=", "sizes": "96x96"}]
     }
   ],
-  "screenshots": [],
-  "_screenshot_note": "Add PNG screenshots (390x844 portrait, 16:9 ratio) under a /screenshots/ folder and list them here for PWA installability. Example: { src: './screenshots/hub.png', sizes: '390x844', type: 'image/png', form_factor: 'narrow' }"
+  "screenshots": []
 }

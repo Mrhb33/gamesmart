@@ -1,10 +1,10 @@
 // ============================================================================
 // Cerebrum Quest — Service Worker
 // ============================================================================
-// Data version: 2026-05-05 — bump when data files change for cache busting
-const CACHE_VERSION = 'v14';
+// Data version: 2026-05-14 — bump when data files change for cache busting
+const CACHE_VERSION = 'v15';
 const CACHE_NAME = `cerebrum-${CACHE_VERSION}`;
-const DATA_VERSION = '2026-05-05';
+const DATA_VERSION = '2026-05-14';
 
 // Core assets that must be cached during install for offline support.
 const CORE_ASSETS = [
@@ -93,10 +93,9 @@ self.addEventListener('fetch', event => {
             if (response && response.status === 200) {
               const clone = response.clone();
               caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-              // Add data version header for stale detection
               const headers = new Headers(response.headers);
               headers.set('X-Data-Version', DATA_VERSION);
-              return new Response(clone.body, { status: response.status, statusText: response.statusText, headers });
+              return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
             }
             return response;
           })
@@ -121,13 +120,13 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          if (response && response.status === 200) {
+          if (response && response.ok && response.type !== 'opaque') {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           }
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(event.request).then(r => r || new Response('Offline', { status: 503 })))
     );
     return;
   }
@@ -136,10 +135,18 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        if (!response || response.status !== 200) return response;
+        if (!response || !response.ok || response.type === 'opaque') return response;
         const clone = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         return response;
+      }).catch(() => {
+        // Offline fallback for external CDN requests (fonts, icons)
+        const accept = event.request.headers.get('Accept') || '';
+        if (accept.includes('text/css')) return new Response('/* offline */', { status: 200, headers: { 'Content-Type': 'text/css' } });
+        if (accept.includes('font') || url.pathname.endsWith('.woff2') || url.pathname.endsWith('.woff') || url.pathname.endsWith('.ttf')) {
+          return new Response('', { status: 200, headers: { 'Content-Type': 'font/woff2' } });
+        }
+        return new Response('', { status: 503, headers: { 'Content-Type': 'text/plain' } });
       });
     })
   );

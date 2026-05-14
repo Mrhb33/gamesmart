@@ -89,7 +89,8 @@ function createDefaultState() {
 let S = createDefaultState();
 
 let _autoAdvance = null;
-function clearAllTimers() { if (S.timerInterval) { cancelAnimationFrame(S.timerInterval); S.timerInterval = null; } if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } }
+let _answerRevealTimer = null;
+function clearAllTimers() { if (S.timerInterval) { cancelAnimationFrame(S.timerInterval); S.timerInterval = null; } if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } if (_answerRevealTimer) { clearTimeout(_answerRevealTimer); _answerRevealTimer = null; } }
 
 const SAVE_VERSION = 7;
 const SAVE_KEY = 'cerebrum_save';
@@ -154,12 +155,18 @@ function hydrateState(raw) {
   // Merge into fresh state
   S = { ...createDefaultState(), ...p };
   applySaveDefaults();
+  return S;
 }
 
 function saveState() {
   if (S.answeredQuestionIds) {
     let cutoff = Date.now() - 7 * 24 * 3600000;
     Object.keys(S.answeredQuestionIds).forEach(id => { if (S.answeredQuestionIds[id] < cutoff) delete S.answeredQuestionIds[id]; });
+    let entries = Object.entries(S.answeredQuestionIds);
+    if (entries.length > 2000) {
+      entries.sort((a, b) => a[1] - b[1]);
+      S.answeredQuestionIds = Object.fromEntries(entries.slice(-2000));
+    }
   }
   if (typeof decaySkillProfile === 'function') decaySkillProfile();
   try {
@@ -240,7 +247,7 @@ function migrateSave(p, version) {
   // v6 → v7: Normalize daily dates from toDateString to ISO YYYY-MM-DD
   if (version < 7) {
     if (p.lastDaily && !p.lastDailyDate) {
-      let dd = typeof p.lastDaily === 'number' ? new Date(p.lastDaily) : new Date(p.lastDaily);
+      let dd = typeof p.lastDaily === 'number' ? new Date(p.lastDaily) : new Date(Date.parse(p.lastDaily));
       if (!isNaN(dd.getTime())) p.lastDailyDate = dd.toISOString().slice(0, 10);
       else p.lastDailyDate = '';
     }
@@ -273,4 +280,8 @@ function loadState() {
     // Never auto-delete a broken save — keep defaults and warn.
     console.warn('Save parse error — keeping defaults:', e.message);
   }
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { createDefaultState, migrateSave, hydrateState, SAVE_VERSION };
 }

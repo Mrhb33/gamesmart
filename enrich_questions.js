@@ -117,8 +117,8 @@ function smartTags(cat, question) {
 
   const sorted = Object.entries(tagScores).sort((a, b) => b[1] - a[1]);
   if (sorted.length === 0) {
-    // Fallback: pick first tag from the category
-    return [Object.keys(catKeywords)[0]];
+    // Fallback: use generic tag to maintain diversity
+    return ['general'];
   }
   return sorted.slice(0, Math.min(3, sorted.length)).map(([tag]) => tag);
 }
@@ -136,15 +136,13 @@ function generateHint(q) {
     let censored = expl;
     // Remove any option text from explanation, replace with "___"
     allOptions.forEach(opt => {
-      if (opt.length > 1) { // skip single chars
-        censored = censored.replace(new RegExp(opt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '___');
+      if (opt.length > 2) {
+        censored = censored.replace(new RegExp('\\b' + opt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), '___');
       }
     });
     if (censored !== expl) {
       return censored.trim() + (censored.endsWith('.') ? '' : '.');
     }
-    // If no option was found in explanation, the explanation is safe as-is
-    return expl.trim() + (expl.endsWith('.') ? '' : '.');
   }
 
   // 2. Build from question context
@@ -167,23 +165,23 @@ const allQuestionTexts = new Map();
 
 Object.entries(data).forEach(([cat, questions]) => {
   const skills = SKILL_MAP[cat] || SKILL_MAP.science;
+  const levelCounters = {};
 
   questions.forEach((q, i) => {
     globalId++;
     const lvl = q.lvl || 1;
+    levelCounters[lvl] = (levelCounters[lvl] || 0) + 1;
 
-    if (!q.id) q.id = `${cat}_${String(lvl).padStart(1, '0')}_${String(i + 1).padStart(3, '0')}`;
+    if (!q.id) q.id = `${cat}_${String(lvl).padStart(1, '0')}_${String(levelCounters[lvl]).padStart(3, '0')}`;
     q.type = 'multiple-choice';
     if (!q.difficultyScore) q.difficultyScore = Math.min(100, Math.max(10, lvl * 20 - 10 + (i % 15)));
     if (!q.tags || !Array.isArray(q.tags) || q.tags.length === 0) q.tags = smartTags(cat, q);
     if (!q.skill) q.skill = skills[Math.min(lvl - 1, skills.length - 1)];
-    if (!q.hint) { q._cat = cat; q.hint = generateHint(q); }
+    if (!q.hint) { q.hint = generateHint(q); }
     if (!q.explanationLong) q.explanationLong = q.expl
       ? q.expl + (q.expl.endsWith('.') ? '' : '.') + ` This concept is part of ${cat} at the ${['introductory','intermediate','advanced','expert','mastery'][lvl-1]} level.`
       : 'No explanation available.';
-    if (!q.locale || typeof q.locale !== 'object') q.locale = { en: null, ar: null };
-
-    delete q._cat; // clean up temp field used for hint generation
+    if (!q.locale || typeof q.locale !== 'object') delete q.locale;
 
     const key = q.q.trim().toLowerCase();
     if (!allQuestionTexts.has(key)) allQuestionTexts.set(key, []);

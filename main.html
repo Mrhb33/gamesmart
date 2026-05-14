@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=overlays-content">
   <meta name="theme-color" content="#0a0f1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -39,17 +39,17 @@
 
   <!-- NAV -->
   <nav class="main-nav" id="mainNav" style="display:none;" role="tablist">
-    <button class="nav-tab active" data-tab="hub" onclick="switchTab('hub')" role="tab">
+    <button class="nav-tab active" data-tab="hub" role="tab" aria-selected="true">
       <i class="fas fa-compass"></i><span class="tab-label" data-i18n="nav.realms">Realms</span>
     </button>
-    <button class="nav-tab" data-tab="achievements" onclick="switchTab('achievements')" role="tab">
+    <button class="nav-tab" data-tab="achievements" role="tab" aria-selected="false">
       <i class="fas fa-trophy"></i><span class="tab-label" data-i18n="nav.relics">Relics</span>
       <span class="badge" id="achieveBadge" style="display:none;">0</span>
     </button>
-    <button class="nav-tab" data-tab="shop" onclick="switchTab('shop')" role="tab">
+    <button class="nav-tab" data-tab="shop" role="tab" aria-selected="false">
       <i class="fas fa-store"></i><span class="tab-label" data-i18n="shop.title">Armory</span>
     </button>
-    <button class="nav-tab" data-tab="profile" onclick="switchTab('profile')" role="tab">
+    <button class="nav-tab" data-tab="profile" role="tab" aria-selected="false">
       <i class="fas fa-user"></i><span class="tab-label" data-i18n="nav.skills">Profile</span>
     </button>
   </nav>
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm settings-btn" id="settingsBtn" onclick="openSettings()" aria-label="Settings"><i class="fas fa-cog"></i></button>
+      <button class="btn btn-ghost btn-sm settings-btn" id="settingsBtn" aria-label="Settings"><i class="fas fa-cog"></i></button>
       <div class="hub-stats">
         <div class="hub-stat">
           <div class="hub-stat-val" id="hudLevels">0/35</div>
@@ -156,7 +156,7 @@
     <div id="continueCard"></div>
     <div id="rewardsCard"></div>
     <div class="dashboard-carousel">
-      <div class="carousel-card daily-card" id="dailyCard" onclick="startDaily()">
+      <div class="carousel-card daily-card" id="dailyCard" role="button" tabindex="0" aria-label="Start daily trial">
         <h3><i class="fas fa-calendar-day"></i> <span data-i18n="hub.dailyTrial">Daily Challenge</span></h3>
         <p data-i18n="hub.dailyDesc">10 hard questions for big XP & Coins!</p>
       </div>
@@ -171,7 +171,7 @@
   <!-- LEVEL SELECT -->
   <section id="sLevelSelect" class="screen" role="region">
     <div class="level-select-container">
-      <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')" style="margin-bottom:20px;" data-i18n="misc.back"><i
+      <button class="btn btn-ghost btn-sm" id="lsBackBtn" style="margin-bottom:20px;" data-i18n="misc.back"><i
           class="fas fa-arrow-left"></i> Back</button>
       <div class="ls-header">
         <div class="ls-icon" id="lsIcon"></div>
@@ -195,7 +195,7 @@
       <div class="quiz-score-pill"><i class="fas fa-star"></i> <span id="quizScore">0</span></div>
       
       <!-- Hidden legacy elements to prevent JS errors -->
-      <div style="visibility:hidden; position:absolute; width:0; height:0;">
+      <div style="visibility:hidden; position:absolute; width:0; height:0; pointer-events:none;" aria-hidden="true">
         <span id="quizTotal">0</span>
         <div id="quizCatDot"></div>
         <div id="qProgressBar"></div>
@@ -212,14 +212,14 @@
       <div class="boss-warning" id="bossWarning" style="display:none;"></div>
       <div class="question-number" id="questionNumber">Question 1 of 5</div>
       <h2 class="question-text" id="questionText">Loading...</h2>
-      <div id="explanationArea" aria-live="polite"></div>
+      <div id="explanationArea" aria-live="polite" class="explanation-area"></div>
     </div>
 
     <div class="quiz-footer">
       <div class="lifeline-row">
-        <button class="ll-btn" id="llFifty"><i class="fas fa-percent"></i></button>
-        <button class="ll-btn" id="llTime"><i class="fas fa-snowflake"></i></button>
-        <button class="ll-btn" id="llHint"><i class="fas fa-lightbulb"></i></button>
+        <button class="ll-btn" id="llFifty" aria-label="50/50 lifeline" title="50/50"><i class="fas fa-percent"></i></button>
+        <button class="ll-btn" id="llTime" aria-label="Freeze time lifeline" title="Freeze"><i class="fas fa-snowflake"></i></button>
+        <button class="ll-btn" id="llHint" aria-label="Hint lifeline" title="Hint"><i class="fas fa-lightbulb"></i></button>
       </div>
       
       <div class="options-grid" id="optionsList" role="radiogroup" aria-label="Answer options"></div>
@@ -266,7 +266,7 @@
       </div>
 
       <!-- Hidden legacy elements to prevent JS errors -->
-      <div style="visibility:hidden; position:absolute; width:0; height:0;">
+      <div style="visibility:hidden; position:absolute; width:0; height:0; pointer-events:none;" aria-hidden="true">
         <span id="resWrong">0</span>
         <span id="resBestStreak">0</span>
         <div id="resBossBox"><span id="resBossStatus"></span></div>
@@ -295,9 +295,9 @@
         <button class="btn btn-ghost btn-sm" id="reviewBackBtn"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
       </div>
       <div class="review-filter-tabs" style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="coll-tab active" id="reviewTabAll" data-filter="all" onclick="filterReview('all')" data-i18n="review.all">All</button>
-        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong" onclick="filterReview('wrong')"><i class="fas fa-times-circle"></i> <span data-i18n="review.wrong">Wrong</span></button>
-        <button class="coll-tab" id="reviewTabWeak" data-filter="weak" onclick="filterReview('weak')"><i class="fas fa-crosshairs"></i> <span data-i18n="weak.weakAreas">Weakest</span></button>
+        <button class="coll-tab active" id="reviewTabAll" data-filter="all" data-i18n="review.all">All</button>
+        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong"><i class="fas fa-times-circle"></i> <span data-i18n="review.wrong">Wrong</span></button>
+        <button class="coll-tab" id="reviewTabWeak" data-filter="weak"><i class="fas fa-crosshairs"></i> <span data-i18n="weak.weakAreas">Weakest</span></button>
       </div>
       <div class="review-list" id="reviewList"></div>
     </div>
@@ -311,8 +311,8 @@
         <span id="achieveCount" style="color:var(--muted);font-size:15px;font-weight:600;">0 / 15 <span data-i18n="achieve.collected">Collected</span></span>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
-        <button class="coll-tab active" data-coll="relics" onclick="switchCollTab('relics')"><i class="fas fa-gem"></i> <span data-i18n="coll.relics">Relics</span></button>
-        <button class="coll-tab" data-coll="trophies" onclick="switchCollTab('trophies')"><i class="fas fa-trophy"></i> <span data-i18n="coll.trophies">Trophies</span></button>
+        <button class="coll-tab active" data-coll="relics"><i class="fas fa-gem"></i> <span data-i18n="coll.relics">Relics</span></button>
+        <button class="coll-tab" data-coll="trophies"><i class="fas fa-trophy"></i> <span data-i18n="coll.trophies">Trophies</span></button>
         <select id="collRealmFilter" onchange="filterCollection(this.value)" style="background:var(--bg2);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;">
           <option value="all" data-i18n="coll.allRealms">All Realms</option>
           <option value="science" data-i18n="cat.science.name">Science</option>
@@ -323,11 +323,11 @@
           <option value="nature" data-i18n="cat.nature.name">Nature</option>
           <option value="culture" data-i18n="cat.culture.name">Culture</option>
         </select>
-        <button class="coll-filter active" data-filter="all" onclick="filterCollection('all')" data-i18n="achieve.all">All</button>
-        <button class="coll-filter" data-filter="Common" onclick="filterCollection('Common')" data-i18n="achieve.filter.common">Common</button>
-        <button class="coll-filter" data-filter="Rare" onclick="filterCollection('Rare')" data-i18n="achieve.filter.rare">Rare</button>
-        <button class="coll-filter" data-filter="Epic" onclick="filterCollection('Epic')" data-i18n="achieve.filter.epic">Epic</button>
-        <button class="coll-filter" data-filter="Legendary" onclick="filterCollection('Legendary')" data-i18n="achieve.filter.legendary">Legendary</button>
+        <button class="coll-filter active" data-filter="all" data-i18n="achieve.all">All</button>
+        <button class="coll-filter" data-filter="Common" data-i18n="achieve.filter.common">Common</button>
+        <button class="coll-filter" data-filter="Rare" data-i18n="achieve.filter.rare">Rare</button>
+        <button class="coll-filter" data-filter="Epic" data-i18n="achieve.filter.epic">Epic</button>
+        <button class="coll-filter" data-filter="Legendary" data-i18n="achieve.filter.legendary">Legendary</button>
       </div>
       <div class="achievements-grid" id="achievementsGrid"></div>
     </div>
@@ -342,10 +342,10 @@
             id="shopCoins">0</span></span>
       </div>
       <div id="shopTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-        <button class="coll-tab active" data-shopcat="avatar" onclick="switchShopCat('avatar')"><i class="fas fa-user"></i> <span data-i18n="shop.avatars">Avatars</span></button>
-        <button class="coll-tab" data-shopcat="frame" onclick="switchShopCat('frame')"><i class="fas fa-ring"></i> <span data-i18n="shop.frames">Frames</span></button>
-        <button class="coll-tab" data-shopcat="title" onclick="switchShopCat('title')"><i class="fas fa-scroll"></i> <span data-i18n="shop.titles">Titles</span></button>
-        <button class="coll-tab" data-shopcat="theme" onclick="switchShopCat('theme')"><i class="fas fa-palette"></i> <span data-i18n="shop.themes">Themes</span></button>
+        <button class="coll-tab active" data-shopcat="avatar"><i class="fas fa-user"></i> <span data-i18n="shop.avatars">Avatars</span></button>
+        <button class="coll-tab" data-shopcat="frame"><i class="fas fa-ring"></i> <span data-i18n="shop.frames">Frames</span></button>
+        <button class="coll-tab" data-shopcat="title"><i class="fas fa-scroll"></i> <span data-i18n="shop.titles">Titles</span></button>
+        <button class="coll-tab" data-shopcat="theme"><i class="fas fa-palette"></i> <span data-i18n="shop.themes">Themes</span></button>
       </div>
       <div class="category-grid" id="shopGrid"></div>
     </div>
@@ -379,8 +379,6 @@
       </div>
     </div>
   </section>
-
-  </div> <!-- END VIEW STACK -->
 
   <!-- Confirm Modal -->
   <div id="confirmModal" class="bottom-sheet-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
@@ -449,7 +447,7 @@
     <div class="weak-areas-container">
       <div class="weak-header">
         <h2 data-i18n="weak.title">Weak Areas</h2>
-        <button class="btn btn-ghost btn-sm" onclick="showScreen('sHub')"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
+        <button class="btn btn-ghost btn-sm" id="weakAreasBackBtn"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
       </div>
       <div id="weakAreasContent"></div>
     </div>
@@ -462,7 +460,7 @@
       <div class="chest-title" data-i18n="chest.dailyChest">Daily Reward!</div>
       <div class="chest-reward" id="chestReward">+100 Crowns</div>
       <div class="chest-streak-info" id="chestStreakInfo"></div>
-      <button class="chest-close-btn" onclick="closeChest()" data-i18n="misc.claim">Claim</button>
+      <button class="chest-close-btn" id="chestCloseBtn" data-i18n="misc.claim">Claim</button>
     </div>
   </div>
 
@@ -471,7 +469,7 @@
     <div class="bottom-sheet-content" style="text-align:center;">
       <div class="drag-handle"></div>
       <div id="relicModalContent"></div>
-      <button class="btn btn-ghost" onclick="closeRelicModal()" style="margin-top:16px;" data-i18n="misc.close">Close</button>
+      <button class="btn btn-ghost" id="relicModalCloseBtn" style="margin-top:16px;" data-i18n="misc.close">Close</button>
     </div>
   </div>
 
@@ -498,7 +496,7 @@
       // Focus trap for open modals
       let openModal = document.querySelector('.modal-bg.open, .chest-overlay.show');
       if (openModal && e.key === 'Tab') {
-        let focusable = openModal.querySelectorAll('button, input, select, [tabindex]:not([tabindex="-1"])');
+        let focusable = Array.from(openModal.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(el => el.offsetParent !== null);
         if (focusable.length === 0) return;
         let first = focusable[0], last = focusable[focusable.length - 1];
         if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
@@ -524,7 +522,7 @@
         navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
           const { y, height } = event.target.boundingRect;
           if (height > 0) {
-            document.body.style.transform = `translateY(-${height / 2}px)`;
+            document.body.style.transform = `translateY(-${height}px)`;
             document.body.style.transition = 'transform 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
           } else {
             document.body.style.transform = 'translateY(0)';
@@ -540,7 +538,7 @@
 
       // Show loading indicator while questions load
       let loader = $('loadingOverlay');
-      let isReturning = S.playerName && S.playerName !== 'Explorer';
+      let isReturning = S.onboardingDone || S.totalAnswered > 0 || S.totalXP > 0 || S.levelsCleared > 0;
       if (isReturning && loader) loader.classList.add('show');
 
       await loadQuestions();
@@ -551,10 +549,37 @@
         trackEvent('app_open', { returning: true });
         if (loader) loader.classList.remove('show');
         startGame();
+
+        // Handle PWA shortcut action=daily
+        let urlAction = new URLSearchParams(location.search).get('action');
+        if (urlAction === 'daily') {
+          history.replaceState(null, '', location.pathname);
+          setTimeout(() => {
+            let today = getISODate();
+            if (S.lastDailyDate !== today) startDaily();
+          }, 500);
+        }
       }
     }
 
     function wireEventListeners() {
+      // Nav tabs — declarative event delegation
+      D.mainNav.addEventListener('click', e => {
+        let tab = e.target.closest('[data-tab]');
+        if (tab) switchTab(tab.dataset.tab);
+      });
+      // Keyboard navigation for tab list
+      D.mainNav.addEventListener('keydown', e => {
+        let tabs = Array.from(D.mainNav.querySelectorAll('[data-tab]'));
+        let idx = tabs.indexOf(document.activeElement);
+        if (idx < 0) return;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          let next = e.key === 'ArrowRight' ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
+          tabs[next].focus();
+          tabs[next].click();
+        }
+      });
       D.startBtn.addEventListener('click', startGame);
       D.nextQBtn.onclick = () => { if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } S.qIndex++; loadQ(); };
       D.quizBackBtn.onclick = () => { sfxK(); clearAllTimers(); S._finishing = false; showCnf(t('confirm.retreatTitle'), t('confirm.retreatMsg'), () => { trackEvent('quit_quiz', { category: S.curCat, level: S.curLevel, question: S.qIndex }); S.isDaily = false; _particleReduced = false; showScreen(S.curCat === 'daily' ? 'sHub' : 'sLevelSelect'); }); };
@@ -581,6 +606,30 @@
       $('settingsImportBtn').onclick = () => { sfxK(); importSave(); };
       $('settingsResetBtn').onclick = () => { sfxK(); showCnf(t('confirm.resetTitle'), t('confirm.resetMsg'), doReset); };
       $('settingLang').onchange = function() { sfxK(); setLang(this.value); };
+      // Declarative event listeners (replacing inline onclick)
+      $('settingsBtn').addEventListener('click', openSettings);
+      $('dailyCard').addEventListener('click', () => { sfxK(); startDaily(); });
+      $('dailyCard').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startDaily(); } });
+      $('lsBackBtn').addEventListener('click', () => { sfxK(); showScreen('sHub'); });
+      $('weakAreasBackBtn').addEventListener('click', () => { sfxK(); showScreen('sHub'); });
+      $('chestCloseBtn').addEventListener('click', closeChest);
+      $('relicModalCloseBtn').addEventListener('click', closeRelicModal);
+      // Event delegation for review filter tabs
+      document.querySelectorAll('#sReview .coll-tab').forEach(btn => {
+        btn.addEventListener('click', () => filterReview(btn.dataset.filter));
+      });
+      // Event delegation for collection tabs (relics/trophies)
+      document.querySelectorAll('[data-coll]').forEach(btn => {
+        btn.addEventListener('click', () => switchCollTab(btn.dataset.coll));
+      });
+      // Event delegation for collection filters (rarity)
+      document.querySelectorAll('.coll-filter').forEach(btn => {
+        btn.addEventListener('click', () => filterCollection(btn.dataset.filter));
+      });
+      // Event delegation for shop category tabs
+      document.querySelectorAll('[data-shopcat]').forEach(btn => {
+        btn.addEventListener('click', () => { if (typeof switchShopCat === 'function') switchShopCat(btn.dataset.shopcat); });
+      });
     }
 
     document.addEventListener('DOMContentLoaded', bootApp);
