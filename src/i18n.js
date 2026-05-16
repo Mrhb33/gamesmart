@@ -174,6 +174,7 @@ const I18N = {
     'result.perfectSub': 'Flawless victory! Amazing work.',
     'result.bossDefeated': 'Boss Defeated!',
     'result.trialCleared': 'Trial Cleared!',
+    'result.scoreRing': 'Score: {{pct}}%',
     'result.dailyComplete': 'Daily Trial Complete!',
     'result.bossSub': 'You overcame the ultimate challenge of this category!',
     'result.trialSub': 'You mastered this trial!',
@@ -353,6 +354,7 @@ const I18N = {
     'shop.themes': 'Themes',
     'shop.equipped': 'Equipped',
     'shop.equip': 'Equip',
+    'shop.earnCrowns': 'Complete trials to earn crowns and unlock items here!',
     // Shop item names
     'shop.avatar_A.name': 'Default Seeker',
     'shop.avatar_B.name': 'Mech Sage',
@@ -757,6 +759,7 @@ const I18N = {
     'result.perfectSub': 'انتصار بلا عيب! عمل رائع.',
     'result.bossDefeated': 'تم هزيمة الزعيم!',
     'result.trialCleared': 'تم تجاوز التحدي!',
+    'result.scoreRing': 'النتيجة: {{pct}}٪',
     'result.dailyComplete': 'التحدي اليومي مكتمل!',
     'result.bossSub': 'لقد تجاوزت التحدي الأقصى في هذا التصنيف!',
     'result.trialSub': 'لقد أتقنت هذا التحدي!',
@@ -936,6 +939,7 @@ const I18N = {
     'shop.themes': 'السمات',
     'shop.equipped': 'مُجهّز',
     'shop.equip': 'تجهيز',
+    'shop.earnCrowns': 'أكمل التحديات لتحصل على التيجان وفتح العناصر هنا!',
     // Shop item names
     'shop.avatar_A.name': 'الباحث الافتراضي',
     'shop.avatar_B.name': 'حكيم الآلات',

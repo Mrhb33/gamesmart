@@ -15,6 +15,12 @@ function renderShop() {
   if (!D.shopGrid) return;
   D.shopGrid.innerHTML = '';
   let items = SHOP_ITEMS.filter(i => i.cat === _shopCat);
+  if (S.coins < 50 && !items.some(i => S.unlockedShopItems.includes(i.id) && i.cost > 0)) {
+    let tip = document.createElement('div');
+    tip.style.cssText = 'grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted);';
+    tip.innerHTML = '<i class="fas fa-coins" style="font-size:32px;display:block;margin-bottom:12px;color:#eab308;"></i>' + t('shop.earnCrowns');
+    D.shopGrid.appendChild(tip);
+  }
   items.forEach(item => {
     let isOwned = S.unlockedShopItems.includes(item.id);
     let isEquipped = false;

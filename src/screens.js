@@ -5,6 +5,10 @@ function updateHub() {
   if (D.hubTotalXP) D.hubTotalXP.textContent = S.totalXP;
   if (D.hudLevels) D.hudLevels.textContent = `${S.levelsCleared}/35`;
   let hc = $('hubCoins'); if (hc) hc.textContent = S.coins || 0;
+  if (D.hubAccuracy) {
+    let acc = S.totalAnswered > 0 ? Math.round((S.totalCorrect / S.totalAnswered) * 100) : 0;
+    D.hubAccuracy.textContent = acc + '%';
+  }
 
   // Grandmaster state
   let allMastered = S.realmsMastered >= 7;
@@ -22,7 +26,9 @@ function updateHub() {
     let today = getISODate();
     let dailyDone = S.lastDailyDate === today;
     dc.className = 'daily-card' + (dailyDone ? ' completed-daily' : '');
-    dc.onclick = dailyDone ? null : startDaily;
+    dc.onclick = dailyDone ? null : () => { sfxK(); startDaily(); };
+    dc.setAttribute('aria-disabled', dailyDone ? 'true' : 'false');
+    dc.setAttribute('role', dailyDone ? 'text' : 'button');
     let streakHtml = S.dailyStreak > 0 ? `<span class="daily-streak-badge"><i class="fas fa-fire"></i> ${t('hub.dayStreak', {n: S.dailyStreak})}</span>` : '';
     let ms = getDailyMilestone(S.dailyStreak);
     let msIdx = DAILY_STREAK_MILESTONES.indexOf(ms);
@@ -398,13 +404,13 @@ function checkSessionMissions() {
   let st = S.missionSessionStats; if (!st) return;
   S.missions.forEach(m => {
     if (m.claimed) return;
-    let baseId = m.id.split('_')[0];
+    let baseId = m.id.split('_')[0].toLowerCase();
     switch (baseId) {
       case 'answer': case 'answer20': case 'answer30': m.progress = Math.min(m.target, st.questionsAnswered); break;
       case 'correct': case 'correct15': m.progress = Math.min(m.target, st.correctAnswers); break;
       case 'stages': case 'stages2': case 'stages3': case 'stages5': m.progress = Math.min(m.target, st.stagesCompleted); break;
       case 'streak': case 'streak5': case 'streak8': m.progress = Math.min(m.target, st.maxStreak); break;
-      case 'no': case 'noll': case 'noLL': m.progress = Math.min(m.target, st.noLifelineStages); break;
+      case 'no': case 'noll': case 'noll': m.progress = Math.min(m.target, st.noLifelineStages); break;
       case 'daily': case 'dailyDone': m.progress = st.dailyCompleted ? 1 : 0; break;
       case 'wrong': case 'wrongReview': m.progress = Math.min(m.target, st.wrongReviewed); break;
       case 'science': case 'science1': break;
@@ -484,7 +490,7 @@ function renderWeeklyGoal() {
 function claimWeeklyGoal() {
   if (S.weeklyGoalClaimed || S.weeklyStagesCompleted < WEEKLY_GOAL_TARGET) return;
   S.weeklyGoalClaimed = true; S.coins += WEEKLY_REWARD.coins; S.totalXP += WEEKLY_REWARD.xp;
-  saveState(); sfxReward(); confetti(); vibeCelebrate();
+  saveState(); sfxReward(); if (typeof confetti === 'function') confetti(); vibeCelebrate();
   showToast(t('toast.weeklyComplete', { xp: WEEKLY_REWARD.xp, coins: WEEKLY_REWARD.coins }));
   trackEvent('weekly_goal_claimed'); renderWeeklyGoal();
 }
@@ -506,7 +512,7 @@ function showDailyChest(streak) {
     $('chestStreakInfo').textContent = streakText;
     $('chestIcon').innerHTML = '<i class="fas fa-gift"></i>';
   }
-  overlay.classList.add('show'); confetti(); vibeCelebrate();
+  overlay.classList.add('show'); if (typeof confetti === 'function') confetti(); vibeCelebrate();
   trackEvent('daily_chest_shown', { streak });
 }
 function closeChest() { let o = $('chestOverlay'); if (o) o.classList.remove('show'); sfxK(); }
@@ -586,19 +592,19 @@ function showShardPopups() {
     let fullyUnlocked = S.unlockedRelics.has(relicId);
     let rs = RARITY_STYLES[relic.rarity] || RARITY_STYLES.Common;
     setTimeout(() => {
-      let t = document.createElement('div');
-      t.className = 'trophy-modal';
-      t.style.borderColor = rs.border;
-      t.innerHTML = `
+      let popup = document.createElement('div');
+      popup.className = 'trophy-modal';
+      popup.style.borderColor = rs.border;
+      popup.innerHTML = `
         <div class="trophy-icon" style="color:${rs.color}"><i class="fas ${relic.icon}"></i></div>
         <div class="trophy-info">
           <div class="trophy-label" style="color:${rs.color}">${t('rarity.' + relic.rarity.toLowerCase())} ${t('achieve.shard')}${fullyUnlocked ? ' — ' + t('achieve.relicAssembled') : ''}</div>
           <div class="trophy-name">${escHtml(relicName(relic.id))}</div>
           <div class="trophy-reward">${S.relicShards[relicId]}/${relic.shardsNeeded} ${t('achieve.shards')}</div>
         </div>`;
-      document.body.appendChild(t);
-      setTimeout(() => t.classList.add('show'), 10);
-      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3500);
+      document.body.appendChild(popup);
+      setTimeout(() => popup.classList.add('show'), 10);
+      setTimeout(() => { popup.classList.remove('show'); setTimeout(() => popup.remove(), 400); }, 3500);
       sfxTrophy();
     }, i * 4000 + 2000);
   });
@@ -754,7 +760,9 @@ function finishLvl() {
     }
     D.resultsIcon.innerHTML = '<i class="fas fa-book-open"></i>';
   }
-  D.scoreRingValue.textContent = pct + '%';
+  D.scoreRingValue.textContent = pct;
+  let ring = $('resultsRing');
+  if (ring) { let svg = ring.querySelector('svg'); if (svg) svg.setAttribute('aria-label', t('result.scoreRing', { pct }) || ('Score: ' + pct + '%')); }
   D.resCorrect.textContent = cor; D.resWrong.textContent = tot - cor;
   animateValue(D.resXP, 0, S.quizXP, 1200);
   animateValue(D.resCoins, 0, coinsEarned, 1200);
@@ -807,7 +815,7 @@ function finishLvl() {
   // Banner
   let ban = D.levelCompleteBanner;
   if (passed) {
-    ban.classList.add('show'); confetti();
+    ban.classList.add('show'); if (typeof confetti === 'function') confetti();
     D.bannerText.textContent = isDaily ? t('result.dailyCompleteBanner') : (t('result.trialComplete', { lvl: S.curLevel }) + (S.curLevel < 5 ? ' — ' + t('result.trialUnlocked', { lvl: S.curLevel + 1 }) : ''));
     let ft = $('failureTips'); if (ft) ft.style.display = 'none';
   } else { ban.classList.remove('show'); }
@@ -840,6 +848,7 @@ function finishLvl() {
     retryBtn.innerHTML = '<i class="fas fa-eye"></i> ' + t('result.reviewMistakes');
     retryBtn.className = 'btn btn-ghost';
     retryBtn.style.display = 'inline-flex';
+    retryBtn.setAttribute('aria-label', t('result.reviewMistakes'));
     retryBtn.onclick = () => { sfxK(); openReview(); };
 
     // Show failure tips with personalized advice
@@ -912,10 +921,10 @@ function openReview() {
 }
 function filterReview(filter) {
   _reviewFilter = filter;
-  document.querySelectorAll('#sReview .coll-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#sReview .coll-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
   let tabId = filter === 'wrong' ? 'reviewTabWrong' : filter === 'weak' ? 'reviewTabWeak' : 'reviewTabAll';
   let tab = document.getElementById(tabId);
-  if (tab) tab.classList.add('active');
+  if (tab) { tab.classList.add('active'); tab.setAttribute('aria-selected', 'true'); }
   renderReview();
 }
 function renderReview() {
@@ -1029,7 +1038,7 @@ function trySimilarQuestion(answer) {
   // Start a 3-5 question practice quiz with matching questions
   let count = Math.min(5, Math.max(3, pool.length));
   let selected = shuffle(pool).slice(0, count);
-  S.curCat = cat; S.curLevel = lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
+  S.curCat = cat; S.curLevel = lvl; S.qIndex = 0; S.quizScore = 0; S.quizStreak = 0; S.quizMaxStreak = 0; S.quizXP = 0; S.lastQuizAnswers = []; S.isDaily = false;
   S.lifelinesUsed = { fifty: 0, time: 0, hint: 0 }; S._finishing = false;
   S.qs = smartShuffle(selected);
   let meta = CATEGORY_META[cat];
@@ -1085,7 +1094,7 @@ function switchCollTab(tab) {
   _collTab = tab;
   if(window.sfxK) sfxK();
   if(window.vibe) vibe(15);
-  document.querySelectorAll('.coll-tab').forEach(b => b.classList.toggle('active', b.dataset.coll === tab));
+  document.querySelectorAll('#sAchievements .coll-tab').forEach(b => b.classList.toggle('active', b.dataset.coll === tab));
   let realmFilter = $('collRealmFilter');
   if (realmFilter) realmFilter.style.display = tab === 'relics' ? 'inline-block' : 'none';
   renderCollection();
@@ -1094,7 +1103,7 @@ function filterCollection(filter) {
   if (filter) _collFilter = filter;
   if(window.sfxK) sfxK();
   if(window.vibe) vibe(10);
-  document.querySelectorAll('.coll-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === _collFilter));
+  document.querySelectorAll('#sAchievements .coll-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === _collFilter));
   renderCollection();
 }
 
@@ -1155,11 +1164,15 @@ function renderCollection() {
 
     if (item._unlocked || item._type === 'trophy') {
       el.style.cursor = 'pointer';
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
       el.onclick = () => {
         sfxK();
         if (item._type === 'relic' && item._unlocked) openRelicModal(item);
         else togglePin(item);
       };
+    } else {
+      el.setAttribute('aria-disabled', 'true');
     }
     grid.appendChild(el);
   });
@@ -1262,6 +1275,7 @@ function renderProfile() {
     }
 
     if (displayList.length > 0) {
+      showcase.style.display = '';
       showcase.innerHTML = '<div style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;">' + t('profile.hallOfFame') + '</div><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">' +
         displayList.map(item => {
           let rs = RARITY_STYLES[item.rarity] || RARITY_STYLES.Common;
@@ -1269,7 +1283,7 @@ function renderProfile() {
           return `<span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:var(--card);border:1px solid ${rs.border};border-radius:10px;font-size:13px;font-weight:600;color:${rs.color}"><i class="fas ${item.icon}"></i> ${escHtml(itemName)}</span>`;
         }).join('') + '</div>';
     } else {
-      showcase.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;">' + t('profile.collectRelics') + '</div>';
+      showcase.style.display = 'none';
     }
   }
 }
@@ -1371,17 +1385,20 @@ function renderWeakAreas() {
   }
 
   content.innerHTML = html;
-  // Event delegation for weak areas interactions
-  content.addEventListener('click', e => {
-    let practiceBtn = e.target.closest('[data-practice-cat]');
-    if (practiceBtn) {
-      e.stopPropagation();
-      sfxK();
-      startWeakAreaPractice(practiceBtn.dataset.practiceCat, practiceBtn.dataset.practiceTag);
-      return;
-    }
-    let catItem = e.target.closest('[data-cat]');
-    if (catItem) { sfxK(); openLevelSelect(catItem.dataset.cat); }
-  });
 }
+
+// Single event delegation for weak areas (avoids duplicate listeners)
+document.addEventListener('click', e => {
+  let content = $('weakAreasContent');
+  if (!content || !content.contains(e.target)) return;
+  let practiceBtn = e.target.closest('[data-practice-cat]');
+  if (practiceBtn) {
+    e.stopPropagation();
+    sfxK();
+    startWeakAreaPractice(practiceBtn.dataset.practiceCat, practiceBtn.dataset.practiceTag);
+    return;
+  }
+  let catItem = e.target.closest('[data-cat]');
+  if (catItem) { sfxK(); openLevelSelect(catItem.dataset.cat); }
+});
 

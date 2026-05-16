@@ -135,9 +135,8 @@
     }
 
     html {
-      height: 100%;
-      overflow: hidden;
-      width: 100vw;
+      min-height: 100vh;
+      width: 100%;
       max-width: 100vw;
       overflow-x: hidden;
     }
@@ -147,13 +146,11 @@
       background: var(--bg-deep);
       color: var(--fg);
       font-size: var(--text-base);
-      height: 100%;
-      overflow: hidden;
-      position: fixed;
-      width: 100vw;
+      min-height: 100vh;
+      width: 100%;
       max-width: 100vw;
       overflow-x: hidden;
-      overscroll-behavior: none;
+      overscroll-behavior-y: none;
       -webkit-overflow-scrolling: touch;
       -webkit-text-size-adjust: 100%;
       -webkit-font-smoothing: antialiased;
@@ -390,7 +387,7 @@
       display: none;
       position: relative;
       z-index: 1;
-      height: 100dvh;
+      min-height: 100dvh;
       padding: var(--space-4) var(--space-3) var(--space-8);
       animation: screenIn var(--duration-normal) var(--ease-out-expo);
       overflow-y: auto;
@@ -817,6 +814,7 @@
       transition: all var(--duration-normal) var(--ease-out-expo);
       overflow: hidden;
       border-inline-start: 4px solid transparent;
+      min-height: 160px;
     }
     .category-card::before {
       content: '';
@@ -941,29 +939,32 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      width: 100%;
+      box-sizing: border-box;
     }
     .dashboard-carousel::-webkit-scrollbar { display: none; }
-    
+
     .carousel-card {
       scroll-snap-align: center;
-      flex: 0 0 85%;
+      flex: 0 0 calc(100% - var(--space-4) * 2);
+      max-width: calc(100vw - var(--space-4) * 4);
       background: var(--card);
       border-radius: var(--radius-lg);
       padding: var(--space-4);
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     /* ==================== DAILY CARD ==================== */
     .daily-card {
-      margin-bottom: 24px;
       padding: 24px;
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(239, 68, 68, 0.08));
       border: 1px solid rgba(245, 158, 11, 0.3);
       border-radius: var(--radius-xl);
       cursor: pointer;
       transition: all var(--duration-normal);
-      max-width: 1100px;
       width: 100%;
       position: relative;
       overflow: hidden;
@@ -976,8 +977,8 @@
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), transparent);
       pointer-events: none;
     }
-    .daily-card h3 { font-size: 18px; font-weight: 700; }
-    .daily-card p { color: var(--fg-secondary); font-size: 14px; margin-top: 6px; }
+    .daily-card h3 { font-size: 18px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .daily-card p { color: var(--fg-secondary); font-size: 14px; margin-top: 6px; overflow-wrap: break-word; }
     .daily-card.completed-daily {
       opacity: 0.5;
       border-color: rgba(16, 185, 129, 0.3);
@@ -2684,7 +2685,7 @@
 
       /* Screens */
       .screen {
-        height: 100dvh;
+        min-height: 100dvh;
         margin-top: 0;
         padding: calc(var(--safe-top) + var(--space-3)) var(--space-3) calc(var(--mobile-nav-height) + var(--safe-bottom) + var(--space-3));
       }
@@ -3372,7 +3373,7 @@
 
     /* ---------- SCREENS: full-height, no margin, safe areas ---------- */
     .screen {
-      height: 100dvh;
+      min-height: 100dvh;
       margin-top: 0;
       padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
       padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px) + 12px);
@@ -3472,10 +3473,13 @@
       padding-left: 16px;
       padding-right: 16px;
       margin-bottom: 16px;
+      width: calc(100% + 32px);
+      box-sizing: border-box;
     }
     .carousel-card {
-      flex: 0 0 88%;
+      flex: 0 0 calc(100% - 32px);
       min-width: 0;
+      max-width: calc(100vw - 64px);
     }
 
     /* Daily card */
@@ -3556,6 +3560,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+      min-height: 140px;
     }
     .cat-icon { width: 40px; height: 40px; font-size: 17px; margin-bottom: 0; border-radius: 10px; }
     .cat-name { font-size: 16px; margin-bottom: 1px; }
@@ -3872,7 +3877,7 @@
     /* ---------- GLOBAL SAFETY NETS ---------- */
     /* Prevent any horizontal overflow */
     body, html, .screen, .screen > * {
-      max-width: 100vw;
+      max-width: 100%;
       overflow-x: hidden;
     }
     /* Ensure all flex rows wrap */
@@ -4251,7 +4256,404 @@
     .results-score-ring svg { width: 180px; height: 180px; }
     .score-text { font-size: 26px; }
     .btn { padding: 10px 14px; font-size: 13px; min-height: 44px; border-radius: 10px; }
-    .carousel-card { flex: 0 0 95%; }
+    .carousel-card { flex: 0 0 calc(100% - 24px); max-width: calc(100vw - 48px); }
     .daily-card h3 { font-size: 13px; }
     .daily-card p { font-size: 10px; }
     }
+
+/* ==================== SAFE MOBILE RESPONSIVE FIX ==================== */
+
+/* 1. Prevent flexbox children from expanding past viewport bounds causing left-clipping */
+.screen.active {
+  align-items: center !important;
+}
+
+.screen.active > * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. Force text and flex containers to respect boundaries */
+* {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* 3. Ensure Hub Stats and Headers gracefully wrap and size on mobile */
+.hub-header, .hub-profile, .hub-stats {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 480px) {
+  .hub-stats {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .hub-stat {
+    flex: 1 1 calc(50% - 10px) !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* 4. Carousel constraints */
+.dashboard-carousel {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.carousel-card {
+  max-width: calc(100vw - 48px) !important;
+  box-sizing: border-box !important;
+}
+
+/* 5. Fix hidden layout breaks */
+[style*="visibility:hidden"], [style*="visibility: hidden"], #streakPill:empty {
+  display: none !important;
+}
+
+/* 6. Fix RTL layouts pushing out of bounds */
+[dir="rtl"] .screen.active > * {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ==================== CRITICAL BUG FIXES ==================== */
+
+/* --- LIFELINE BUTTONS: proper size and text layout --- */
+.ll-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 70px;
+  height: auto;
+  min-height: 52px;
+  padding: 6px 8px;
+  font-family: inherit;
+  color: var(--fg);
+  overflow: hidden;
+}
+.ll-btn i {
+  font-size: 16px;
+  display: block;
+}
+.ll-btn span[style*="font-size:10px"] {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+/* Freeze text label inside ll-btn */
+.ll-btn .freeze-label {
+  font-size: 9px;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- CONTINUE CARD: fix CI-LABEL vertical text bug --- */
+.continue-info .ci-label {
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- HUB: Settings button — stays in flow properly on mobile --- */
+@media (max-width: 700px) {
+  .hub-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px;
+    align-items: start;
+    padding: 0 0 8px;
+    position: relative;
+  }
+  .hub-profile {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+  }
+  .settings-btn {
+    grid-column: 2;
+    grid-row: 1;
+    position: static !important;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 44px;
+    padding: 0;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  .hub-stats {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+
+  /* --- CATEGORY GRID: single column on narrow mobile --- */
+  .category-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- LIFELINE ROW: justify evenly --- */
+  .lifeline-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .ll-btn {
+    flex: 1;
+    max-width: 120px;
+    min-height: 52px;
+  }
+
+  /* --- WELCOME STATS BAR: fix COLLECTIBLES overflow --- */
+  .stats-bar {
+    gap: 8px;
+    padding: 12px 8px;
+  }
+  .stat-item {
+    flex: 1;
+    min-width: 0;
+  }
+  .stat-label {
+    font-size: 9px;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .stat-value {
+    font-size: 20px;
+  }
+
+  /* --- RESULTS ACTIONS: stack properly --- */
+  .results-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+    gap: 8px;
+    margin: 0 auto;
+  }
+  .results-actions .btn {
+    width: 100%;
+    min-height: 52px;
+  }
+}
+
+/* --- QUIZ BODY: proper flex layout --- */
+.quiz-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 12px 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- SCORE RING: ensure text is perfectly centered --- */
+.score-text {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  gap: 0;
+  line-height: 1;
+}
+.score-val {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* --- LOADING OVERLAY: fix backdrop --- */
+.loading-overlay {
+  backdrop-filter: none;
+}
+
+/* --- TOAST: ensure proper display on mobile above nav --- */
+@media (max-width: 700px) {
+  .toast {
+    position: fixed;
+    top: auto !important;
+    bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 12px !important;
+    right: 12px !important;
+    inset-inline-start: 12px !important;
+    inset-inline-end: 12px !important;
+    max-width: calc(100vw - 24px) !important;
+    width: calc(100vw - 24px) !important;
+  }
+}
+
+/* --- DAILY CARD TITLE: prevent badge overflow --- */
+.daily-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.3;
+  font-size: 16px;
+  overflow: hidden;
+}
+.daily-card h3 i { flex-shrink: 0; }
+
+/* --- ADAPTIVE REC CARD play button --- */
+.rec-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  color: inherit;
+}
+
+/* --- STAGE PATH: always LTR and flex, no vertical layout --- */
+.stage-path {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.stage-path::-webkit-scrollbar { display: none; }
+
+/* --- REVIEW SECTION HEADER --- */
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- CONTINUE CARD: Fix flex layout --- */
+.continue-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.continue-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.continue-info .ci-realm {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.continue-info .ci-stage {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- MISSION PANEL inside carousel: fix card height --- */
+.mission-panel {
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+.weekly-goal-card {
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* --- CATEGORY GRID DESKTOP: proper 2-col --- */
+@media (min-width: 700px) {
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* --- NAV backdrop filter for glass effect --- */
+.main-nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* --- Global: ensure all interactive elements have visible focus --- */
+.ll-btn:focus-visible,
+.mission-claim-btn:focus-visible,
+.weekly-claim-btn:focus-visible,
+.btn-ghost:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* --- Prevent horizontal overflow on mobile --- */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* --- Hub stats responsive on very small screens --- */
+@media (max-width: 360px) {
+  .hub-stats {
+    gap: 4px !important;
+  }
+  .hub-stat-val {
+    font-size: 14px;
+  }
+  .hub-stat-lbl {
+    font-size: 9px;
+  }
+}
+
+/* --- Carousel overflow fix --- */
+.dashboard-carousel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.carousel-card {
+  scroll-snap-align: start;
+  min-width: 260px;
+  max-width: calc(100vw - 48px);
+}
+
+/* --- Quiz footer scrollable on short screens --- */
+@media (max-height: 680px) {
+  .quiz-footer {
+    overflow-y: auto;
+    max-height: 45vh;
+  }
+}
+
+/* --- Hub profile: prevent overflow with settings button --- */
+.hub-profile {
+  min-width: 0;
+  flex: 1;
+}
+
+/* --- Onboarding actions take full width --- */
+.onboarding-actions {
+  width: 100%;
+  max-width: 340px;
+}

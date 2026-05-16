@@ -116,6 +116,8 @@ const PERSIST_KEYS = new Set([
   'pinnedShowcase',
   'skillProfile',
   'stageMastery', 'recentMistakes',
+  'missionSessionStats',
+  '_shardQueue',
 ]);
 
 function serializeState() {
@@ -144,7 +146,7 @@ function hydrateState(raw) {
   const transient = new Set([
     'timerInterval', 'qs', 'qIndex', 'quizScore', 'quizStreak', 'quizXP',
     'quizStartTime', 'timeLeft', 'questionAnswered', 'lastQuizAnswers',
-    'isDaily', '_shuffled', '_finishing', '_bossDefeated', 'missionSessionStats', '_shardQueue',
+    'isDaily', '_shuffled', '_finishing', '_bossDefeated',
     'newAchievements', '_practiceSnapshot',
   ]);
   transient.forEach(k => delete p[k]);

@@ -93,7 +93,7 @@ function updateBottomNavVisibility(id) {
     if (t === 'hub') isActive = ['sHub', 'sLevelSelect', 'sResults', 'sReview', 'sWeakAreas'].includes(id);
     else if (t === 'shop') isActive = id === 'sShop';
     else if (t === 'achievements') isActive = id === 'sAchievements';
-    else if (t === 'profile') isActive = ['sProfile', 'sWeakAreas'].includes(id);
+    else if (t === 'profile') isActive = id === 'sProfile';
     let tab = document.querySelector(`[data-tab="${t}"]`);
     if (tab) {
       tab.classList.toggle('active', isActive);
@@ -164,13 +164,15 @@ function handleHardwareBack() {
   }
 }
 
-function switchTab(t) { 
-  sfxK(); vibe(15); 
+const TAB_TO_SCREEN = { hub: 'sHub', achievements: 'sAchievements', shop: 'sShop', profile: 'sProfile' };
+
+function switchTab(t) {
+  sfxK(); vibe(15);
   let tabs = ['hub', 'achievements', 'shop', 'profile'];
   let oldIdx = tabs.indexOf(_currTab);
   let newIdx = tabs.indexOf(t);
   let isBack = false;
-  
+
   // For tab switching, we simulate forward/back based on tab index
   if (oldIdx !== -1 && newIdx !== -1 && oldIdx !== newIdx) {
     isBack = newIdx < oldIdx;
@@ -178,9 +180,9 @@ function switchTab(t) {
       isBack = !isBack;
     }
   }
-  
+
   _currTab = t;
-  showScreen('s' + t.charAt(0).toUpperCase() + t.slice(1), isBack); 
+  showScreen(TAB_TO_SCREEN[t] || ('s' + t.charAt(0).toUpperCase() + t.slice(1)), isBack);
 }
 function updateBadge() {
   let b = D.achieveBadge;
@@ -192,8 +194,12 @@ function getRank(lvl) {
   return t('rank.' + (PLAYER_RANKS.length - 1 - idx));
 }
 function calcLevel() {
-  let l = 1, xp = 0; while (xp + l * 150 <= S.totalXP && l < 200) { xp += l * 150; l++; }
-  let need = l * 150; let xpIn = S.totalXP - xp;
+  // O(1) formula: sum(1..L)*150 = L*(L+1)/2*150 => L^2 + L - 2*totalXP/150 = 0
+  // Solve quadratic: L = floor((-1 + sqrt(1 + 8*totalXP/150)) / 2)
+  let l = Math.min(200, Math.max(1, Math.floor((Math.sqrt(1 + 8 * S.totalXP / 150) - 1) / 2)));
+  let xp = l * (l - 1) / 2 * 150;
+  let need = l * 150;
+  let xpIn = S.totalXP - xp;
   return { lvl: l, xpIn, xpNeed: need, pct: Math.min(100, (xpIn / need) * 100) };
 }
 

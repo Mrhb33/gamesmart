@@ -17,13 +17,15 @@ let _onStep = 0;
 function initOnboarding() {
   _onStep = 0;
   updateOnboardingStep();
-  $('onboardingNext').onclick = () => {
-    sfxK();
-    _onStep++;
-    if (_onStep >= 4) { finishOnboarding(); return; }
-    updateOnboardingStep();
-  };
-  $('onboardingSkip').onclick = () => { sfxK(); finishOnboarding(); };
+  let nextBtn = $('onboardingNext');
+  let skipBtn = $('onboardingSkip');
+  // Clone nodes to remove any previous listeners (idempotent init)
+  let nextClone = nextBtn.cloneNode(true);
+  let skipClone = skipBtn.cloneNode(true);
+  nextBtn.parentNode.replaceChild(nextClone, nextBtn);
+  skipBtn.parentNode.replaceChild(skipClone, skipBtn);
+  nextClone.addEventListener('click', () => { sfxK(); _onStep++; if (_onStep >= 4) { finishOnboarding(); return; } updateOnboardingStep(); });
+  skipClone.addEventListener('click', () => { sfxK(); finishOnboarding(); });
 }
 function updateOnboardingStep() {
   document.querySelectorAll('.onboarding-step').forEach((el, i) => el.classList.toggle('active', i === _onStep));
@@ -283,6 +285,9 @@ function loadQ() {
   S.questionAnswered = false;
   D.explanationArea.innerHTML = '';
   D.nextQBtn.classList.remove('visible');
+  // Clear hint area from previous question
+  let prevHint = document.getElementById('hintArea');
+  if (prevHint) prevHint.remove();
   let q = S.qs[S.qIndex]; if (!q) { finishLvl(); return; }
   let phaseName = getBattlePhase(S.qIndex, S.qs.length);
   D.questionNumber.textContent = t('quiz.battleOf', { phase: phaseName, cur: S.qIndex + 1, total: S.qs.length });

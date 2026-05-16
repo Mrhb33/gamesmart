@@ -190,7 +190,7 @@
       <button class="btn-icon" id="quizBackBtn" aria-label="Retreat from trial" data-i18n-aria="aria.retreatTrial"><i class="fas fa-times"></i></button>
       <div class="quiz-progress-pill">
         <div class="timer-fill" id="timerFill"></div>
-        <span id="quizTimerText">20s</span>
+        <span id="quizTimerText"></span>
       </div>
       <div class="quiz-score-pill"><i class="fas fa-star"></i> <span id="quizScore">0</span></div>
       
@@ -238,7 +238,7 @@
       </div>
       
       <div class="results-score-ring" id="resultsRing">
-        <svg viewBox="0 0 200 200">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Score ring">
           <circle cx="100" cy="100" r="90" class="ring-bg"></circle>
           <circle cx="100" cy="100" r="90" class="ring-fill" id="scoreCircle"></circle>
         </svg>
@@ -294,10 +294,10 @@
         <h2 data-i18n="review.title">Review</h2>
         <button class="btn btn-ghost btn-sm" id="reviewBackBtn"><i class="fas fa-arrow-left"></i> <span data-i18n="misc.back">Back</span></button>
       </div>
-      <div class="review-filter-tabs" style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="coll-tab active" id="reviewTabAll" data-filter="all" data-i18n="review.all">All</button>
-        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong"><i class="fas fa-times-circle"></i> <span data-i18n="review.wrong">Wrong</span></button>
-        <button class="coll-tab" id="reviewTabWeak" data-filter="weak"><i class="fas fa-crosshairs"></i> <span data-i18n="weak.weakAreas">Weakest</span></button>
+      <div class="review-filter-tabs" style="display:flex;gap:8px;margin-bottom:16px;" role="tablist">
+        <button class="coll-tab active" id="reviewTabAll" data-filter="all" role="tab" aria-selected="true" data-i18n="review.all">All</button>
+        <button class="coll-tab" id="reviewTabWrong" data-filter="wrong" role="tab" aria-selected="false"><i class="fas fa-times-circle"></i> <span data-i18n="review.wrong">Wrong</span></button>
+        <button class="coll-tab" id="reviewTabWeak" data-filter="weak" role="tab" aria-selected="false"><i class="fas fa-crosshairs"></i> <span data-i18n="weak.weakAreas">Weakest</span></button>
       </div>
       <div class="review-list" id="reviewList"></div>
     </div>
@@ -313,7 +313,7 @@
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
         <button class="coll-tab active" data-coll="relics"><i class="fas fa-gem"></i> <span data-i18n="coll.relics">Relics</span></button>
         <button class="coll-tab" data-coll="trophies"><i class="fas fa-trophy"></i> <span data-i18n="coll.trophies">Trophies</span></button>
-        <select id="collRealmFilter" onchange="filterCollection(this.value)" style="background:var(--bg2);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;">
+        <select id="collRealmFilter" style="background:var(--bg2);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;">
           <option value="all" data-i18n="coll.allRealms">All Realms</option>
           <option value="science" data-i18n="cat.science.name">Science</option>
           <option value="history" data-i18n="cat.history.name">History</option>
@@ -417,15 +417,15 @@
       </div>
       <div class="settings-item">
         <span class="settings-label"><i class="fas fa-volume-high"></i> <span data-i18n="settings.sound">Sound</span></span>
-        <label class="settings-toggle"><input type="checkbox" id="settingSound"><span class="toggle-slider"></span></label>
+        <label class="settings-toggle" for="settingSound"><input type="checkbox" id="settingSound"><span class="toggle-slider"></span></label>
       </div>
       <div class="settings-item">
         <span class="settings-label"><i class="fas fa-mobile-screen"></i> <span data-i18n="settings.haptics">Haptics</span></span>
-        <label class="settings-toggle"><input type="checkbox" id="settingHaptics"><span class="toggle-slider"></span></label>
+        <label class="settings-toggle" for="settingHaptics"><input type="checkbox" id="settingHaptics"><span class="toggle-slider"></span></label>
       </div>
       <div class="settings-item">
         <span class="settings-label"><i class="fas fa-eye-slash"></i> <span data-i18n="settings.reducedMotion">Reduced Motion</span></span>
-        <label class="settings-toggle"><input type="checkbox" id="settingReducedMotion"><span class="toggle-slider"></span></label>
+        <label class="settings-toggle" for="settingReducedMotion"><input type="checkbox" id="settingReducedMotion"><span class="toggle-slider"></span></label>
       </div>
       <div class="settings-item">
         <span class="settings-label"><i class="fas fa-globe"></i> <span data-i18n="settings.language">Language</span></span>
@@ -434,7 +434,7 @@
           <option value="ar">العربية</option>
         </select>
       </div>
-      <div style="display:flex;gap:10px;margin-top:20px;">
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
         <button class="btn btn-ghost btn-sm" style="flex:1;" id="settingsExportBtn"><i class="fas fa-download"></i> <span data-i18n="settings.exportSave">Export</span></button>
         <button class="btn btn-ghost btn-sm" style="flex:1;" id="settingsImportBtn"><i class="fas fa-upload"></i> <span data-i18n="settings.importSave">Import</span></button>
         <button class="btn btn-red btn-sm" style="flex:1;" id="settingsResetBtn"><i class="fas fa-rotate-left"></i> <span data-i18n="settings.resetProgress">Reset</span></button>
@@ -488,7 +488,7 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         if ($('settingsModal').classList.contains('open')) { closeSettings(); return; }
-        if (D.confirmModal.classList.contains('open')) { D.confirmModal.classList.remove('open'); cb = null; if (_prevFocus) _prevFocus.focus(); return; }
+        if (D.confirmModal.classList.contains('open')) { D.confirmModal.classList.remove('open'); cb = null; try { if (_prevFocus && _prevFocus.focus) _prevFocus.focus(); } catch(e) {} return; }
         if ($('nameModal').classList.contains('open')) { $('nameModal').classList.remove('open'); return; }
         if ($('relicModal').classList.contains('open')) { closeRelicModal(); return; }
         if ($('chestOverlay').classList.contains('show')) { closeChest(); return; }
@@ -504,7 +504,7 @@
       }
       if (!D.sQuiz || !D.sQuiz.classList.contains('active')) return;
       if (S.questionAnswered && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault(); if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } S.qIndex++; loadQ(); return;
+        e.preventDefault(); if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } if (_answerRevealTimer) { clearTimeout(_answerRevealTimer); _answerRevealTimer = null; } S.qIndex++; loadQ(); return;
       }
       if (S.questionAnswered) return;
       let k = parseInt(e.key); if (k >= 1 && k <= 4) { let di = k - 1; if (S._shuffled && S._shuffled[di]) pickA(di, S._shuffled[di].origIdx); }
@@ -522,10 +522,10 @@
         navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
           const { y, height } = event.target.boundingRect;
           if (height > 0) {
-            document.body.style.transform = `translateY(-${height}px)`;
-            document.body.style.transition = 'transform 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
+            document.body.style.paddingBottom = height + 'px';
+            document.body.style.transition = 'padding-bottom 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
           } else {
-            document.body.style.transform = 'translateY(0)';
+            document.body.style.paddingBottom = '0';
           }
         });
       } else if ('visualViewport' in window) { 
@@ -581,13 +581,13 @@
         }
       });
       D.startBtn.addEventListener('click', startGame);
-      D.nextQBtn.onclick = () => { if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } S.qIndex++; loadQ(); };
-      D.quizBackBtn.onclick = () => { sfxK(); clearAllTimers(); S._finishing = false; showCnf(t('confirm.retreatTitle'), t('confirm.retreatMsg'), () => { trackEvent('quit_quiz', { category: S.curCat, level: S.curLevel, question: S.qIndex }); S.isDaily = false; _particleReduced = false; showScreen(S.curCat === 'daily' ? 'sHub' : 'sLevelSelect'); }); };
+      D.nextQBtn.onclick = () => { if (_autoAdvance) { clearTimeout(_autoAdvance); _autoAdvance = null; } if (_answerRevealTimer) { clearTimeout(_answerRevealTimer); _answerRevealTimer = null; } S.qIndex++; loadQ(); };
+      D.quizBackBtn.onclick = () => { sfxK(); clearAllTimers(); S._finishing = false; showCnf(t('confirm.retreatTitle'), t('confirm.retreatMsg'), () => { trackEvent('quit_quiz', { category: S.curCat, level: S.curLevel, question: S.qIndex }); S.isDaily = false; _particleReduced = false; if (S.curCat === 'daily') { showScreen('sHub'); } else { openLevelSelect(S.curCat); } }); };
       $('retryBtn').onclick = () => { sfxK(); if (S.curCat === 'daily') { startDaily(); } else { startLevel(S.curCat, S.curLevel); } };
       let sBtn = $('shareBtn'); if (sBtn) sBtn.onclick = tryShare;
       $('reviewBtn').onclick = openReview;
       $('reviewBackBtn').onclick = () => { sfxK(); showScreen('sResults'); };
-      $('backHubBtn').onclick = () => { sfxK(); showScreen('sHub'); };
+      $('backHubBtn').onclick = () => { sfxK(); if (S.curCat && S.curCat !== 'daily') { openLevelSelect(S.curCat); } else { showScreen('sHub'); } };
       $('confirmCancelBtn').onclick = () => { sfxK(); D.confirmModal.classList.remove('open'); if (_prevFocus) _prevFocus.focus(); cb = null; };
       $('confirmOkBtn').onclick = () => { sfxK(); D.confirmModal.classList.remove('open'); if (cb) cb(); cb = null; if (_prevFocus) _prevFocus.focus(); };
       let rm = $('relicModal'); if (rm) rm.addEventListener('click', e => { if (e.target === rm) closeRelicModal(); });
@@ -608,10 +608,9 @@
       $('settingLang').onchange = function() { sfxK(); setLang(this.value); };
       // Declarative event listeners (replacing inline onclick)
       $('settingsBtn').addEventListener('click', openSettings);
-      $('dailyCard').addEventListener('click', () => { sfxK(); startDaily(); });
-      $('dailyCard').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startDaily(); } });
+      $('dailyCard').addEventListener('keydown', e => { let dc = $('dailyCard'); if ((e.key === 'Enter' || e.key === ' ') && dc.onclick) { e.preventDefault(); dc.onclick(); } });
       $('lsBackBtn').addEventListener('click', () => { sfxK(); showScreen('sHub'); });
-      $('weakAreasBackBtn').addEventListener('click', () => { sfxK(); showScreen('sHub'); });
+      $('weakAreasBackBtn').addEventListener('click', () => { sfxK(); showScreen('sHub', true); });
       $('chestCloseBtn').addEventListener('click', closeChest);
       $('relicModalCloseBtn').addEventListener('click', closeRelicModal);
       // Event delegation for review filter tabs
@@ -626,6 +625,8 @@
       document.querySelectorAll('.coll-filter').forEach(btn => {
         btn.addEventListener('click', () => filterCollection(btn.dataset.filter));
       });
+      // Realm filter dropdown
+      $('collRealmFilter').addEventListener('change', function() { filterCollection(); });
       // Event delegation for shop category tabs
       document.querySelectorAll('[data-shopcat]').forEach(btn => {
         btn.addEventListener('click', () => { if (typeof switchShopCat === 'function') switchShopCat(btn.dataset.shopcat); });
