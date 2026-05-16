@@ -844,12 +844,12 @@ function finishLvl() {
     primaryBtn.innerHTML = '<i class="fas fa-rotate-right"></i> ' + t('result.retryStage');
     primaryBtn.className = 'btn btn-gold';
     primaryBtn.onclick = () => { sfxK(); if (S.curCat === 'daily') { startDaily(); } else { startLevel(S.curCat, S.curLevel); } };
-    // Show Review Mistakes button on failure
-    retryBtn.innerHTML = '<i class="fas fa-eye"></i> ' + t('result.reviewMistakes');
+    // Show Retry button on failure (retryBtn), reviewBtn already exists separately
+    retryBtn.innerHTML = '<i class="fas fa-rotate-right"></i> ' + t('result.retryStage');
     retryBtn.className = 'btn btn-ghost';
     retryBtn.style.display = 'inline-flex';
-    retryBtn.setAttribute('aria-label', t('result.reviewMistakes'));
-    retryBtn.onclick = () => { sfxK(); openReview(); };
+    retryBtn.setAttribute('aria-label', t('result.retryStage'));
+    retryBtn.onclick = () => { sfxK(); if (S.curCat === 'daily') { startDaily(); } else { startLevel(S.curCat, S.curLevel); } };
 
     // Show failure tips with personalized advice
     let ft = $('failureTips');

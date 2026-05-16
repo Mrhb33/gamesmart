@@ -310,7 +310,7 @@
         <h2 data-i18n="coll.title">Collection</h2>
         <span id="achieveCount" style="color:var(--muted);font-size:15px;font-weight:600;">0 / 15 <span data-i18n="achieve.collected">Collected</span></span>
       </div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:nowrap;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
         <button class="coll-tab active" data-coll="relics"><i class="fas fa-gem"></i> <span data-i18n="coll.relics">Relics</span></button>
         <button class="coll-tab" data-coll="trophies"><i class="fas fa-trophy"></i> <span data-i18n="coll.trophies">Trophies</span></button>
         <select id="collRealmFilter" style="background:var(--bg2);color:var(--fg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;">
@@ -341,7 +341,7 @@
         <span style="color:var(--accent);font-size:18px;font-weight:700;"><i class="fas fa-coins"></i> <span
             id="shopCoins">0</span></span>
       </div>
-      <div id="shopTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <div id="shopTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
         <button class="coll-tab active" data-shopcat="avatar"><i class="fas fa-user"></i> <span data-i18n="shop.avatars">Avatars</span></button>
         <button class="coll-tab" data-shopcat="frame"><i class="fas fa-ring"></i> <span data-i18n="shop.frames">Frames</span></button>
         <button class="coll-tab" data-shopcat="title"><i class="fas fa-scroll"></i> <span data-i18n="shop.titles">Titles</span></button>
@@ -410,10 +410,10 @@
 
   <!-- Settings Modal -->
   <div id="settingsModal" class="modal-bg" role="dialog" aria-modal="true" aria-label="Settings">
-    <div class="modal-box" style="max-width:400px;">
+    <div class="modal-box" style="max-width:400px;overflow-y:auto;overscroll-behavior-y:contain;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         <h3 id="settingsTitle" style="font-size:20px;font-weight:700;" data-i18n="settings.title">Settings</h3>
-        <button class="btn btn-ghost btn-sm" id="settingsCloseBtn" aria-label="Close settings" data-i18n-aria="aria.closeSettings"><i class="fas fa-times"></i></button>
+        <button class="btn btn-ghost" id="settingsCloseBtn" aria-label="Close settings" data-i18n-aria="aria.closeSettings" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-times"></i></button>
       </div>
       <div class="settings-item">
         <span class="settings-label"><i class="fas fa-volume-high"></i> <span data-i18n="settings.sound">Sound</span></span>
@@ -434,11 +434,12 @@
           <option value="ar">العربية</option>
         </select>
       </div>
-      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-        <button class="btn btn-ghost btn-sm" style="flex:1;" id="settingsExportBtn"><i class="fas fa-download"></i> <span data-i18n="settings.exportSave">Export</span></button>
-        <button class="btn btn-ghost btn-sm" style="flex:1;" id="settingsImportBtn"><i class="fas fa-upload"></i> <span data-i18n="settings.importSave">Import</span></button>
-        <button class="btn btn-red btn-sm" style="flex:1;" id="settingsResetBtn"><i class="fas fa-rotate-left"></i> <span data-i18n="settings.resetProgress">Reset</span></button>
+      <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;justify-content:center;">
+        <button class="btn btn-ghost btn-sm" style="flex:1;min-width:90px;" id="settingsExportBtn"><i class="fas fa-download"></i> <span data-i18n="settings.exportSave">Export</span></button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;min-width:90px;" id="settingsImportBtn"><i class="fas fa-upload"></i> <span data-i18n="settings.importSave">Import</span></button>
+        <button class="btn btn-red btn-sm" style="flex:1;min-width:90px;" id="settingsResetBtn"><i class="fas fa-rotate-left"></i> <span data-i18n="settings.resetProgress">Reset</span></button>
       </div>
+      <div style="height:env(safe-area-inset-bottom, 0px);"></div>
     </div>
   </div>
 

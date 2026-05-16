@@ -75,13 +75,15 @@ function equipShopItem(id, cat, subId) {
   saveState(); renderShop(); sfxK();
 }
 function updateAvatars() {
-  let a = AVATARS.find(x => x.id === S.avatar);
+  let avatarId = S.avatar || 'A';
+  let a = AVATARS.find(x => x.id === avatarId);
   let hubA = D.hubAvatar, profA = D.profileBigAvatar;
   if (a) {
-    let i = '<i class="fas ' + a.icon + '"></i>';
+    let i = '<i class="fas ' + a.icon + '" style="font-size:inherit;color:inherit;"></i>';
     if (hubA) hubA.innerHTML = i; if (profA) profA.innerHTML = i;
   } else {
-    if (hubA) hubA.textContent = S.playerName.charAt(0); if (profA) profA.textContent = S.playerName.charAt(0);
+    let init = (S.playerName || 'E').charAt(0).toUpperCase();
+    if (hubA) hubA.textContent = init; if (profA) profA.textContent = init;
   }
 }
 

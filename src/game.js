@@ -270,7 +270,9 @@ function startLevel(cat, lvl) {
   let lMeta = LEVELS_METADATA[cat] && LEVELS_METADATA[cat][lvl - 1] ? LEVELS_METADATA[cat][lvl - 1] : null;
 
   if (meta && lMeta) {
-    D.quizCatName.textContent = `${catName(cat)} — ${lMeta.title}: ${lMeta.subtitle}`;
+    // Use translated trial label to avoid mixed-language text in RTL
+    let stageLabel = t('misc.stage') + ' ' + lvl;
+    D.quizCatName.textContent = `${catName(cat)} — ${stageLabel}`;
   } else {
     D.quizCatName.textContent = meta ? `${catName(cat)} — ${t('quiz.trial')} ${lvl}` : `${cat === 'daily' ? t('quiz.dailyTrial') : catName(cat)} — ${t('quiz.trial')} ${lvl}`;
   }

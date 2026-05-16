@@ -206,7 +206,19 @@ function calcLevel() {
 // ==================== Confirm Dialog ====================
 // ==================== Edit / Reset / Confirm ====================
 let cb = null;
-function showCnf(t, m, onC) { _prevFocus = document.activeElement; D.confirmTitle.textContent = t; D.confirmMsg.textContent = m; cb = onC; D.confirmModal.classList.add('open'); D.confirmModal.querySelector('.btn-red')?.focus(); }
+function showCnf(title, msg, onC) {
+  _prevFocus = document.activeElement;
+  D.confirmTitle.textContent = title;
+  D.confirmMsg.textContent = msg;
+  // Update button labels for current language
+  let cancelBtn = $('confirmCancelBtn');
+  let okBtn = $('confirmOkBtn');
+  if (cancelBtn) cancelBtn.textContent = t('modal.cancel');
+  if (okBtn) okBtn.textContent = t('confirm.confirm');
+  cb = onC;
+  D.confirmModal.classList.add('open');
+  D.confirmModal.querySelector('.btn-red')?.focus();
+}
 
 // ==================== Settings ====================
 let _prevFocus = null;
